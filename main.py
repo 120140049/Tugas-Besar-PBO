@@ -17,7 +17,7 @@ class Game:
         bg_img = pygame.image.load('img/bg2.png')
         icon = pygame.image.load('img/bg2.png')
         pygame.display.set_icon(icon)
-        self.window.blit(bg_img, (0, 90))
+        self.window.blit(bg_img, (0, 0))
 
     def play_game(self):
         self.active_sprite_list = pygame.sprite.Group()
@@ -35,14 +35,13 @@ class Game:
 
         pygame.quit()
 
-
     def select_character(self):
         # print("1.Ulrich\n2.Lu Bu\n3.Zeus")
         # self.karakter_pilihan = int(input("Masukkan pilihan: "))
         # print("1.Demonzilla\n2. DOOM")
         # self.monster_pilihan = int(input("Masukkan pilihan: "))
-        players = player.Ulrich()
-        enemy = player.Demonzilla()
+        players = player.Alectrona()
+        enemy = player.Aposteus()
         self.active_sprite_list.add(players)
         self.active_sprite_list.add(enemy)
         players.rect.x = 75
