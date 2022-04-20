@@ -1,5 +1,5 @@
-# Tubes PBO - ... Fighter
-Proyek ini berisikan file file esensial yang menyusun game ... Fighter.
+# Tubes PBO RC - 02 | Dungeon Fighter
+Proyek ini berisikan file file esensial yang menyusun game Dungeon Fighter.
 Library yang digunakan:
 * Pygame
 
