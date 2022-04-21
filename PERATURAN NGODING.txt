@@ -1,0 +1,16 @@
+>>> Tolong Diperhatiin Supaya Kodingannya Rapih <<<
+
+PENAMAAN
+    Nama Kelas --> menggunakan PascalCase (setiap kata baru menggunakan huruf kapital [UPPERCASE] )
+        contoh : IniNamaKelas 
+    
+    Atribut --> menggunakan snake_case (kata sambung pakai simbol underscore)
+        contoh : ini_nama_atribut
+    
+    Method --> menggunakan camelCase (diawali dengan huruf kecil [lowercase] kemudian jika ada kata 
+               baru dituliskan dengan menggunakan huruf kapital [UPPERCASE] )
+        contoh : iniNamaMethod
+
+PENGGUNAAN BAHASA SAAT NULIS VARIABEL
+    Tolong gunakan BAHASA INDONESIA yang bisa dimengerti semua anggota (ngga usah overthinking supaya harus 
+    semuanya ngerti, tapi yang penting diusahain aja)
