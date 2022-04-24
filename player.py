@@ -30,7 +30,10 @@ class Nipalto(pygame.sprite.Sprite, character.Hero):
 
     def serang(self):
         pass
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3d369d640bdbaf9f8c1935df382f1e5c03e2ab17
 class Salazar(pygame.sprite.Sprite, character.Hero):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -56,7 +59,10 @@ class Aposteus(pygame.sprite.Sprite, character.Monster):
 
     def serang(self):
         pass
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3d369d640bdbaf9f8c1935df382f1e5c03e2ab17
 class Fenrir(pygame.sprite.Sprite, character.Monster):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
