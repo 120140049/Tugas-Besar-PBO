@@ -1,44 +1,67 @@
-#baru bikin aja
-#ntar ajala kerjainnya
+# #baru bikin aja
+# #ntar ajala kerjainnya
+
 
 import pygame
 import sys
+import pygame_widgets
+from pygame_widgets.button import Button
+
 
 pygame.init()
 layar = pygame.display.set_mode((896,504))
 main_font=pygame.font.SysFont("Times",65)
 
 class TombolPilihan():
-    def __init__ (self, warna_bg, gambar_avatar, x_pos, y_pos, nama_karakter):
-        self.warna_bg=warna_bg
-        self.background=pygame.Surface([x_pos,y_pos])
-        self.background.fill("green")
-        self.rect=self.background.get_rect(center=(x_pos,y_pos))
-        self.gambar_avatar=gambar_avatar
-        self.gambar_avatar_rect=self.gambar_avatar
-        self.x_pos=x_pos
-        self.y_pos=y_pos
+    pilihan_karakter=[]
+    def __init__(self, gambar_avatar, pos_x, pos_y, nama_karakter):
         self.nama_karakter=nama_karakter
-        self.teks=main_font.render(self.nama_karakter,True,"white")
-        self.teks_rect=self.teks.get_rect(center=(x_pos,y_pos))
+        self.gambar_avatar=gambar_avatar
+        self.pos_x=pos_x
+        self.pos_y=pos_y
+        TombolPilihan.generate(self)
+        # self.rect.center=[pos_x,pos_y]
+    def generate(self):
+        tombol= Button(
+            layar,
+            self.pos_x,
+            self.pos_y,
+            381,
+            70,
+            text=self.nama_karakter,
+            fontSize=65,
+            textHAlign=('left'),
+            # font=("Times",65),
+            inactiveColour=(173,217,201),
+            hoverColour=(255, 206, 160),
+            onClick=lambda: print('Click')
+            )
+        TombolPilihan.pilihan_karakter.append(tombol)
     
-    def update(self):
-        layar.blit(self.background,self.rect)
-        layar.blit(self.teks,self.teks_rect)
-        layar.blit(self.gambar_avatar,self.gambar_avatar_rect)
-    def cekInput(self,posisi):
-        if posisi[0] in range(self.rect.left,self.rect.right) and posisi[1] in range(self.rect.top, self.rect.bottom):
-            print("ini nanti diisi summon hero, terus panggil SelectMonster, \nkemungkinan nambah parameter lagi ntah di class atau disini")
-    def gantiWarna(self,posisi):
-        if posisi[0] in range(self.rect.left,self.rect.right) and posisi[1] in range(self.rect.top, self.rect.bottom):
-            self.background=pygame.draw.rect(layar,self.warna_bg,pygame.Rect(self.x_pos,self.y_pos,485,70))
-        else:
-            self.background=pygame.draw.rect(layar,"green",pygame.Rect(self.x_pos,self.y_pos,485,70))
+ava=pygame.image.load('img/pilihKarakter/test_ava.png')
+ava=pygame.transform.scale(ava,(110,70))    
+background=pygame.image.load('img/pilihKarakter/bg_pilihKarakter.jpeg')
+background=pygame.transform.scale(background,(896,504))    
 
-#masih ngga jelas summonnya gimana
-tombol_alectrona=TombolPilihan("yellow",None,12,18,"Alectrona")
+tombol=TombolPilihan(ava,115,82,"Alectrona")
+tombol=TombolPilihan(ava,115,160,"Nipalto")
+tombol=TombolPilihan(ava,115,239,"Salazar")
+tombol=TombolPilihan(ava,115,317,"Aposteus")
+tombol=TombolPilihan(ava,115,395,"Fenrir")
+#nanti tambahin lagi atribut warna_respon buat kustomisasi warna respon tiap karakter
+tombol_back=Button(
+    layar,
+    36,
+    19,
+    110,
+    50,
 
-
+    text="BACK",
+    fontSize=30,
+    inactiveColour=(99, 113, 115),
+    hoverColour=(217, 17, 17),
+    onClick=lambda: print('Tombol back')
+)
 
 while True:
     for event in pygame.event.get():
@@ -46,11 +69,20 @@ while True:
             pygame.quit()
             sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN:
-            tombol_alectrona.cekInput(pygame.mouse.get_pos())
+            pass
     layar.fill("white")
-
-    tombol_alectrona.update()
-    tombol_alectrona.gantiWarna(pygame.mouse.get_pos())
+    layar.blit(background,(0,0))
+    pygame_widgets.update(event)
+    #ceritanya ini hero 1
+    layar.blit(ava,(5,82))
+    #ceritanya ini hero 2
+    layar.blit(ava,(5,160))
+    #ceritanya ini hero 3
+    layar.blit(ava,(5,239))
+    #ceritanya ini hero 4
+    layar.blit(ava,(5,317))
+    #ceritanya ini hero 5
+    layar.blit(ava,(5,395))
 
     #taro paling bawah, ini buat update semua perubahan
     pygame.display.update()
