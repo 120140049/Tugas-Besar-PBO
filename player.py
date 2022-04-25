@@ -18,6 +18,7 @@ class Alectrona(pygame.sprite.Sprite, character.Hero):
     def serang(self):
         pass
 
+    
 class Nipalto(pygame.sprite.Sprite, character.Hero):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -45,6 +46,7 @@ class Salazar(pygame.sprite.Sprite, character.Hero):
     def serang(self):
         pass
 
+    
 class Aposteus(pygame.sprite.Sprite, character.Monster):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
