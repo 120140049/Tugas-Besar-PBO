@@ -1,4 +1,3 @@
-#belom ngerti cara ngoper bg dari sini ke main
 import pygame
 from pygame import mixer
 
@@ -32,6 +31,7 @@ class Arena:
                         self.window.blit(bg_img, (0, 0))
                         mixer.music.load('bgm/bgA.ogg')
                         mixer.music.play()
+                        mixer.music.set_volume(0.2)
 
                     elif event.key == pygame.K_b:
                         pygame.display.set_caption("Dungeon Figther")
@@ -42,6 +42,7 @@ class Arena:
                         self.window.blit(bg_img, (0, 0))
                         mixer.music.load('bgm/bgB.ogg')
                         mixer.music.play()
+                        mixer.music.set_volume(0.2)
 
                 if event.type == pygame.KEYUP:
                     pygame.display.update()
