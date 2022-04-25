@@ -1,4 +1,6 @@
-#masi berantakan plz dont judge me biar keliatan uda kerja aja
+#belom bikin collage buat user milih bg
+#belom ngerti cara ngoper bg dari sini ke main
+#belom nyari bgm
 
 import pygame
 
@@ -8,19 +10,16 @@ class Arena:
     def __init__(self):
         self.running = True
         self.window = None
-        self.win_size = self.width, self.height = 1270, 720
+        self.win_size = self.width, self.height = 896, 504
 
         pygame.init()
         white = (255, 255, 255)
         self.window = pygame.display.set_mode(self.win_size)
         self.fpsclock = pygame.time.Clock()
-        pygame.display.set_caption("Dungeon Figther")
         self.font = pygame.font.Font('freesansbold.ttf', 32)
         self.text = self.font.render('Press A for indoor. Press B for outdoor.', True, white)
         self.textRect = self.text.get_rect()
-        self.textRect.center = (1270 // 2, 720 // 2)
-      
-        self.active_sprite_list = pygame.sprite.Group()
+        self.textRect.center = (896 // 2, 504 // 2)
 
         black = (0, 0, 0)
         self.window.fill(black)
@@ -41,12 +40,11 @@ class Arena:
                       icon = pygame.image.load('img/Battleground4.png')
                       pygame.display.set_icon(icon)
                       self.window.blit(bg_img, (0, 0))
+                    
               if event.type == pygame.KEYUP:
+                  pygame.display.update()
+                  self.fpsclock.tick(FPS)
                   self.running = False
 
-            self.active_sprite_list.update()
-            self.active_sprite_list.draw(self.window)
             pygame.display.update()
             self.fpsclock.tick(FPS)
-          
-        pygame.quit()
