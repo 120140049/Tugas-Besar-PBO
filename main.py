@@ -7,7 +7,7 @@ class Game:
     def __init__(self):
         self.running = True
         self.window = None
-        self.win_size = self.width, self.height = 1270, 720
+        self.win_size = self.width, self.height = 896, 504
 
     def make_window(self):
         pygame.init()
