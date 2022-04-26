@@ -35,7 +35,7 @@ pygame.init()
 def get_font(size): 
     return pygame.font.SysFont("Times", size)
 
-def pilihTingkatKesulitan():
+def menuUtama():
     while True:
         Display = pygame.display.set_mode((896, 504))
         pygame.display.set_caption("Main Menu")
@@ -71,4 +71,4 @@ def pilihTingkatKesulitan():
 
         pygame.display.update()
 
-pilihTingkatKesulitan()
+menuUtama()
