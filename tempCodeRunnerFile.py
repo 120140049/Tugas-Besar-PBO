@@ -1,0 +1,1 @@
+TombolPilihan.pilihan_karakter.append(tombol)
