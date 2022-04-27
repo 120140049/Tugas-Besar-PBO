@@ -6,14 +6,16 @@ import pygame
 import sys
 import pygame_widgets
 from pygame_widgets.button import Button
+import os
 
-
+CWD=os.getcwd()
+pathfile=os.path.join(CWD, "img/pilihKarakter")
 pygame.init()
 layar = pygame.display.set_mode((896,504))
 main_font=pygame.font.SysFont("Times",65)
 pos_info=(530,82)
 dimensi_ava=(110,70)
-info_karakter=pygame.image.load('img/pilihKarakter/unknownchar.png')
+info_karakter=pygame.image.load(os.path.join(pathfile,'unknownchar.png'))
 klik=None
 
 class TombolPilihan():
@@ -48,17 +50,17 @@ def update (karakter):
     klik=True
     info_karakter=karakter.gambar_info
 
-ava=pygame.image.load('img/pilihKarakter/test_ava.png')
+ava=pygame.image.load(os.path.join(pathfile,'test_ava.png'))
 ava=pygame.transform.scale(ava,dimensi_ava)    
-background=pygame.image.load('img/pilihKarakter/bg_pilihKarakter.jpeg')
+background=pygame.image.load(os.path.join(pathfile,'bg_pilihKarakter.jpeg'))
 background=pygame.transform.scale(background,(896,504))    
 
 #gambar info
-info_alectrona=pygame.image.load('img/pilihKarakter/infoAlectrona.png')
-info_nipalto=pygame.image.load('img/pilihKarakter/infoNipalto.png')
-info_salazar=pygame.image.load('img/pilihKarakter/infoSalazar.png')
-info_aposteus=pygame.image.load('img/pilihKarakter/infoAposteus.png')
-info_fenrir=pygame.image.load('img/pilihKarakter/infoFenrir.png')
+info_alectrona=pygame.image.load(os.path.join(pathfile,'infoAlectrona.png'))
+info_nipalto=pygame.image.load(os.path.join(pathfile,'infoNipalto.png'))
+info_salazar=pygame.image.load(os.path.join(pathfile,'infoSalazar.png'))
+info_aposteus=pygame.image.load(os.path.join(pathfile,'infoAposteus.png'))
+info_fenrir=pygame.image.load(os.path.join(pathfile,'infoFenrir.png'))
 
 
 tombolAlectrona=TombolPilihan(ava,115,82,"Alectrona",info_alectrona)
