@@ -26,6 +26,7 @@ mode_pilihMonster=None
 cek_pilih_hero=True
 cek_pilih_monster=False
 teks_karakter=main_font.render(" ? ? ? ? ? ",True,'white')
+karakter=None
 
 
 #assets (tutup hero monster, ava, background, gambar info)
@@ -81,11 +82,12 @@ class TombolPilihan():
         TombolPilihan.pilihan_karakter.append(tombol)
 
 #update gambar info dan tulisan nama karakter tiap tombol
-def update (karakter):
-    global info_karakter,klik,teks_karakter
+def update (objektombol):
+    global info_karakter,klik,teks_karakter,karakter
     klik=True
-    info_karakter=karakter.gambar_info
-    teks_karakter=main_font.render(karakter.nama_karakter,True,'white')
+    info_karakter=objektombol.gambar_info
+    teks_karakter=main_font.render(objektombol.nama_karakter,True,'white')
+    karakter=objektombol.karakter
 
 def nextCommand():
     global cek_pilih_hero,cek_pilih_monster
@@ -98,7 +100,7 @@ def nextCommand():
     elif Hero != None and Monster != None : print("Step Selanjutnya")
 
 def pilihHero():
-    global mode, pos_mode,tombolAlectrona,tombolNipalto,tombolSalazar,cek_pilih_hero
+    global mode, pos_mode,tombolAlectrona,tombolNipalto,tombolSalazar,cek_pilih_hero,Hero
     cek_pilih_hero=True
     #cetak tombol-tombol ke layar
     tombolAlectrona=TombolPilihan(115,82,"Alectrona",info_alectrona,player.Alectrona())
@@ -107,10 +109,12 @@ def pilihHero():
     #cetak gambar informasi mode
     mode=mode_pilihHero
     pos_mode=(5,317)
+    Hero=karakter
 
 
 def pilihMonster():
-    global mode, pos_mode,tombolAposteus,tombolFenrir,cek_pilih_monster
+    global mode, pos_mode,tombolAposteus,tombolFenrir,cek_pilih_monster,cek_pilih_hero,Monster
+    cek_pilih_hero=False
     cek_pilih_monster=True
     #cetak tombol-tombol ke layar
     tombolAposteus=TombolPilihan(115,317,"Aposteus",info_aposteus,player.Aposteus())
@@ -118,6 +122,7 @@ def pilihMonster():
     #cetak gambar informasi mode
     mode=mode_pilihMonster
     pos_mode=(5,82)
+    Monster=karakter
 
 
 
