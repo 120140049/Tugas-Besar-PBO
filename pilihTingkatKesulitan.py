@@ -39,7 +39,7 @@ def pilihTingkatKesulitan():
     while True:
         Display = pygame.display.set_mode((896, 504))
         pygame.display.set_caption("Display Tingkat Kesulitan")
-        BG = pygame.image.load("img/bg_pilihTingkatKesulitan.jpeg").convert()
+        BG = pygame.image.load("Assets/env/bg_pilihTingkatKesulitan.jpeg").convert()
         BG = pygame.transform.scale(BG,(896, 504))
         Display.blit(BG, (0, 0))
 
@@ -48,13 +48,13 @@ def pilihTingkatKesulitan():
         Text_Judul = get_font(70).render("Tingkat Kesulitan", True, "red")
         Judul_Rect = Text_Judul.get_rect(center=(448, 80))
 
-        Tombol_easy= Button(image=pygame.image.load("img/button1.png"), pos=(450, 180), 
+        Tombol_easy= Button(image=pygame.image.load("Assets/env/button1.png"), pos=(450, 180), 
                             text_input="Easy", font=get_font(35), base_color="red", hovering_color="White")
-        Tombol_medium = Button(image=pygame.image.load("img/button1.png"), pos=(450, 290), 
+        Tombol_medium = Button(image=pygame.image.load("Assets/env/button1.png"), pos=(450, 290), 
                             text_input="Medium", font=get_font(35), base_color="red", hovering_color="White")
-        Tombol_hard = Button(image=pygame.image.load("img/button1.png"), pos=(450, 400), 
+        Tombol_hard = Button(image=pygame.image.load("Assets/env/button1.png"), pos=(450, 400), 
                             text_input="Hard", font=get_font(35), base_color="red", hovering_color="White")
-        Tombol_back = Button(image=pygame.image.load("img/button2.png"), pos=(30, 50), 
+        Tombol_back = Button(image=pygame.image.load("Assets/env/button2.png"), pos=(30, 50), 
                             text_input="Back", font=get_font(20), base_color="red", hovering_color="White")                   
 
         Display.blit(Text_Judul, Judul_Rect)

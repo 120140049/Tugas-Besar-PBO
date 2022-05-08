@@ -1,54 +1,83 @@
 import pygame
-import player
+import karakter
+import assetModule
+from objek import Lantai
 
-FPS = 30
+pygame.init()
+WINDOW = pygame.display.set_mode((896, 504))
+pygame.display.set_caption("Dungeon Fighter")
+FPS = 60
+clock = pygame.time.Clock()
 
-class Game:
-    def __init__(self):
-        self.running = True
-        self.window = None
-        self.win_size = self.width, self.height = 896, 504
+grounds = pygame.sprite.Group()
+heroes = heroes1 = monster = None
 
-    def make_window(self):
-        pygame.init()
-        self.window = pygame.display.set_mode(self.win_size)
-        self.fpsclock = pygame.time.Clock()
-        pygame.display.set_caption("Dungeon Figther")
-        bg_img = pygame.image.load('img/bg2.png')
-        icon = pygame.image.load('img/bg2.png')
-        pygame.display.set_icon(icon)
-        self.window.blit(bg_img, (0, 0))
+def selectCharacter():
+    global heroes, monster #heroes1
+    # print("1. Alectrona\n2. Nipalto\n3. Salazar")
+    # x = int(input("Masukkan Karakter yang diinginkan:"))
+    # if x % 1 == 0:
+    # heroes = karakter.Nipalto()
+    heroes = karakter.Alectrona()
+    #heroes = karakter.Salazar()
+    monster = karakter.Aposteus()
+    # monster = karakter.Fenrir()
 
-    def play_game(self):
-        self.active_sprite_list = pygame.sprite.Group()
-        self.select_character()
+def createGrounds():
+    for x in range(0, 930, 55):
+        grounds.add(Lantai(x, 490, 'terrain1.png'))
+        grounds.add(Lantai(x, 440, 'terrain1.png'))
+        grounds.add(Lantai(x, 390, 'terrain2.png'))
 
-        self.make_window()
-        while self.running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
-            self.active_sprite_list.update()
-            self.active_sprite_list.draw(self.window)
-            pygame.display.update()
-            self.fpsclock.tick(FPS)
+def updateScreen():
+    x = pygame.image.load(assetModule.bg)
+    WINDOW.blit(x, (-183, -100))
+    grounds.draw(WINDOW)
+    heroes_act = heroes.animation[heroes.action][heroes.frame]
+    #heroes1_act = heroes1.animation[heroes1.action][heroes1.frame]
+    monster_act = monster.animation[monster.action][monster.frame]
+    WINDOW.blit(monster_act, (monster))
+    WINDOW.blit(heroes_act, (heroes))
+    # WINDOW.blit(heroes1_act, (heroes1))
+    # pygame.draw.rect(WINDOW, (255, 0, 128), heroes, 2)
+    # pygame.draw.rect(WINDOW, (255, 0, 128), monster, 2)
 
-        pygame.quit()
+# Main Loop
+def mainLoop():
+    selectCharacter()
+    createGrounds()
+    run = True
+    while run:
+        clock.tick(FPS)
+        heroes.floor_collision(grounds)
+        #heroes1.floor_collision(grounds)
+        monster.floor_collision(grounds)
+        updateScreen()
+        if heroes.move_l or heroes.move_r:
+            heroes.move(monster)
+        if monster.move_l or monster.move_r:
+            monster.move(heroes)
+        if heroes.turn % 2 != 0 and heroes.finish:
+            monster.serang(heroes)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if heroes.turn % 2 == 0 and monster.finish and heroes.action == 0:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        # highlight_btn(attack)
+                        heroes.serang(monster)
+                    if event.key == pygame.K_1:
+                        # highlight_btn(skill1)
+                        heroes.skill1()
+                    if event.key == pygame.K_2:
+                        # highlight_btn(skill2)
+                        heroes.skill2()
+        heroes.update(monster)
+        monster.update(heroes)
+        pygame.display.flip()
 
-    def select_character(self):
-        # print("1.Ulrich\n2.Lu Bu\n3.Zeus")
-        # self.karakter_pilihan = int(input("Masukkan pilihan: "))
-        # print("1.Demonzilla\n2. DOOM")
-        # self.monster_pilihan = int(input("Masukkan pilihan: "))
-        players = player.Alectrona()
-        enemy = player.Aposteus()
-        self.active_sprite_list.add(players)
-        self.active_sprite_list.add(enemy)
-        players.rect.x = 75
-        players.rect.y = self.height - 220
-        enemy.rect.x = 1125
-        enemy.rect.y = self.height - 270
+    pygame.quit()
 
 if __name__ == "__main__":
-    StreetFighter = Game()
-    StreetFighter.play_game()
+    mainLoop()

@@ -39,7 +39,7 @@ def menuUtama():
     while True:
         Display = pygame.display.set_mode((896, 504))
         pygame.display.set_caption("Main Menu")
-        BG = pygame.image.load("img/bg_pilihTingkatKesulitan.jpeg").convert()
+        BG = pygame.image.load("Assets/env/bg_pilihTingkatKesulitan.jpeg").convert()
         BG = pygame.transform.scale(BG,(896, 504))
         Display.blit(BG, (0, 0))
 
@@ -48,9 +48,9 @@ def menuUtama():
         Text_Judul = get_font(70).render("Dungeon Fighter", True, "red")
         Judul_Rect = Text_Judul.get_rect(center=(448, 80))
 
-        Tombol_start= Button(image=pygame.image.load("img/button1.png"), pos=(450, 230), 
+        Tombol_start= Button(image=pygame.image.load("Assets/env/button1.png"), pos=(450, 230), 
                             text_input="Start", font=get_font(35), base_color="red", hovering_color="White")
-        Tombol_options = Button(image=pygame.image.load("img/button1.png"), pos=(450, 340), 
+        Tombol_options = Button(image=pygame.image.load("Assets/env/button1.png"), pos=(450, 340), 
                             text_input="options", font=get_font(35), base_color="red", hovering_color="White")                 
 
         Display.blit(Text_Judul, Judul_Rect)

@@ -14,7 +14,7 @@ class Arena:
         self.window = pygame.display.set_mode(self.win_size)
         self.fpsclock = pygame.time.Clock()
         pygame.display.set_caption("Dungeon Figther")
-        bg_img = pygame.image.load('img/pilihBGsimple.png').convert_alpha()
+        bg_img = pygame.image.load('Assets/env/pilihBGsimple.png').convert_alpha()
         self.window.blit(bg_img, (0, 0))
 
         while self.running:
@@ -24,23 +24,23 @@ class Arena:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_a:
                         pygame.display.set_caption("Dungeon Figther")
-                        bg_img = pygame.image.load('img/Battleground2.png')
+                        bg_img = pygame.image.load('Assets/env/Battleground2.png')
                         bg_img = pygame.transform.scale(bg_img, (896, 504))
-                        icon = pygame.image.load('img/Battleground2.png')
+                        icon = pygame.image.load('Assets/env/Battleground2.png')
                         pygame.display.set_icon(icon)
                         self.window.blit(bg_img, (0, 0))
-                        mixer.music.load('bgm/bgA.ogg')
+                        mixer.music.load('Assets/bgm/bgA.ogg')
                         mixer.music.play()
                         mixer.music.set_volume(0.2)
 
                     elif event.key == pygame.K_b:
                         pygame.display.set_caption("Dungeon Figther")
-                        bg_img = pygame.image.load('img/Battleground4.png')
+                        bg_img = pygame.image.load('Assets/env/Battleground4.png')
                         bg_img = pygame.transform.scale(bg_img, (896, 504))
-                        icon = pygame.image.load('img/Battleground4.png')
+                        icon = pygame.image.load('Assets/env/Battleground4.png')
                         pygame.display.set_icon(icon)
                         self.window.blit(bg_img, (0, 0))
-                        mixer.music.load('bgm/bgB.ogg')
+                        mixer.music.load('Assets/bgm/bgB.ogg')
                         mixer.music.play()
                         mixer.music.set_volume(0.2)
 
