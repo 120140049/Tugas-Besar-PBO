@@ -28,12 +28,12 @@ class Makhluk(ABC):
 
     def update(self, enemy):
         if not self.onground and not self.attacking:
-            self.rect.y += 15
+            self.rect.y += 6
         if self.prev_action != self.action:
             self.frame = 0
             self.prev_action = self.action
         else:
-            if pygame.time.get_ticks() - self.update_time > 75:
+            if pygame.time.get_ticks() - self.update_time > 90:
                 self.frame = (self.frame + 1) % \
                     len(self.animation[self.action])
                 self.update_time = pygame.time.get_ticks()
@@ -84,9 +84,9 @@ class Hero(Makhluk):
             self.finish = True
             self.action = 0
         if self.move_r:
-            self.rect.x += 14
+            self.rect.x += 4
         if self.move_l:
-            self.rect.x -= 14
+            self.rect.x -= 4
 
     def serang(self, target):
         self.move_r = True
@@ -137,7 +137,7 @@ class Monster(Makhluk):
         if self.obj_collision(enemy):
             self.move_r = False
             self.attacking = True
-            self.rect.x = 180
+            self.rect.x = 170
             if self.nama == 'Aposteus':
                 self.rect.y = 0
             self.action = 3
@@ -147,9 +147,9 @@ class Monster(Makhluk):
             self.finish = True
             self.action = 0
         if self.move_r:
-            self.rect.x -= 14
+            self.rect.x -= 4
         if self.move_l:
-            self.rect.x += 14
+            self.rect.x += 4
 
     def serang(self, obj):
         obj.turn += 1

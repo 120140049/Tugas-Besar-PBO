@@ -1,50 +1,48 @@
 # #baru bikin aja
 # #ntar ajala kerjainnya
-import pygame
 import sys
+import os
+import pygame
 import pygame_widgets
 from pygame_widgets.button import Button
-import os
+from assetModule import assets_dir, game_chara, game_font
 
+run = True
 CWD = os.getcwd()
-pathfile = os.path.join(CWD, "Assets/pilihKarakter")
 pygame.init()
 layar = pygame.display.set_mode((896,504))
-main_font = pygame.font.Font("Assets/font/A Goblin Appears!.otf",35)
-pos_info = (530,82)
+main_font = pygame.font.Font(f"{game_font}",35)
 pos_mode = (5,82)
-dimensi_ava = (110,70)
-info_karakter = pygame.image.load(os.path.join(pathfile,'unknownchar.png'))
+info_karakter = pygame.image.load(os.path.join(game_chara,'unknownchar.png'))
 Hero = Monster = klik = mode_pilihHero = mode_pilihMonster = karakter = None
 cek_pilih_hero = True
 cek_pilih_monster = False
-teks_karakter = main_font.render(" ? ? ? ? ? ",True,'white')
+teks_karakter = main_font.render(" ? ? ? ? ? ", True, 'white')
 #assets (tutup hero monster, ava, background, gambar info)
 
 #gambar tutup
-mode_pilihHero = pygame.image.load(os.path.join(pathfile,'mode pilih hero.png'))
-mode_pilihMonster = pygame.image.load(os.path.join(pathfile,'mode pilih monster.png'))
+mode_pilihHero = pygame.image.load(os.path.join(game_chara,'mode pilih hero.png'))
+mode_pilihMonster = pygame.image.load(os.path.join(game_chara,'mode pilih monster.png'))
 mode = mode_pilihHero
 #gambar ava
-avaAlectrona = pygame.image.load(os.path.join(pathfile,'avaAlectrona.png'))
-avaNipalto = pygame.image.load(os.path.join(pathfile,'avaNipalto.png'))
-avaSalazar = pygame.image.load(os.path.join(pathfile,'avaSalazar.png'))
-avaAposteus = pygame.image.load(os.path.join(pathfile,'avaAposteus.png'))
-avaFenrir = pygame.image.load(os.path.join(pathfile,'avaFenrir.png'))
+avaAlectrona = pygame.image.load(os.path.join(game_chara,'avaAlectrona.png'))
+avaNipalto = pygame.image.load(os.path.join(game_chara,'avaNipalto.png'))
+avaSalazar = pygame.image.load(os.path.join(game_chara,'avaSalazar.png'))
+avaAposteus = pygame.image.load(os.path.join(game_chara,'avaAposteus.png'))
+avaFenrir = pygame.image.load(os.path.join(game_chara,'avaFenrir.png'))
 #gambar background
-background = pygame.image.load(os.path.join(pathfile,'bg_pilihKarakter.jpeg'))
+background = pygame.image.load(os.path.join(game_chara,'bg_pilihKarakter.jpeg'))
 background = pygame.transform.scale(background,(896,504))    
 
 #gambar info
-info_alectrona = pygame.image.load(os.path.join(pathfile,'infoAlectrona.png'))
-info_nipalto = pygame.image.load(os.path.join(pathfile,'infoNipalto.png'))
-info_salazar = pygame.image.load(os.path.join(pathfile,'infoSalazar.png'))
-info_aposteus = pygame.image.load(os.path.join(pathfile,'infoAposteus.png'))
-info_fenrir = pygame.image.load(os.path.join(pathfile,'infoFenrir.png'))
+info_alectrona = pygame.image.load(os.path.join(game_chara,'infoAlectrona.png'))
+info_nipalto = pygame.image.load(os.path.join(game_chara,'infoNipalto.png'))
+info_salazar = pygame.image.load(os.path.join(game_chara,'infoSalazar.png'))
+info_aposteus = pygame.image.load(os.path.join(game_chara,'infoAposteus.png'))
+info_fenrir = pygame.image.load(os.path.join(game_chara,'infoFenrir.png'))
 
 #kelas tombol tombol opsi pemain
 class TombolPilihan():
-    pilihan_karakter=[]
     def __init__(self, pos_x, pos_y, nama_karakter, gambar_info):
         self.nama_karakter = nama_karakter
         self.pos_x = pos_x
@@ -63,7 +61,7 @@ class TombolPilihan():
             textColour=(255, 255, 255),
             fontSize=65,
             textHAlign=('left'),
-            font=pygame.font.Font("Assets/font/A Goblin Appears!.otf",35),
+            font=pygame.font.Font(f"{game_font}",35),
             inactiveColour=(175, 118, 140),
             hoverColour=(216, 191, 159),
             onClick=lambda: update(self) 
@@ -79,7 +77,7 @@ def update(objektombol):
     # karakter = objektombol.karakter
 
 def nextCommand():
-    global cek_pilih_hero,cek_pilih_monster
+    global cek_pilih_hero, cek_pilih_monster
     if Hero == None and Monster == None : 
         cek_pilih_monster=False
         pilihHero()
@@ -112,7 +110,7 @@ def pilihMonster():
     tombolFenrir = TombolPilihan(115, 395, "Fenrir", info_fenrir)
     #cetak gambar informasi mode
     mode = mode_pilihMonster
-    pos_mode = (5,82)
+    pos_mode = (5, 82)
     Monster = karakter
 
 
@@ -125,7 +123,7 @@ tombol_back=Button(
     50,
 
     text="BACK",
-    font=pygame.font.Font("Assets/font/A Goblin Appears!.otf",20),
+    font=pygame.font.Font(f"{game_font}",20),
     textColour='white',
     hoverColour=(128,0,0),
     inactiveColour=(217, 17, 17),
@@ -140,24 +138,26 @@ tombol_next=Button(
     50,
 
     text="NEXT",
-    font=pygame.font.Font("Assets/font/A Goblin Appears!.otf",20),
+    font=pygame.font.Font(f"{game_font}",20),
     textColour='white',
     hoverColour=(124, 145, 153),
     inactiveColour=(177, 212, 224),
     onClick=lambda: nextCommand()
 )
 
-def selectCharacter():
-    while True:
+def pilihKarakter():
+    global run
+    while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                run = False
                 pygame.quit()
-                sys.exit()
+        events = pygame.event.get()
         pilihHero()
         layar.fill("white")
         layar.blit(background,(0,0))
         layar.blit(info_karakter,(530,82))
-        pygame_widgets.update(event)
+        pygame_widgets.update(events)
         if cek_pilih_hero:
             #ini ava Alectrona
             layar.blit(avaAlectrona,(5,82))

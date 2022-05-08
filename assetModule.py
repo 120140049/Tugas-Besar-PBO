@@ -7,6 +7,9 @@ assets_dir = os.path.join(CWD, 'Assets')
 game_env = os.path.join(assets_dir, 'env')
 game_bgm = os.path.join(assets_dir, 'bgm')
 
+game_chara = os.path.join(assets_dir, 'pilihKarakter')
+game_font = os.path.join(assets_dir, 'font', 'A Goblin Appears!.otf')
+
 bg = os.path.join(game_env, 'map.png')
 
 alectrona_dir = os.path.join(assets_dir, 'alectrona')

@@ -100,11 +100,11 @@ class Nipalto(Hero, Melee):
         atk = spritesheet.Spritesheet(os.path.join(
             assetModule.nipalto_img, 'Attack.png'))
         for i in range(8):
-            rect = ((i*231, 0), (231, 150))
+            rect = ((i*232, 0), (232, 150))
             image = atk.image_at(rect)
             image = pygame.transform.scale2x(image)
             image = image.subsurface((150, 110), (240, 190))
-            image = pygame.transform.scale(image, (140, 120))
+            image = pygame.transform.scale(image, (160, 120))
             self.animation[3].append(image)
 
 

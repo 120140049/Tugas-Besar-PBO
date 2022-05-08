@@ -1,20 +1,20 @@
 import pygame
-from pygame import mixer
+from assetModule import game_env, game_bgm
 
-FPS = 30
+FPS = 60
 
 class Arena:
     def __init__(self):
         self.running = True
         self.window = None
         self.win_size = self.width, self.height = 896, 504
+        self.bg_img = self.music = None
 
         pygame.init()
-        mixer.init()
         self.window = pygame.display.set_mode(self.win_size)
         self.fpsclock = pygame.time.Clock()
         pygame.display.set_caption("Dungeon Figther")
-        bg_img = pygame.image.load('Assets/env/pilihBGsimple.png').convert_alpha()
+        bg_img = pygame.image.load(f'{game_env}/pilihBGsimple.png').convert_alpha()
         self.window.blit(bg_img, (0, 0))
 
         while self.running:
@@ -24,31 +24,17 @@ class Arena:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_a:
                         pygame.display.set_caption("Dungeon Figther")
-                        bg_img = pygame.image.load('Assets/env/Battleground2.png')
-                        bg_img = pygame.transform.scale(bg_img, (896, 504))
-                        icon = pygame.image.load('Assets/env/Battleground2.png')
-                        pygame.display.set_icon(icon)
-                        self.window.blit(bg_img, (0, 0))
-                        mixer.music.load('Assets/bgm/bgA.ogg')
-                        mixer.music.play()
-                        mixer.music.set_volume(0.2)
+                        bg_img = pygame.image.load(f'{game_env}/Battleground2.png')
+                        self.bg_img = pygame.transform.scale(bg_img, (896, 504))
+                        self.music = f'{game_bgm}/bgA.ogg'
+                        self.running = False
 
                     elif event.key == pygame.K_b:
                         pygame.display.set_caption("Dungeon Figther")
-                        bg_img = pygame.image.load('Assets/env/Battleground4.png')
-                        bg_img = pygame.transform.scale(bg_img, (896, 504))
-                        icon = pygame.image.load('Assets/env/Battleground4.png')
-                        pygame.display.set_icon(icon)
-                        self.window.blit(bg_img, (0, 0))
-                        mixer.music.load('Assets/bgm/bgB.ogg')
-                        mixer.music.play()
-                        mixer.music.set_volume(0.2)
+                        bg_img = pygame.image.load(f'{game_env}/Battleground4.png')
+                        self.bg_img = pygame.transform.scale(bg_img, (896, 504))
+                        self.music = f'{game_bgm}/bgB.ogg'
+                        self.running = False
 
-                if event.type == pygame.KEYUP:
-                    pygame.display.update()
-                    self.fpsclock.tick(FPS)
-
-            pygame.display.update()
+            pygame.display.flip()
             self.fpsclock.tick(FPS)
-
-        pygame.quit()
