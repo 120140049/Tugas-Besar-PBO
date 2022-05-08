@@ -70,5 +70,3 @@ def menuUtama():
                     print ("options button")
 
         pygame.display.update()
-
-menuUtama()

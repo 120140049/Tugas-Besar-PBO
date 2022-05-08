@@ -82,5 +82,3 @@ def pilihTingkatKesulitan():
                     print ("back button")
 
         pygame.display.update()
-
-pilihTingkatKesulitan()

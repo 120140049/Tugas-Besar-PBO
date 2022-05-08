@@ -5,7 +5,6 @@ import sys
 import pygame_widgets
 from pygame_widgets.button import Button
 import os
-import karakter
 
 CWD = os.getcwd()
 pathfile = os.path.join(CWD, "Assets/pilihKarakter")
@@ -148,40 +147,38 @@ tombol_next=Button(
     onClick=lambda: nextCommand()
 )
 
-
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-    pilihHero()
-    layar.fill("white")
-    layar.blit(background,(0,0))
-    layar.blit(info_karakter,(530,82))
-    pygame_widgets.update(event)
-    if cek_pilih_hero:
-        #ini ava Alectrona
-        layar.blit(avaAlectrona,(5,82))
-        #ini ava Nipalto
-        layar.blit(avaNipalto,(5,160))
-        #ini ava Salazar
-        layar.blit(avaSalazar,(5,239))
-    if cek_pilih_monster:
-        #ini ava Aposteus
-        layar.blit(avaAposteus,(5,317))
-        #ini ava Fenrir
-        layar.blit(avaFenrir,(5,395))
-
-    if klik:
-        #ini nanti buat gambar info_karakter
+def selectCharacter():
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        pilihHero()
+        layar.fill("white")
+        layar.blit(background,(0,0))
         layar.blit(info_karakter,(530,82))
+        pygame_widgets.update(event)
+        if cek_pilih_hero:
+            #ini ava Alectrona
+            layar.blit(avaAlectrona,(5,82))
+            #ini ava Nipalto
+            layar.blit(avaNipalto,(5,160))
+            #ini ava Salazar
+            layar.blit(avaSalazar,(5,239))
+        if cek_pilih_monster:
+            #ini ava Aposteus
+            layar.blit(avaAposteus,(5,317))
+            #ini ava Fenrir
+            layar.blit(avaFenrir,(5,395))
 
-    #ini buat nama karakter dibawah foto info
-    layar.blit(teks_karakter,(510,415))
-    #
-    layar.blit(mode,pos_mode)
-    #taro paling bawah, ini buat update semua perubahan
-    pygame.display.update()
+        if klik:
+            #ini nanti buat gambar info_karakter
+            layar.blit(info_karakter,(530,82))
 
-
+        #ini buat nama karakter dibawah foto info
+        layar.blit(teks_karakter,(510,415))
+        #
+        layar.blit(mode,pos_mode)
+        #taro paling bawah, ini buat update semua perubahan
+        pygame.display.update()
 

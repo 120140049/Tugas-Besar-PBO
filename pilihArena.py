@@ -52,6 +52,3 @@ class Arena:
             self.fpsclock.tick(FPS)
 
         pygame.quit()
-
-if __name__ == "__main__":
-    x = Arena()

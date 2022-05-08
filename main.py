@@ -1,6 +1,10 @@
 import pygame
 import karakter
 import assetModule
+import pilihArena
+import pilihKarakter
+import pilihTingkatKesulitan
+import menuUtama
 from objek import Lantai
 
 pygame.init()
@@ -80,4 +84,5 @@ def mainLoop():
     pygame.quit()
 
 if __name__ == "__main__":
+    x = pilihArena.Arena()
     mainLoop()
