@@ -158,7 +158,7 @@ class Salazar(Hero, Melee):
 
 
 class Aposteus(Monster, Ranged):
-    def __init__(self, nama='Aposteus', hp=5000, damage=20):
+    def __init__(self, nama='Aposteus', hp=5000, damage=78):
         Monster.__init__(self, nama, hp, damage)
         Ranged.__init__(self)
         self.animation = [[]]
@@ -195,9 +195,13 @@ class Aposteus(Monster, Ranged):
             image = pygame.transform.scale2x(image)
             self.animation[3].append(image)
 
+    def buff(self):
+        self.hp = 100
+        self.buffmeter = 0
+
 
 class Fenrir(Monster, Melee):
-    def __init__(self, nama='Aposteus', hp=5000, damage=20):
+    def __init__(self, nama='Aposteus', hp=5000, damage=82):
         Monster.__init__(self, nama, hp, damage)
         Ranged.__init__(self)
         self.animation = [[]]

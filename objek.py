@@ -44,11 +44,13 @@ class Makhluk(ABC):
                         self.move_l = True
                         self.frame = 0
                         if self.tipe == 'Hero':
-                            self.rect.right = enemy.rect.left
+                            self.rect.right = enemy.rect.left                      
                         else:
                             if self.nama == 'Aposteus':
                                 self.rect.y = enemy.rect.y
                             self.rect.left = enemy.rect.right
+                        enemy - self.damage
+                        self + 1
 
     @abstractmethod
     def __sub__(self):
@@ -65,13 +67,8 @@ class Hero(Makhluk):
         self.__hp = hp
         self.__damage = damage
         self.__energi = energi
-        self.turn = 0
         self.tipe = 'Hero'
-
-    def buttonImage(self):
-        # Get current Directory
-        # Assign gambar tombol
-        pass
+        self.turn = 0
 
     def move(self, enemy):
         if self.obj_collision(enemy):
@@ -88,7 +85,7 @@ class Hero(Makhluk):
         if self.move_l:
             self.rect.x -= 4
 
-    def serang(self, target):
+    def serang(self):
         self.move_r = True
         self.action = 1
         self.turn += 1
@@ -118,11 +115,14 @@ class Hero(Makhluk):
 
     @energi.setter
     def energi(self, tambahan):
-        self.__energi += tambahan
+        self.__energi -= tambahan
 
     # Reducing HP after attacked
     def __sub__(self, amount):
         self.__hp -= amount
+
+    def __add__(self, amount):
+        self.__energi += amount
 
 
 class Monster(Makhluk):
@@ -130,6 +130,7 @@ class Monster(Makhluk):
         super().__init__(nama)
         self.__hp = hp
         self.__damage = damage
+        self.__buffmeter = 0
         self.finish = True
         self.tipe = 'Monster'
 
@@ -152,9 +153,9 @@ class Monster(Makhluk):
             self.rect.x += 4
 
     def serang(self, obj):
-        obj.turn += 1
         self.move_r = True
         self.action = 1
+        obj.turn += 1
 
     def buff(self):
         pass
@@ -169,9 +170,23 @@ class Monster(Makhluk):
     def damage(self):
         return self.__damage
 
+    @property
+    def buffmeter(self):
+        return self.__buffmeter
+
+    @hp.setter
+    def hp(self, amount):
+        self.__hp += amount
+
+    @buffmeter.setter
+    def buffmeter(self, amount):
+        self.__buffmeter = amount
     # Reducing hp after attacked
     def __sub__(self, amount):
         self.__hp -= amount
+
+    def __add__(self, amount):
+        self.__buffmeter += 1
 
 
 class Melee:

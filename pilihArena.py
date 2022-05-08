@@ -1,3 +1,4 @@
+import sys
 import pygame
 from assetModule import game_env, game_bgm
 
@@ -21,6 +22,8 @@ class Arena:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+                    pygame.quit()
+                    sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_a:
                         pygame.display.set_caption("Dungeon Figther")

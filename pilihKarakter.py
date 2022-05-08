@@ -43,13 +43,15 @@ info_fenrir = pygame.image.load(os.path.join(game_chara,'infoFenrir.png'))
 
 #kelas tombol tombol opsi pemain
 class TombolPilihan():
+    # ga kepake
+    # pilihan_karakter=[]
     def __init__(self, pos_x, pos_y, nama_karakter, gambar_info):
         self.nama_karakter = nama_karakter
         self.pos_x = pos_x
         self.pos_y = pos_y
         self.gambar_info = gambar_info
         TombolPilihan.generate(self)
-     #bikin supaya tombol baru bisa dibikin sesuai atribut   
+     #bikin supaya tombol baru bisa dibikin sesuai atribut
     def generate(self):
         tombol= Button(
             layar,
@@ -66,7 +68,8 @@ class TombolPilihan():
             hoverColour=(216, 191, 159),
             onClick=lambda: update(self) 
             )
-        TombolPilihan.pilihan_karakter.append(tombol)
+        # ini buat apaan kocak, ga kepake
+        # TombolPilihan.pilihan_karakter.append(tombol)
 
 #update gambar info dan tulisan nama karakter tiap tombol
 def update(objektombol):
@@ -99,7 +102,6 @@ def pilihHero():
     pos_mode = (5,317)
     Hero = karakter
 
-
 def pilihMonster():
     global mode, pos_mode, tombolAposteus, tombolFenrir, \
         cek_pilih_monster, cek_pilih_hero, Monster
@@ -113,36 +115,22 @@ def pilihMonster():
     pos_mode = (5, 82)
     Monster = karakter
 
-
-
-tombol_back=Button(
-    layar,
-    36,
-    19,
-    110,
-    50,
-
-    text="BACK",
-    font=pygame.font.Font(f"{game_font}",20),
-    textColour='white',
-    hoverColour=(128,0,0),
-    inactiveColour=(217, 17, 17),
-    onClick=lambda: print('Tombol back')
+tombol_back = Button(layar, 36, 19, 110, 50,
+    text = "Back",
+    font = pygame.font.Font(f"{game_font}",20),
+    textColour = 'white',
+    hoverColour = (128,0,0),
+    inactiveColour = (217, 17, 17),
+    onClick = lambda: print('Tombol back')
 )
 
-tombol_next=Button(
-    layar,
-    160,
-    19,
-    110,
-    50,
-
-    text="NEXT",
-    font=pygame.font.Font(f"{game_font}",20),
-    textColour='white',
-    hoverColour=(124, 145, 153),
-    inactiveColour=(177, 212, 224),
-    onClick=lambda: nextCommand()
+tombol_next = Button(layar, 160, 19, 110, 50,
+    text = "Next",
+    font = pygame.font.Font(f"{game_font}",20),
+    textColour = 'white',
+    hoverColour = (124, 145, 153),
+    inactiveColour = (177, 212, 224),
+    onClick = lambda: nextCommand()
 )
 
 def pilihKarakter():
@@ -152,6 +140,7 @@ def pilihKarakter():
             if event.type == pygame.QUIT:
                 run = False
                 pygame.quit()
+                sys.exit()
         events = pygame.event.get()
         pilihHero()
         layar.fill("white")

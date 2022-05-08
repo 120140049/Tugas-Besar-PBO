@@ -17,10 +17,10 @@ FPS = 60
 clock = pygame.time.Clock()
 
 grounds = pygame.sprite.Group()
-heroes = heroes1 = monster = None
+heroes = heroes1 = monster = monster_hp = heroes_hp = None
 
 def selectCharacter():
-    global heroes, monster #heroes1
+    global heroes, monster, monster_hp, heroes_hp #heroes1
     # print("1. Alectrona\n2. Nipalto\n3. Salazar")
     # x = int(input("Masukkan Karakter yang diinginkan:"))
     # if x % 1 == 0:
@@ -29,6 +29,8 @@ def selectCharacter():
     # heroes = karakter.Salazar()
     monster = karakter.Aposteus()
     # monster = karakter.Fenrir()
+    monster_hp = monster.hp
+    heroes_hp = heroes.hp
 
 def createGrounds():
     for x in range(0, 930, 55):
@@ -45,11 +47,20 @@ def updateScreen(arena):
     WINDOW.blit(monster_act, (monster))
     WINDOW.blit(heroes_act, (heroes))
     # WINDOW.blit(heroes1_act, (heroes1))
+    pygame.draw.rect(WINDOW, (255, 0, 0), (100, 30, 250, 20))
+    pygame.draw.rect(WINDOW, (0, 255, 0), (100, 30, (heroes.hp/heroes_hp)*250, 20))
+    pygame.draw.rect(WINDOW, (255, 0, 0), (575, 30, 250, 20))
+    pygame.draw.rect(WINDOW, (0, 255, 0), (575, 30, (monster.hp/monster_hp)*250, 20))
+    pygame.draw.rect(WINDOW, (55, 55, 55), (100, 45, 250, 15))
+    pygame.draw.rect(WINDOW, (0, 0, 232), (100, 45, 50*heroes.energi, 15))
+    pygame.draw.rect(WINDOW, (55, 55, 55), (575, 45, 250, 15))
+    pygame.draw.rect(WINDOW, (255, 128, 0), (575, 45, 250/4*monster.buffmeter, 15))
     # pygame.draw.rect(WINDOW, (255, 0, 128), heroes, 2)
     # pygame.draw.rect(WINDOW, (255, 0, 128), monster, 2)
 
 # Main Loop
 def mainLoop(arena):
+    global monster_hp
     selectCharacter()
     createGrounds()
     mixer.music.load(arena.music)
@@ -58,9 +69,8 @@ def mainLoop(arena):
     music_duration = pygame.time.get_ticks()
     run = True
     while run:
-        #clock.tick(FPS)
+        clock.tick(FPS)
         heroes.floor_collision(grounds)
-        #heroes1.floor_collision(grounds)
         monster.floor_collision(grounds)
         updateScreen(arena)
         if heroes.move_l or heroes.move_r:
@@ -69,6 +79,8 @@ def mainLoop(arena):
             monster.move(heroes)
         if heroes.turn % 2 != 0 and heroes.finish:
             monster.serang(heroes)
+        if monster.buffmeter == 4 and monster.finish:
+            monster.buff()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -76,7 +88,7 @@ def mainLoop(arena):
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         # highlight_btn(attack)
-                        heroes.serang(monster)
+                        heroes.serang()
                     if event.key == pygame.K_1:
                         # highlight_btn(skill1)
                         heroes.skill1()
@@ -96,5 +108,5 @@ if __name__ == "__main__":
         arena = pilihArena.Arena()
     else:
         sys.exit()
-    pilihKarakter.pilihKarakter()
+    #pilihKarakter.pilihKarakter()
     mainLoop(arena)
