@@ -68,11 +68,9 @@ def akhirpertandingan():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if Tombol_menu.checkForInput(Posisi_Mouse):
                     #ubah HP monster dan damage 
-                    print ("menu")
+                    return True
                 if Tombol_back.checkForInput(Posisi_Mouse):
                     #kembali ke pilih Arena
-                    print ("main lagi")
+                    return False
 
         pygame.display.update()
-
-akhirpertandingan()
