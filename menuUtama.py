@@ -1,4 +1,8 @@
 import pygame, sys
+from assetModule import game_env, get_font
+
+state = None
+run = True
 
 class Button():
 	def __init__(self, image, pos, text_input, font, base_color, hovering_color):
@@ -32,43 +36,46 @@ class Button():
 
 pygame.init()
 
-def get_font(size): 
-    return pygame.font.SysFont("Times", size)
-
 def menuUtama():
-    while True:
+    global run, state
+    while run == True:
         Display = pygame.display.set_mode((896, 504))
         pygame.display.set_caption("Main Menu")
-        BG = pygame.image.load("img/bg_pilihTingkatKesulitan.jpeg").convert()
+        BG = pygame.image.load(f"{game_env}/bg_pilihTingkatKesulitan.jpeg").convert()
         BG = pygame.transform.scale(BG,(896, 504))
         Display.blit(BG, (0, 0))
 
         Posisi_Mouse = pygame.mouse.get_pos()
 
-        Text_Judul = get_font(70).render("Dungeon Fighter", True, "red")
+        Text_Judul = get_font(35).render("Dungeon Fighter", True, "red")
         Judul_Rect = Text_Judul.get_rect(center=(448, 80))
 
-        Tombol_start= Button(image=pygame.image.load("img/button1.png"), pos=(450, 230), 
-                            text_input="Start", font=get_font(35), base_color="red", hovering_color="White")
-        Tombol_options = Button(image=pygame.image.load("img/button1.png"), pos=(450, 340), 
-                            text_input="options", font=get_font(35), base_color="red", hovering_color="White")                 
+        Tombol_start= Button(image=pygame.image.load(f"{game_env}/button1.png"), 
+                            pos=(450, 230), text_input="Start", font=get_font(20),
+                            base_color="white", hovering_color="red")
+        Tombol_exit = Button(image=pygame.image.load(f"{game_env}/button1.png"),
+                            pos=(450, 340), text_input="Exit", font=get_font(20),
+                            base_color="white", hovering_color="red")                 
 
         Display.blit(Text_Judul, Judul_Rect)
 
-        for button in [Tombol_start, Tombol_options]:
+        for button in [Tombol_start, Tombol_exit]:
             button.changeColor(Posisi_Mouse)
             button.update(Display)
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                run = False
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if Tombol_start.checkForInput(Posisi_Mouse):
-                    print ("start button")
-                if Tombol_options.checkForInput(Posisi_Mouse):
-                    print ("options button")
+                    state = 'Start'
+                    return state
+                    run = False
+                if Tombol_exit.checkForInput(Posisi_Mouse):
+                    state = 'Options'
+                    return state
+                    run = False
 
         pygame.display.update()
-
-menuUtama()
