@@ -274,21 +274,22 @@ def pilihhero():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if Tombol_alectrona.checkForInput(Posisi_Mouse):
-                    #ubah HP monster dan damage 
-                    print ("easy button")
-                    pilihmonster()
+                    state = 'Alectrona'
+                    return state
+                    run = False
                 if Tombol_nipalto.checkForInput(Posisi_Mouse):
-                    #ubah HP monster dan damage 
-                    print ("medium button")
-                    pilihmonster()
+                    state = 'Nipalto'
+                    return state
+                    run = False
                 if Tombol_salazar.checkForInput(Posisi_Mouse):
-                    #ubah HP monster dan damage 
-                    print ("hard button")
-                    pilihmonster()
+                    state = 'Salazar'
+                    return state
+                    run = False
                 if Tombol_back.checkForInput(Posisi_Mouse):
-                    #kembali ke pilih Arena
-                    print ("back button")
-                    menuUtama()
+                    state = 'Back'
+                    return state
+                    run = False
+                    
             
         if Tombol_alectrona.checkForInput(Posisi_Mouse):
             image_base=pygame.image.load(os.path.join(pathfile,'infoAlectrona.png'))
@@ -346,17 +347,17 @@ def pilihmonster():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if Tombol_aposteus.checkForInput(Posisi_Mouse):
-                    #ubah HP monster dan damage 
-                    print ("easy button")
-                    pilihArena()
+                    state = 'Aposteus'
+                    return state
+                    run = False
                 if Tombol_fenrir.checkForInput(Posisi_Mouse):
-                    #ubah HP monster dan damage 
-                    print ("medium button")
-                    pilihArena()
+                    state = 'Fenrir'
+                    return state
+                    run = False
                 if Tombol_back.checkForInput(Posisi_Mouse):
-                    #kembali ke pilih Arena
-                    print ("back button")
-                    pilihhero()
+                    state = 'Back'
+                    return state
+                    run = False
             
         if Tombol_aposteus.checkForInput(Posisi_Mouse):
             image_base=pygame.image.load(os.path.join(pathfile,'infoAposteus.png'))
