@@ -47,21 +47,21 @@ def pilihhero():
 
         Posisi_Mouse = pygame.mouse.get_pos()
 
-        Text_Judul = get_font(40).render("Pilih Hero", True, "red")
+        Text_Judul = get_font(40).render("Pilih Hero", True, "white")
         Judul_Rect = Text_Judul.get_rect(center=(448, 80))
 
         Tombol_alectrona= Button(image=pygame.image.load(f"{game_env}/button1.png"),
             pos=(275, 180), text_input="Alectrona", font=get_font(15),
-            base_color="red", hovering_color="White")
+            base_color="white", hovering_color="red")
         Tombol_nipalto = Button(image=pygame.image.load(f"{game_env}/button1.png"),
             pos=(275, 290), text_input="Nipalto", font=get_font(15),
-            base_color="red", hovering_color="White")
+            base_color="white", hovering_color="red")
         Tombol_salazar = Button(image=pygame.image.load(f"{game_env}/button1.png"),
             pos=(275, 400), text_input="Salazar", font=get_font(15),
-            base_color="red", hovering_color="White")
+            base_color="white", hovering_color="red")
         Tombol_back = Button(image=pygame.image.load(f"{game_env}/button2.png"),
-            pos=(100, 50), text_input="Back", font=get_font(15), base_color="red",
-            hovering_color="White")
+            pos=(100, 50), text_input="Back", font=get_font(15), base_color="white",
+            hovering_color="red")
 
         Display.blit(Text_Judul, Judul_Rect)
 
@@ -123,18 +123,18 @@ def pilihmonster():
 
         Posisi_Mouse = pygame.mouse.get_pos()
 
-        Text_Judul = get_font(40).render("Pilih Monster", True, "red")
+        Text_Judul = get_font(40).render("Pilih Monster", True, "white")
         Judul_Rect = Text_Judul.get_rect(center=(448, 80))
 
         Tombol_aposteus= Button(image=pygame.image.load(f"{game_env}/button1.png"),
             pos=(275, 180), text_input="aposteus", font=get_font(15),
-            base_color="red", hovering_color="White")
+            base_color="white", hovering_color="red")
         Tombol_fenrir = Button(image=pygame.image.load(f"{game_env}/button1.png"),
             pos=(275, 290), text_input="fenrir", font=get_font(15),
-            base_color="red", hovering_color="White")
+            base_color="white", hovering_color="red")
         Tombol_back = Button(image=pygame.image.load(f"{game_env}/button2.png"),
-            pos=(100, 50), text_input="Back", font=get_font(15), base_color="red",
-            hovering_color="White")
+            pos=(100, 50), text_input="Back", font=get_font(15), base_color="white",
+            hovering_color="red")
 
         Display.blit(Text_Judul, Judul_Rect)
         image_base = pygame.image.load(f'{game_chara}/unknownchar.png')
@@ -178,7 +178,6 @@ def pilihmonster():
         pygame.display.update()
 
 def main():
-    x = None
     x = pilihhero()
     if x == 4:
         return
