@@ -93,9 +93,6 @@ class Hero(Makhluk):
     def skill1(self):
         pass
 
-    def skill2(self):
-        pass
-
     # Famage Getter
     @property
     def damage(self):
