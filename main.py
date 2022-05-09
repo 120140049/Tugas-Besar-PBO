@@ -105,14 +105,13 @@ def mainLoop(arena):
                     if event.key == pygame.K_1:
                         # highlight_btn(skill1)
                         heroes.skill1()
-                    if event.key == pygame.K_2:
-                        # highlight_btn(skill2)
-                        heroes.skill2()
+
         heroes.update(monster)
         monster.update(heroes)
         pygame.display.flip()
 
     pygame.quit()
+    sys.exit()
 
 def main():
     x = menuUtama.menuUtama()
@@ -122,10 +121,8 @@ def main():
         sys.exit()
     if choice == None:
         main()
-    print(choice)
     selectCharacter(choice)
     arena = pilihArena.Arena()
-    # pilihKarakter.pilihKarakter()
     mainLoop(arena)
 
 if __name__ == "__main__":  
