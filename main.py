@@ -47,14 +47,18 @@ def updateScreen(arena):
     WINDOW.blit(monster_act, (monster))
     WINDOW.blit(heroes_act, (heroes))
     # WINDOW.blit(heroes1_act, (heroes1))
+    # Heroes Health
     pygame.draw.rect(WINDOW, (255, 0, 0), (100, 30, 250, 20))
     pygame.draw.rect(WINDOW, (0, 255, 0), (100, 30, (heroes.hp/heroes_hp)*250, 20))
+    # Monster Health
     pygame.draw.rect(WINDOW, (255, 0, 0), (575, 30, 250, 20))
     pygame.draw.rect(WINDOW, (0, 255, 0), (575, 30, (monster.hp/monster_hp)*250, 20))
-    pygame.draw.rect(WINDOW, (55, 55, 55), (100, 45, 250, 15))
-    pygame.draw.rect(WINDOW, (0, 0, 232), (100, 45, 50*heroes.energi, 15))
-    pygame.draw.rect(WINDOW, (55, 55, 55), (575, 45, 250, 15))
-    pygame.draw.rect(WINDOW, (255, 128, 0), (575, 45, 250/4*monster.buffmeter, 15))
+    pygame.draw.rect(WINDOW, (76, 76 , 76), (100, 45, 250, 15))
+    # Heroes Energy
+    pygame.draw.rect(WINDOW, (44, 142, 212), (100, 45, 50*heroes.energi, 15))
+    # Monster Buff Gauge
+    pygame.draw.rect(WINDOW, (76, 76, 76), (575, 45, 250, 15))
+    pygame.draw.rect(WINDOW, (237, 222, 62), (575, 45, 250/4*monster.buffmeter, 15))
     # pygame.draw.rect(WINDOW, (255, 0, 128), heroes, 2)
     # pygame.draw.rect(WINDOW, (255, 0, 128), monster, 2)
 
@@ -101,12 +105,11 @@ def mainLoop(arena):
 
     pygame.quit()
 
-if __name__ == "__main__":
-    # y = pilihKarakter.selectCharacter()
+if __name__ == "__main__":  
     x = menuUtama.menuUtama()
     if x == 'Start':
         arena = pilihArena.Arena()
     else:
         sys.exit()
-    #pilihKarakter.pilihKarakter()
+    # pilihKarakter.pilihKarakter()
     mainLoop(arena)

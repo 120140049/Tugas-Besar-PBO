@@ -3,6 +3,7 @@ import pygame
 import assetModule
 import spritesheet
 from objek import Hero, Monster, Melee, Ranged
+from assetModule import get_font
 
 class Alectrona(Hero, Ranged):
     def __init__(self, nama='Alectrona', hp=3200, damage=240):
@@ -165,6 +166,7 @@ class Aposteus(Monster, Ranged):
         self.setAnimation()
         self.rect.x = 520
         self.rect.y = 0
+        self.buff_alert = get_font(35).render("HP +100", True, "green")
 
     def setAnimation(self):
         idle = spritesheet.Spritesheet(os.path.join(
@@ -201,7 +203,7 @@ class Aposteus(Monster, Ranged):
 
 
 class Fenrir(Monster, Melee):
-    def __init__(self, nama='Aposteus', hp=5000, damage=82):
+    def __init__(self, nama='Fenrir', hp=5000, damage=82):
         Monster.__init__(self, nama, hp, damage)
         Ranged.__init__(self)
         self.animation = [[]]

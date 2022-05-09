@@ -1,4 +1,5 @@
 import os
+import pygame
 
 CWD = os.getcwd()
 
@@ -26,3 +27,6 @@ aposteus_img = os.path.join(aposteus_dir, 'img')
 
 fenrir_dir = os.path.join(assets_dir, 'fenrir')
 fenrir_img = os.path.join(fenrir_dir, 'img')
+
+def get_font(size): 
+    return pygame.font.Font(f"{game_font}", size)

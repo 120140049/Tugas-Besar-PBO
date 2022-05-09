@@ -81,9 +81,9 @@ class Hero(Makhluk):
             self.finish = True
             self.action = 0
         if self.move_r:
-            self.rect.x += 4
+            self.rect.x += 5
         if self.move_l:
-            self.rect.x -= 4
+            self.rect.x -= 5
 
     def serang(self):
         self.move_r = True
@@ -122,7 +122,8 @@ class Hero(Makhluk):
         self.__hp -= amount
 
     def __add__(self, amount):
-        self.__energi += amount
+        if self.__energi < 5:
+            self.__energi += amount
 
 
 class Monster(Makhluk):
@@ -138,7 +139,7 @@ class Monster(Makhluk):
         if self.obj_collision(enemy):
             self.move_r = False
             self.attacking = True
-            self.rect.x = 170
+            self.rect.x = 150
             if self.nama == 'Aposteus':
                 self.rect.y = 0
             self.action = 3
@@ -148,9 +149,9 @@ class Monster(Makhluk):
             self.finish = True
             self.action = 0
         if self.move_r:
-            self.rect.x -= 4
+            self.rect.x -= 6
         if self.move_l:
-            self.rect.x += 4
+            self.rect.x += 6
 
     def serang(self, obj):
         self.move_r = True
@@ -186,7 +187,8 @@ class Monster(Makhluk):
         self.__hp -= amount
 
     def __add__(self, amount):
-        self.__buffmeter += 1
+        if self.__buffmeter < 4:
+            self.__buffmeter += 1
 
 
 class Melee:

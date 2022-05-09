@@ -1,5 +1,5 @@
 import pygame, sys
-from assetModule import game_env, game_font
+from assetModule import game_env, get_font
 
 class Button():
 	def __init__(self, image, pos, text_input, font, base_color, hovering_color):
@@ -34,9 +34,6 @@ class Button():
 			self.text = self.font.render(self.text_input, True, self.base_color)
 
 pygame.init()
-
-def get_font(size): 
-    return pygame.font.Font(f"{game_font}", size)
 
 def akhirpertandingan():
     while True:
