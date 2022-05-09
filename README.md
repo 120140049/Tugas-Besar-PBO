@@ -1,7 +1,10 @@
 # Tubes PBO RC - 02 | Dungeon Fighter
 Proyek ini berisikan file file esensial yang menyusun game Dungeon Fighter.
 Library yang digunakan:
-* Pygame
+* pygame
+* os
+* sys
+* pygame-widgets
 
 Cara Bermain:
 1. Pilih menu start
