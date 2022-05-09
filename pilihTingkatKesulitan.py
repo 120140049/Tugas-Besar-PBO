@@ -82,8 +82,3 @@ def tingkatKesulitan():
                     print ("back button")
 
         pygame.display.update()
-<<<<<<< HEAD
-=======
-
-tingkatKesulitan()
->>>>>>> bee434e12c133324c9281016b8e250454556123e
