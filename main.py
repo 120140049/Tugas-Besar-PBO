@@ -6,17 +6,22 @@ import pilihArena
 import pilihKarakter
 import pilihTingkatKesulitan
 import menuUtama
+import matchResult
 from pygame import mixer
 from objek import Lantai
 
 pygame.init()
 mixer.init()
+
+FPS = 60
 WINDOW = pygame.display.set_mode((896, 504))
 pygame.display.set_caption("Dungeon Fighter")
-FPS = 60
-clock = pygame.time.Clock()
 
 grounds = pygame.sprite.Group()
+clock = pygame.time.Clock()
+
+game_over = False
+conside = None
 heroes = heroes1 = monster = monster_hp = heroes_hp = None
 
 def selectCharacter(choice):
@@ -75,6 +80,7 @@ def updateScreen(arena):
 
 # Main Loop
 def mainLoop(arena):
+    global game_over
     createGrounds()
     mixer.music.load(arena.music)
     mixer.music.play(loops=-1)
@@ -82,6 +88,10 @@ def mainLoop(arena):
     music_duration = pygame.time.get_ticks()
     run = True
     while run:
+        if monster.hp < 0 or heroes.hp < 0:
+            if monster.rect.x == 520 and heroes.rect.x == 180:
+                run = False
+                game_over = True
         clock.tick(FPS)
         heroes.floor_collision(grounds)
         monster.floor_collision(grounds)
@@ -97,6 +107,8 @@ def mainLoop(arena):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+                pygame.quit()
+                sys.exit()
             if heroes.turn % 2 == 0 and monster.finish and heroes.action == 0:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
@@ -110,20 +122,30 @@ def mainLoop(arena):
         monster.update(heroes)
         pygame.display.flip()
 
-    pygame.quit()
-    sys.exit()
+def pemilihanKarakter():
+    global game_over
+    choice = pilihKarakter.main()
+    if choice == None:
+        mainMenu()
+    else:
+        selectCharacter(choice)
+        arena = pilihArena.Arena()
+        mainLoop(arena)
+    if game_over:
+        consider = matchResult.akhirpertandingan()
+        if consider:
+            mainMenu()
+        else:
+            pemilihanKarakter()
 
-def main():
+def mainMenu():
+    global consider
     x = menuUtama.menuUtama()
     if x == 'Start':
-        choice = pilihKarakter.main()
+        pemilihanKarakter()
     else:
         sys.exit()
-    if choice == None:
-        main()
-    selectCharacter(choice)
-    arena = pilihArena.Arena()
-    mainLoop(arena)
 
-if __name__ == "__main__":  
-    main()
+if __name__ == "__main__":
+    mainMenu()
+    
