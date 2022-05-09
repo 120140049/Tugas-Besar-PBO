@@ -56,9 +56,6 @@ class Alectrona(Hero, Ranged):
     def skill1(self):
         pass
 
-    def skill2(self):
-        pass
-
 
 class Nipalto(Hero, Melee):
     def __init__(self, nama='Nipalto', hp=3200, damage=240):
@@ -108,6 +105,8 @@ class Nipalto(Hero, Melee):
             image = pygame.transform.scale(image, (160, 120))
             self.animation[3].append(image)
 
+    def skill1(self):
+        pass
 
 class Salazar(Hero, Melee):
     def __init__(self, nama='Nipalto', hp=3200, damage=240):
@@ -157,6 +156,8 @@ class Salazar(Hero, Melee):
             image = pygame.transform.scale(image, (310, 230))
             self.animation[3].append(image)
 
+    def skill1(self):
+        pass
 
 class Aposteus(Monster, Ranged):
     def __init__(self, nama='Aposteus', hp=5000, damage=78):
@@ -241,4 +242,5 @@ class Fenrir(Monster, Melee):
             image = image.subsurface((10, 70), (546, 250))
             self.animation[3].append(image)
 
-        
+    def buff(self):
+        pass
