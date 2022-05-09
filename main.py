@@ -19,15 +19,22 @@ clock = pygame.time.Clock()
 grounds = pygame.sprite.Group()
 heroes = heroes1 = monster = monster_hp = heroes_hp = None
 
-def selectCharacter():
+def selectCharacter(choice):
     global heroes, monster, monster_hp, heroes_hp #heroes1
     # print("1. Alectrona\n2. Nipalto\n3. Salazar")
     # x = int(input("Masukkan Karakter yang diinginkan:"))
-    # if x % 1 == 0:
-    heroes = karakter.Nipalto()
+    if choice[0] == 1:
+        heroes = karakter.Alectrona()
+    elif choice[0] == 2:
+        heroes = karakter.Nipalto()
+    else:
+        heroes = karakter.Salazar()
     # heroes = karakter.Alectrona()
     # heroes = karakter.Salazar()
-    monster = karakter.Aposteus()
+    if choice[1] == 1:
+        monster = karakter.Aposteus()
+    else:
+        monster = karakter.Fenrir()
     # monster = karakter.Fenrir()
     monster_hp = monster.hp
     heroes_hp = heroes.hp
@@ -44,8 +51,6 @@ def updateScreen(arena):
     heroes_act = heroes.animation[heroes.action][heroes.frame]
     #heroes1_act = heroes1.animation[heroes1.action][heroes1.frame]
     monster_act = monster.animation[monster.action][monster.frame]
-    WINDOW.blit(monster_act, (monster))
-    WINDOW.blit(heroes_act, (heroes))
     # WINDOW.blit(heroes1_act, (heroes1))
     # Heroes Health
     pygame.draw.rect(WINDOW, (255, 0, 0), (100, 30, 250, 20))
@@ -61,11 +66,15 @@ def updateScreen(arena):
     pygame.draw.rect(WINDOW, (237, 222, 62), (575, 45, 250/4*monster.buffmeter, 15))
     # pygame.draw.rect(WINDOW, (255, 0, 128), heroes, 2)
     # pygame.draw.rect(WINDOW, (255, 0, 128), monster, 2)
+    if monster.finish:
+        WINDOW.blit(monster_act, (monster))
+        WINDOW.blit(heroes_act, (heroes))
+    else:
+        WINDOW.blit(heroes_act, (heroes))
+        WINDOW.blit(monster_act, (monster))
 
 # Main Loop
 def mainLoop(arena):
-    global monster_hp
-    selectCharacter()
     createGrounds()
     mixer.music.load(arena.music)
     mixer.music.play(loops=-1)
@@ -105,11 +114,19 @@ def mainLoop(arena):
 
     pygame.quit()
 
-if __name__ == "__main__":  
+def main():
     x = menuUtama.menuUtama()
     if x == 'Start':
-        arena = pilihArena.Arena()
+        choice = pilihKarakter.main()
     else:
         sys.exit()
+    if choice == None:
+        main()
+    print(choice)
+    selectCharacter(choice)
+    arena = pilihArena.Arena()
     # pilihKarakter.pilihKarakter()
     mainLoop(arena)
+
+if __name__ == "__main__":  
+    main()
