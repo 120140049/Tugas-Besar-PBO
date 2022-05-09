@@ -49,13 +49,17 @@ def tingkatKesulitan():
         Judul_Rect = Text_Judul.get_rect(center=(448, 80))
 
         Tombol_easy= Button(image=pygame.image.load("Assets/env/button1.png"), pos=(450, 180), 
-                            text_input="Easy", font=get_font(35), base_color="red", hovering_color="White")
+                            text_input="Easy", font=get_font(35), base_color="white",
+                            hovering_color="red")
         Tombol_medium = Button(image=pygame.image.load("Assets/env/button1.png"), pos=(450, 290), 
-                            text_input="Medium", font=get_font(35), base_color="red", hovering_color="White")
+                            text_input="Medium", font=get_font(35), base_color="white",
+                            hovering_color="red")
         Tombol_hard = Button(image=pygame.image.load("Assets/env/button1.png"), pos=(450, 400), 
-                            text_input="Hard", font=get_font(35), base_color="red", hovering_color="White")
+                            text_input="Hard", font=get_font(35), base_color="white",
+                            hovering_color="red")
         Tombol_back = Button(image=pygame.image.load("Assets/env/button2.png"), pos=(30, 50), 
-                            text_input="Back", font=get_font(20), base_color="red", hovering_color="White")                   
+                            text_input="Back", font=get_font(20), base_color="white",
+                            hovering_color="red")                   
 
         Display.blit(Text_Judul, Judul_Rect)
 
