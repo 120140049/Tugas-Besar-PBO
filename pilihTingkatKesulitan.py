@@ -1,4 +1,5 @@
 import pygame, sys
+from assetModule import game_env, get_font
 
 class Button():
 	def __init__(self, image, pos, text_input, font, base_color, hovering_color):
@@ -32,33 +33,30 @@ class Button():
 
 pygame.init()
 
-def get_font(size): 
-    return pygame.font.SysFont("Times", size)
-
 def tingkatKesulitan():
     while True:
         Display = pygame.display.set_mode((896, 504))
         pygame.display.set_caption("Display Tingkat Kesulitan")
-        BG = pygame.image.load("Assets/env/bg_pilihTingkatKesulitan.jpeg").convert()
+        BG = pygame.image.load(f"{game_env}/bg_pilihTingkatKesulitan.jpeg").convert()
         BG = pygame.transform.scale(BG,(896, 504))
         Display.blit(BG, (0, 0))
 
         Posisi_Mouse = pygame.mouse.get_pos()
 
-        Text_Judul = get_font(70).render("Tingkat Kesulitan", True, "red")
+        Text_Judul = get_font(30).render("Tingkat Kesulitan", True, "white")
         Judul_Rect = Text_Judul.get_rect(center=(448, 80))
 
-        Tombol_easy= Button(image=pygame.image.load("Assets/env/button1.png"), pos=(450, 180), 
-                            text_input="Easy", font=get_font(35), base_color="white",
+        Tombol_easy= Button(image=pygame.image.load(f"{game_env}/button1.png"), pos=(450, 180), 
+                            text_input="Easy", font=get_font(15), base_color="white",
                             hovering_color="red")
-        Tombol_medium = Button(image=pygame.image.load("Assets/env/button1.png"), pos=(450, 290), 
-                            text_input="Medium", font=get_font(35), base_color="white",
+        Tombol_medium = Button(image=pygame.image.load(f"{game_env}/button1.png"), pos=(450, 290), 
+                            text_input="Medium", font=get_font(15), base_color="white",
                             hovering_color="red")
-        Tombol_hard = Button(image=pygame.image.load("Assets/env/button1.png"), pos=(450, 400), 
-                            text_input="Hard", font=get_font(35), base_color="white",
+        Tombol_hard = Button(image=pygame.image.load(f"{game_env}/button1.png"), pos=(450, 400), 
+                            text_input="Hard", font=get_font(15), base_color="white",
                             hovering_color="red")
-        Tombol_back = Button(image=pygame.image.load("Assets/env/button2.png"), pos=(30, 50), 
-                            text_input="Back", font=get_font(20), base_color="white",
+        Tombol_back = Button(image=pygame.image.load(f"{game_env}/button2.png"), pos=(100, 50), 
+                            text_input="Back", font=get_font(15), base_color="white",
                             hovering_color="red")                   
 
         Display.blit(Text_Judul, Judul_Rect)
@@ -73,16 +71,24 @@ def tingkatKesulitan():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if Tombol_easy.checkForInput(Posisi_Mouse):
-                    #ubah HP monster dan damage 
-                    print ("easy button")
+                    return 1
                 if Tombol_medium.checkForInput(Posisi_Mouse):
-                    #meningkatkanh HP dan damage monster sebesar 115%
-                    print ("medium button")
+                    return 2
                 if Tombol_hard.checkForInput(Posisi_Mouse):
-                    #meningkatkanh HP dan damage monster sebesar 125%
-                    print ("hard button")
+                    return 3
                 if Tombol_back.checkForInput(Posisi_Mouse):
-                    #kembali ke display pilih Arena
-                    print ("back button")
+                    return 4
 
         pygame.display.update()
+
+def main():
+    state= tingkatKesulitan()
+    if state == 1 :
+        return 'easy'
+    if state == 2 :
+        return 'medium'
+    if state == 3 :
+        return 'hard'
+    if state == 4 :
+        return 'back'
+    

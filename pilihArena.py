@@ -38,7 +38,7 @@ class Arena:
         self.running = True
         self.window = None
         self.win_size = self.width, self.height = 896, 504
-        self.bg_img = self.music = None
+        self.bg_img = self.music = self.state = None
 
         pygame.init()
         self.window = pygame.display.set_mode(self.win_size)
