@@ -176,13 +176,3 @@ def pilihmonster():
 
         pygame_widgets.update(events)
         pygame.display.update()
-
-def main():
-    x = pilihhero()
-    if x == 4:
-        return
-    y = pilihmonster()
-    if y == 3:
-        main()
-    else:
-        return [x, y]
