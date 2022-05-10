@@ -99,8 +99,8 @@ def mainLoop(arena):
     music_duration = pygame.time.get_ticks()
     run = True
     while run:
-        if monster.hp < 0 or heroes.hp < 0:
-            if monster.rect.x == 520 and heroes.rect.x == 180:
+        if (monster.hp <= 0 or heroes.hp <= 0) and \
+            (monster.action == 0 and heroes.action == 0):
                 run = False
                 game_over = True
         clock.tick(FPS)
@@ -149,7 +149,10 @@ def pemilihanKarakter():
     else:
         selectCharacter(choice)
         arena = pilihArena.Arena()
-        mainLoop(arena)
+        if arena.state == 'Back':
+            pemilihanKarakter()
+        else:
+            mainLoop(arena)
     if game_over:
         consider = matchResult.akhirpertandingan(arena.bg_img, grounds)
         if consider:
