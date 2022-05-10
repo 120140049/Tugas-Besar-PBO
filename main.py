@@ -133,6 +133,9 @@ def mainLoop(arena):
                     if event.key == pygame.K_SPACE:
                         # highlight_btn(attack)
                         heroes.serang()
+                        print('hp mosnter' ,monster.hp)
+                        print('hp hero' ,heroes.hp)
+                        #print('damage hero' ,heroes.damage)
                     if event.key == pygame.K_1:
                         # highlight_btn(skill1)
                         heroes.skill1()
@@ -152,13 +155,37 @@ def pemilihanKarakter():
         if arena.state == 'Back':
             pemilihanKarakter()
         else:
-            mainLoop(arena)
+            pemilihanTingkatKesulitan()
     if game_over:
         consider = matchResult.akhirpertandingan(arena.bg_img, grounds)
         if consider:
             mainMenu()
         else:
             pemilihanKarakter()
+
+def pemilihanTingkatKesulitan():
+    global game_over, arena, consider, monster, heroes, monster_hp, heroes_hp
+    choice = pilihTingkatKesulitan.main()
+    if choice == 'easy' :
+        print('easy')
+        monster.hp = monster.hp * 1
+        #heroes.damage = heroes.damage * 1
+        monster_hp = monster.hp 
+        mainLoop(arena)
+    if choice == 'medium' :
+        print('medium')
+        monster.hp = monster.hp * 1.15 
+        #heroes.damage = heroes.damage * 1.15
+        monster_hp = monster.hp 
+        mainLoop(arena)
+    if choice == 'hard' :
+        print('hard')
+        monster.hp = monster.hp * 1.25
+        #heroes.damage = heroes.damage * 1.25 
+        monster_hp = monster.hp 
+        mainLoop(arena)
+    if choice == 'back' :
+        pemilihanKarakter()
 
 def mainMenu():
     x = menuUtama.menuUtama()
