@@ -49,10 +49,10 @@ def akhirpertandingan(arena, grounds):
 
         Tombol_menu = Button(image=pygame.image.load(f"{game_env}/button1.png"),
                             pos=(450, 400), text_input="Menu", font=get_font(18),
-                            base_color="white", hovering_color="Red")
+                            base_color="White", hovering_color="Red")
         Tombol_back = Button(image=pygame.image.load(f"{game_env}/button1.png"),
                             pos=(450, 300), text_input="Main lagi",
-                            font=get_font(18), base_color="white", hovering_color="red")                   
+                            font=get_font(18), base_color="White", hovering_color="red")                   
 
         Display.blit(Text_Judul, Judul_Rect)
 
@@ -65,11 +65,11 @@ def akhirpertandingan(arena, grounds):
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
+                # Ke pilih karakter
                 if Tombol_menu.checkForInput(Posisi_Mouse):
-                    #ubah HP monster dan damage 
                     return True
+                # Ke menu Utama
                 if Tombol_back.checkForInput(Posisi_Mouse):
-                    #kembali ke pilih Arena
                     return False
 
         pygame.display.update()
