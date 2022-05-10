@@ -167,7 +167,7 @@ class Aposteus(Monster, Ranged):
         self.setAnimation()
         self.rect.x = 520
         self.rect.y = 0
-        self.buff_alert = get_font(35).render("HP +100", True, "green")
+        self.buff_alert = get_font(15).render("HP +100", True, "green")
 
     def setAnimation(self):
         idle = spritesheet.Spritesheet(os.path.join(
@@ -199,9 +199,11 @@ class Aposteus(Monster, Ranged):
             self.animation[3].append(image)
 
     def buff(self):
+        self.buff_time = pygame.time.get_ticks()
+        print(self.buff_time)
         self.hp = 100
         self.buffmeter = 0
-
+        self.buffed = True
 
 class Fenrir(Monster, Melee):
     def __init__(self, nama='Fenrir', hp=5000, damage=82):
@@ -211,6 +213,7 @@ class Fenrir(Monster, Melee):
         self.setAnimation()
         self.rect.x = 520
         self.rect.y = 0
+        self.buff_alert = get_font(15).render("Damage +1000", True, "red")
 
     def setAnimation(self):
         for i in range(6):
@@ -243,4 +246,8 @@ class Fenrir(Monster, Melee):
             self.animation[3].append(image)
 
     def buff(self):
-        pass
+        self.buff_time = pygame.time.get_ticks()
+        print(self.buff_time)
+        self.damage = 1000 #self.damage * 0.1
+        self.buffmeter = 0
+        self.buffed = True

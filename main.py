@@ -21,8 +21,12 @@ grounds = pygame.sprite.Group()
 clock = pygame.time.Clock()
 
 game_over = False
-conside = None
+consider = arena = None
 heroes = heroes1 = monster = monster_hp = heroes_hp = None
+
+
+your_turn = assetModule.get_font(15).render("Your Turn", True, "yellow")
+monster_turn = assetModule.get_font(15).render("Enemy Turn", True, "yellow")
 
 def selectCharacter(choice):
     global heroes, monster, monster_hp, heroes_hp #heroes1
@@ -51,6 +55,7 @@ def createGrounds():
         grounds.add(Lantai(x, 390, 'terrain2.png'))
 
 def updateScreen(arena):
+    # global your_turn, monster_turn
     WINDOW.blit(arena.bg_img, (0, 0))
     grounds.draw(WINDOW)
     heroes_act = heroes.animation[heroes.action][heroes.frame]
@@ -74,9 +79,15 @@ def updateScreen(arena):
     if monster.finish:
         WINDOW.blit(monster_act, (monster))
         WINDOW.blit(heroes_act, (heroes))
+        your_rect = your_turn.get_rect()
+        your_rect.center = [458, 35]
+        WINDOW.blit(your_turn, your_rect)
     else:
         WINDOW.blit(heroes_act, (heroes))
         WINDOW.blit(monster_act, (monster))
+        monster_rect = your_turn.get_rect()
+        monster_rect.center = [458, 35]
+        WINDOW.blit(monster_turn, monster_rect)
 
 # Main Loop
 def mainLoop(arena):
@@ -102,14 +113,22 @@ def mainLoop(arena):
             monster.move(heroes)
         if heroes.turn % 2 != 0 and heroes.finish:
             monster.serang(heroes)
-        if monster.buffmeter == 4 and monster.finish:
+        if monster.buffmeter == 4:
             monster.buff()
+        if monster.buffed:
+            if pygame.time.get_ticks() - monster.buff_time < 800:
+                WINDOW.blit(monster.buff_alert, (575, 13))
+            else:
+                monster.buffed = False
+                monster.finish = True
+                heroes.finish = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
                 pygame.quit()
                 sys.exit()
-            if heroes.turn % 2 == 0 and monster.finish and heroes.action == 0:
+            if heroes.turn % 2 == 0 and monster.finish and heroes.action == 0 \
+                and heroes.onground:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         # highlight_btn(attack)
@@ -123,7 +142,7 @@ def mainLoop(arena):
         pygame.display.flip()
 
 def pemilihanKarakter():
-    global game_over
+    global game_over, arena, consider
     choice = pilihKarakter.main()
     if choice == None:
         mainMenu()
@@ -132,14 +151,13 @@ def pemilihanKarakter():
         arena = pilihArena.Arena()
         mainLoop(arena)
     if game_over:
-        consider = matchResult.akhirpertandingan()
+        consider = matchResult.akhirpertandingan(arena.bg_img, grounds)
         if consider:
             mainMenu()
         else:
             pemilihanKarakter()
 
 def mainMenu():
-    global consider
     x = menuUtama.menuUtama()
     if x == 'Start':
         pemilihanKarakter()

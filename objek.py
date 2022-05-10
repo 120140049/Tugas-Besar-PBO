@@ -131,6 +131,8 @@ class Monster(Makhluk):
         self.__buffmeter = 0
         self.finish = True
         self.tipe = 'Monster'
+        self.buffed = False
+        self.buff_time = 0
 
     def move(self, enemy):
         if self.obj_collision(enemy):
@@ -142,9 +144,12 @@ class Monster(Makhluk):
             self.action = 3
         if self.rect.x >= 520 and self.move_l:
             self.move_l = False
-            enemy.finish = False
-            self.finish = True
             self.action = 0
+            if self.buffed:
+                self.buff()
+            else:
+                self.finish = True
+                enemy.finish = False
         if self.move_r:
             self.rect.x -= 6
         if self.move_l:
@@ -175,6 +180,10 @@ class Monster(Makhluk):
     @hp.setter
     def hp(self, amount):
         self.__hp += amount
+
+    @damage.setter
+    def damage(self, amount):
+        self.__damage += amount
 
     @buffmeter.setter
     def buffmeter(self, amount):
