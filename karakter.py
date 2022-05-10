@@ -248,6 +248,6 @@ class Fenrir(Monster, Melee):
     def buff(self):
         self.buff_time = pygame.time.get_ticks()
         print(self.buff_time)
-        self.damage = 1000 #self.damage * 0.1
+        self.damage = self.damage * 0.2
         self.buffmeter = 0
         self.buffed = True
