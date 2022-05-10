@@ -21,6 +21,7 @@ grounds = pygame.sprite.Group()
 clock = pygame.time.Clock()
 
 game_over = False
+choice = [None, None]
 consider = arena = None
 heroes = heroes1 = monster = monster_hp = heroes_hp = None
 
@@ -45,8 +46,6 @@ def selectCharacter(choice):
     else:
         monster = karakter.Fenrir()
     # monster = karakter.Fenrir()
-    monster_hp = monster.hp
-    heroes_hp = heroes.hp
 
 def createGrounds():
     for x in range(0, 930, 55):
@@ -133,8 +132,6 @@ def mainLoop(arena):
                     if event.key == pygame.K_SPACE:
                         # highlight_btn(attack)
                         heroes.serang()
-                        print('hp mosnter' ,monster.hp)
-                        print('hp hero' ,heroes.hp)
                         #print('damage hero' ,heroes.damage)
                     if event.key == pygame.K_1:
                         # highlight_btn(skill1)
@@ -144,53 +141,53 @@ def mainLoop(arena):
         monster.update(heroes)
         pygame.display.flip()
 
-def pemilihanKarakter():
-    global game_over, arena, consider
-    choice = pilihKarakter.main()
-    if choice == None:
+def pilihKaraktermu(choice):
+    choice[0] = pilihKarakter.pilihhero()
+    if choice[0] == '4':
         mainMenu()
     else:
-        selectCharacter(choice)
-        arena = pilihArena.Arena()
-        if arena.state == 'Back':
-            pemilihanKarakter()
-        else:
-            pemilihanTingkatKesulitan()
+        pilihLawan(choice)
+
+def pilihLawan(choice):
+    global monster_hp, heroes_hp
+    choice[1] = pilihKarakter.pilihmonster()
+    if choice[1] != 4:
+        difficulty = pilihTingkatKesulitan.main()
+        if difficulty != 'back' :
+            selectCharacter(choice)
+            if difficulty == 'easy':
+                monster.hp = monster.hp * 1
+                #heroes.damage = heroes.damage * 1
+            if difficulty == 'medium' :
+                monster.hp = monster.hp * 1.15 
+                #heroes.damage = heroes.damage * 1.15
+            if difficulty == 'hard' :
+                monster.hp = monster.hp * 1.25
+                #heroes.damage = heroes.damage * 1.25
+            monster_hp = monster.hp
+            heroes_hp = heroes.hp
+    else:
+        pilihKaraktermu(choice)
+
+def gameStart():
+    global arena, consider, choice
+    pilihKaraktermu(choice)
+    arena = pilihArena.Arena()
+    if arena.state == 'Back':
+        gameStart()
+    else:
+        mainLoop(arena)    
     if game_over:
         consider = matchResult.akhirpertandingan(arena.bg_img, grounds)
         if consider:
             mainMenu()
         else:
-            pemilihanKarakter()
-
-def pemilihanTingkatKesulitan():
-    global game_over, arena, consider, monster, heroes, monster_hp, heroes_hp
-    choice = pilihTingkatKesulitan.main()
-    if choice == 'easy' :
-        print('easy')
-        monster.hp = monster.hp * 1
-        #heroes.damage = heroes.damage * 1
-        monster_hp = monster.hp 
-        mainLoop(arena)
-    if choice == 'medium' :
-        print('medium')
-        monster.hp = monster.hp * 1.15 
-        #heroes.damage = heroes.damage * 1.15
-        monster_hp = monster.hp 
-        mainLoop(arena)
-    if choice == 'hard' :
-        print('hard')
-        monster.hp = monster.hp * 1.25
-        #heroes.damage = heroes.damage * 1.25 
-        monster_hp = monster.hp 
-        mainLoop(arena)
-    if choice == 'back' :
-        pemilihanKarakter()
+            gameStart()
 
 def mainMenu():
     x = menuUtama.menuUtama()
     if x == 'Start':
-        pemilihanKarakter()
+        gameStart()
     else:
         sys.exit()
 
