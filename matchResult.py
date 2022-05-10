@@ -35,13 +35,12 @@ class Button():
 
 pygame.init()
 
-def akhirpertandingan():
+def akhirpertandingan(arena, grounds):
     while True:
         Display = pygame.display.set_mode((896, 504))
         pygame.display.set_caption("Dungeon Fighter")
-        BG = pygame.image.load(f"{game_env}/Battleground4.png").convert()
-        BG = pygame.transform.scale(BG,(896, 504))
-        Display.blit(BG, (0, 0))
+        Display.blit(arena, (0, 0))
+        grounds.draw(Display)
 
         Posisi_Mouse = pygame.mouse.get_pos()
 
