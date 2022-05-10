@@ -184,9 +184,12 @@ def gameStart():
     if game_over:
         consider = matchResult.akhirpertandingan(arena.bg_img, grounds)
         if consider:
+            mixer.music.stop()
             mainMenu()
         else:
+            mixer.music.stop()
             gameStart()
+
 
 def mainMenu():
     x = menuUtama.menuUtama()
