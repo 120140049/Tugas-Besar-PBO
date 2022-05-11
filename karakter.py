@@ -197,6 +197,7 @@ class Aposteus(Monster, Ranged):
             image = atk.image_at(rect)
             image = pygame.transform.scale2x(image)
             self.animation[3].append(image)
+        self.death_img = pygame.transform.rotate(self.animation[0][0], -90)
 
     def buff(self):
         self.buff_time = pygame.time.get_ticks()

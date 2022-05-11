@@ -10,7 +10,7 @@ class Makhluk(ABC):
         self.nama = nama
         self.action = self.prev_action = self.frame = 0
         self.update_time = pygame.time.get_ticks()
-        self.onground = False
+        self.onground = self.death = False
         self.move_l = self.move_r = self.finish = self.attacking = False
 
     def obj_collision(self, enemy):
@@ -24,10 +24,13 @@ class Makhluk(ABC):
             idx = len(collide) - 1
             self.rect.bottom = collide[idx].rect.top
         else:
-            self.rect.y += 6
-            self.floor_collision(grounds)
+            self.onground = False
 
     def update(self, enemy):
+        if self.hp <= 0:
+            self.death = True
+        if not self.onground and not self.attacking:
+            self.rect.y += 6
         if self.prev_action != self.action:
             self.frame = 0
             self.prev_action = self.action
@@ -64,25 +67,26 @@ class Hero(Makhluk):
     def __init__(self, nama, hp, damage, energi=0):
         super().__init__(nama)
         self.__hp = hp
-        self.__damage = damage
+        self.__damage = 240
         self.__energi = energi
         self.tipe = 'Hero'
         self.turn = 0
 
     def move(self, enemy):
-        if self.obj_collision(enemy):
-            self.move_r = False
-            self.attacking = True
-            self.action = 3
-        if self.rect.x <= 180 and self.move_l:
-            self.move_l = False
-            enemy.finish = False
-            self.finish = True
-            self.action = 0
-        if self.move_r:
-            self.rect.x += 5
-        if self.move_l:
-            self.rect.x -= 5
+        if not self.death:
+            if self.obj_collision(enemy):
+                self.move_r = False
+                self.attacking = True
+                self.action = 3
+            if self.rect.x <= 180 and self.move_l:
+                self.move_l = False
+                enemy.finish = False
+                self.finish = True
+                self.action = 0
+            if self.move_r:
+                self.rect.x += 5
+            if self.move_l:
+                self.rect.x -= 5
 
     def serang(self):
         self.move_r = True
@@ -126,7 +130,7 @@ class Monster(Makhluk):
     def __init__(self, nama, hp, damage):
         super().__init__(nama)
         self.__hp = hp
-        self.__damage = damage
+        self.__damage = 20000
         self.__buffmeter = 0
         self.finish = True
         self.tipe = 'Monster'
@@ -134,25 +138,33 @@ class Monster(Makhluk):
         self.buff_time = 0
 
     def move(self, enemy):
-        if self.obj_collision(enemy):
-            self.move_r = False
-            self.attacking = True
-            self.rect.x = 150
-            if self.nama == 'Aposteus':
-                self.rect.y = 0
-            self.action = 3
-        if self.rect.x >= 520 and self.move_l:
-            self.move_l = False
-            self.action = 0
-            if self.buffed:
-                self.buff()
+        if self.death:
+            self.action = 2
+            if self.rect.x >= 896:
+                self.action = 0
+                self.death = True
             else:
-                self.finish = True
-                enemy.finish = False
-        if self.move_r:
-            self.rect.x -= 6
-        if self.move_l:
-            self.rect.x += 6
+                self.rect.x += 6
+        else:
+            if self.obj_collision(enemy):
+                self.move_r = False
+                self.attacking = True
+                self.rect.x = 150
+                if self.nama == 'Aposteus':
+                    self.rect.y = 0
+                self.action = 3
+            if self.rect.x >= 520 and self.move_l:
+                self.move_l = False
+                self.action = 0
+                if self.buffed:
+                    self.buff()
+                else:
+                    self.finish = True
+                    enemy.finish = False
+            if self.move_r:
+                self.rect.x -= 6
+            if self.move_l:
+                self.rect.x += 6
 
     def serang(self, obj):
         self.move_r = True
