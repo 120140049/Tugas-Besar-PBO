@@ -24,11 +24,10 @@ class Makhluk(ABC):
             idx = len(collide) - 1
             self.rect.bottom = collide[idx].rect.top
         else:
-            self.onground = False
+            self.rect.y += 6
+            self.floor_collision(grounds)
 
     def update(self, enemy):
-        if not self.onground and not self.attacking:
-            self.rect.y += 6
         if self.prev_action != self.action:
             self.frame = 0
             self.prev_action = self.action
