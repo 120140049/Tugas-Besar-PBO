@@ -25,7 +25,6 @@ onscreen_chara = [None, None]
 consider = arena = None
 heroes = heroes1 = monster = monster_hp = heroes_hp = None
 
-
 your_turn = assetModule.get_font(15).render("Your Turn", True, "yellow")
 monster_turn = assetModule.get_font(15).render("Enemy Turn", True, "yellow")
 
@@ -80,13 +79,16 @@ def updateScreen(arena):
         WINDOW.blit(heroes_act, (heroes))
         your_rect = your_turn.get_rect()
         your_rect.center = [458, 35]
-        WINDOW.blit(your_turn, your_rect)
     else:
         WINDOW.blit(heroes_act, (heroes))
         WINDOW.blit(monster_act, (monster))
         monster_rect = your_turn.get_rect()
         monster_rect.center = [458, 35]
+    if monster.finish and not heroes.finish:
+        WINDOW.blit(your_turn, your_rect)
+    elif heroes.finish and not monster.finish:
         WINDOW.blit(monster_turn, monster_rect)
+
 
 # Main Loop
 def mainLoop(arena):
@@ -95,7 +97,8 @@ def mainLoop(arena):
     mixer.music.load(arena.music)
     mixer.music.play(loops=-1)
     mixer.music.set_volume(0.3)
-    music_duration = pygame.time.get_ticks()
+    heroes.floor_collision(grounds)
+    monster.floor_collision(grounds)
     run = True
     while run:
         if (monster.hp <= 0 or heroes.hp <= 0) and \
@@ -103,24 +106,7 @@ def mainLoop(arena):
                 run = False
                 game_over = True
         clock.tick(FPS)
-        heroes.floor_collision(grounds)
-        monster.floor_collision(grounds)
         updateScreen(arena)
-        if heroes.move_l or heroes.move_r:
-            heroes.move(monster)
-        if monster.move_l or monster.move_r:
-            monster.move(heroes)
-        if heroes.turn % 2 != 0 and heroes.finish:
-            monster.serang(heroes)
-        if monster.buffmeter == 4:
-            monster.buff()
-        if monster.buffed:
-            if pygame.time.get_ticks() - monster.buff_time < 800:
-                WINDOW.blit(monster.buff_alert, (575, 13))
-            else:
-                monster.buffed = False
-                monster.finish = True
-                heroes.finish = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -132,10 +118,24 @@ def mainLoop(arena):
                     if event.key == pygame.K_SPACE:
                         # highlight_btn(attack)
                         heroes.serang()
-                        #print('damage hero' ,heroes.damage)
                     if event.key == pygame.K_1:
                         # highlight_btn(skill1)
                         heroes.skill1()
+        if heroes.move_l or heroes.move_r:
+            heroes.move(monster)
+        if monster.move_l or monster.move_r:
+            monster.move(heroes)
+        if heroes.turn % 2 != 0 and heroes.finish:
+            monster.serang(heroes)
+        if monster.buffmeter == 4:
+            monster.buff()
+        if monster.buffed:
+            if pygame.time.get_ticks() - monster.buff_time < 650:
+                WINDOW.blit(monster.buff_alert, (575, 13))
+            else:
+                monster.buffed = False
+                monster.finish = True
+                heroes.finish = False
 
         heroes.update(monster)
         monster.update(heroes)
@@ -161,12 +161,12 @@ def selectDifficulty():
     if difficulty != 'back' :
         selectCharacter(onscreen_chara)
         if difficulty == 'easy':
-            monster.hp = monster.hp * 1
+            pass
             #heroes.damage = heroes.damage * 1
-        if difficulty == 'medium' :
+        elif difficulty == 'medium' :
             monster.hp = monster.hp * 1.15 
             #heroes.damage = heroes.damage * 1.15
-        if difficulty == 'hard' :
+        elif difficulty == 'hard' :
             monster.hp = monster.hp * 1.25
             #heroes.damage = heroes.damage * 1.25
         monster_hp = monster.hp
