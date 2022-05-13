@@ -39,8 +39,9 @@ def akhirpertandingan(arena, grounds):
     while True:
         Display = pygame.display.set_mode((896, 504))
         pygame.display.set_caption("Dungeon Fighter")
-        Display.blit(arena, (0, 0))
-        grounds.draw(Display)
+        temp = arena
+        temp.set_alpha(90)
+        Display.blit(temp, (0, 0))
 
         Posisi_Mouse = pygame.mouse.get_pos()
 

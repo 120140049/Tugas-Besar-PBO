@@ -12,8 +12,9 @@ class Alectrona(Hero, Ranged):
         self.animation = [[]]
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
+        self.dead_img = pygame.transform.rotate(self.animation[0][0], 90)
         self.rect.x = 180
-        self.rect.y = 0
+        self.rect.y = -100
 
     def setAnimation(self):
         idle = spritesheet.Spritesheet(os.path.join(
@@ -54,7 +55,7 @@ class Alectrona(Hero, Ranged):
             self.animation[3].append(image)
 
     def skill1(self):
-        pass
+        self.energi = 2
 
 
 class Nipalto(Hero, Melee):
@@ -64,8 +65,9 @@ class Nipalto(Hero, Melee):
         self.animation = [[]]
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
+        self.dead_img = pygame.transform.rotate(self.animation[0][0], 90)
         self.rect.x = 180
-        self.rect.y = 0
+        self.rect.y = -100
 
     def setAnimation(self):
         idle = spritesheet.Spritesheet(os.path.join(
@@ -106,17 +108,18 @@ class Nipalto(Hero, Melee):
             self.animation[3].append(image)
 
     def skill1(self):
-        pass
+        self.energi = 2
 
 class Salazar(Hero, Melee):
-    def __init__(self, nama='Nipalto', hp=3200, damage=240):
+    def __init__(self, nama='Salazar', hp=3200, damage=240):
         Hero.__init__(self, nama, hp, damage)
         Ranged.__init__(self)
         self.animation = [[]]
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
+        self.dead_img = pygame.transform.rotate(self.animation[4][22], 90)
         self.rect.x = 180
-        self.rect.y = 0
+        self.rect.y = -100
 
     def setAnimation(self):
         idle = spritesheet.Spritesheet(os.path.join(
@@ -144,7 +147,7 @@ class Salazar(Hero, Melee):
         for i in range(6):
             image = pygame.transform.flip(self.animation[1][i], True, False)
             self.animation[2].append(image)
-            temp_list = []
+        temp_list = []
         self.animation.append(temp_list)
         atk = spritesheet.Spritesheet(os.path.join(
             assetModule.salazar_img, 'attack.png'))
@@ -155,9 +158,20 @@ class Salazar(Hero, Melee):
             image = image.subsurface((10, 14), (145, 130))
             image = pygame.transform.scale(image, (310, 230))
             self.animation[3].append(image)
+        temp_list = []
+        self.animation.append(temp_list)
+        dead = spritesheet.Spritesheet(os.path.join(
+            assetModule.salazar_img, 'death.png'))
+        for i in range(23):
+            rect = ((i*80, 0), (80, 69))
+            image = dead.image_at(rect)
+            image = pygame.transform.scale2x(image)
+            image = image.subsurface((20, 0), (135, 138))
+            image = pygame.transform.scale(image, (310, 240))
+            self.animation[4].append(image)
 
     def skill1(self):
-        pass
+        self.energi = 2
 
 class Aposteus(Monster, Ranged):
     def __init__(self, nama='Aposteus', hp=5000, damage=78):
@@ -166,7 +180,7 @@ class Aposteus(Monster, Ranged):
         self.animation = [[]]
         self.setAnimation()
         self.rect.x = 520
-        self.rect.y = 0
+        self.rect.y = -100
         self.buff_alert = get_font(15).render("HP +100", True, "green")
 
     def setAnimation(self):
@@ -197,7 +211,6 @@ class Aposteus(Monster, Ranged):
             image = atk.image_at(rect)
             image = pygame.transform.scale2x(image)
             self.animation[3].append(image)
-        self.death_img = pygame.transform.rotate(self.animation[0][0], -90)
 
     def buff(self):
         self.buff_time = pygame.time.get_ticks()
@@ -213,7 +226,7 @@ class Fenrir(Monster, Melee):
         self.animation = [[]]
         self.setAnimation()
         self.rect.x = 520
-        self.rect.y = 0
+        self.rect.y = -100
         self.buff_alert = get_font(15).render("Damage +1000", True, "red")
 
     def setAnimation(self):

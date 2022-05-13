@@ -10,7 +10,7 @@ class Makhluk(ABC):
         self.nama = nama
         self.action = self.prev_action = self.frame = 0
         self.update_time = pygame.time.get_ticks()
-        self.onground = self.death = False
+        self.onground = self.onfloor = self.death = self.die = False
         self.move_l = self.move_r = self.finish = self.attacking = False
 
     def obj_collision(self, enemy):
@@ -21,6 +21,7 @@ class Makhluk(ABC):
         collide = pygame.sprite.spritecollide(self, grounds, False)
         if collide:
             self.onground = True
+            self.onfloor = True
             idx = len(collide) - 1
             self.rect.bottom = collide[idx].rect.top
         else:
@@ -29,30 +30,36 @@ class Makhluk(ABC):
     def update(self, enemy):
         if self.hp <= 0:
             self.death = True
+        if enemy.hp <= 0:
+            enemy.death = True
         if not self.onground and not self.attacking:
-            self.rect.y += 6
+            self.rect.y += 3
         if self.prev_action != self.action:
             self.frame = 0
             self.prev_action = self.action
-        else:
-            if pygame.time.get_ticks() - self.update_time > 90:
-                self.frame = (self.frame + 1) % \
-                    len(self.animation[self.action])
-                self.update_time = pygame.time.get_ticks()
-                if self.attacking:
-                    if self.frame == len(self.animation[self.action]) - 1:
-                        self.action = 2
-                        self.attacking = False
-                        self.move_l = True
-                        self.frame = 0
-                        if self.tipe == 'Hero':
-                            self.rect.right = enemy.rect.left                      
-                        else:
-                            if self.nama == 'Aposteus':
-                                self.rect.y = enemy.rect.y
-                            self.rect.left = enemy.rect.right
-                        enemy - self.damage
-                        self + 1
+        if pygame.time.get_ticks() - self.update_time > 90:
+            self.frame = (self.frame + 1) % \
+                len(self.animation[self.action])
+            self.update_time = pygame.time.get_ticks()
+            if self.attacking:
+                if self.frame == len(self.animation[self.action]) - 1:
+                    self.action = 2
+                    self.attacking = False
+                    self.move_l = True
+                    self.frame = 0
+                    if self.tipe == 'Hero':
+                        self.rect.right = enemy.rect.left                      
+                    else:
+                        if self.nama == 'Aposteus':
+                            self.rect.y = enemy.rect.y
+                        self.rect.left = enemy.rect.right
+                    enemy - self.damage
+                    self + 1
+            if self.tipe == 'Hero' and self.action == 4:
+                if self.frame == len(self.animation[self.action]) - 1:
+                    self.action = 0
+                    self.frame = 0
+                    self.die = True
 
     @abstractmethod
     def __sub__(self):
@@ -67,10 +74,11 @@ class Hero(Makhluk):
     def __init__(self, nama, hp, damage, energi=0):
         super().__init__(nama)
         self.__hp = hp
-        self.__damage = 240
+        self.__damage = damage
         self.__energi = energi
         self.tipe = 'Hero'
         self.turn = 0
+        self.dead_img = None
 
     def move(self, enemy):
         if not self.death:
@@ -87,6 +95,11 @@ class Hero(Makhluk):
                 self.rect.x += 5
             if self.move_l:
                 self.rect.x -= 5
+        else:
+            if self.nama == 'Salazar':
+                self.action = 4
+            else:
+                self.die = True            
 
     def serang(self):
         self.move_r = True
@@ -111,8 +124,6 @@ class Hero(Makhluk):
     def energi(self):
         return self.__energi
 
-    # Energi setter 
-
     @energi.setter
     def energi(self, tambahan):
         self.__energi -= tambahan
@@ -130,7 +141,7 @@ class Monster(Makhluk):
     def __init__(self, nama, hp, damage):
         super().__init__(nama)
         self.__hp = hp
-        self.__damage = 20000
+        self.__damage = 500
         self.__buffmeter = 0
         self.finish = True
         self.tipe = 'Monster'
@@ -139,11 +150,12 @@ class Monster(Makhluk):
 
     def move(self, enemy):
         if self.death:
-            self.action = 2
+            if enemy.action == 0:
+                self.action = 2
             if self.rect.x >= 896:
                 self.action = 0
-                self.death = True
-            else:
+                self.die = True
+            elif enemy.action == 0:
                 self.rect.x += 6
         else:
             if self.obj_collision(enemy):

@@ -1,17 +1,21 @@
 import pygame
 import sys
+import os
 import karakter
-import assetModule
 import pilihArena
 import pilihKarakter
 import pilihTingkatKesulitan
 import menuUtama
 import matchResult
+import assetModule
+from assetModule import game_env
 from pygame import mixer
 from objek import Lantai
 
 pygame.init()
 mixer.init()
+
+timer = 120
 
 FPS = 60
 WINDOW = pygame.display.set_mode((896, 504))
@@ -29,25 +33,22 @@ your_turn = assetModule.get_font(15).render("Your Turn", True, "yellow")
 monster_turn = assetModule.get_font(15).render("Enemy Turn", True, "yellow")
 win_txt = assetModule.get_font(35).render("YOU WIN!", True, "yellow")
 lose_txt = assetModule.get_font(35).render("YOU LOSE!", True, "red")
-over_rect = win_txt.get_rect(center=(448, 257))
+game_start = assetModule.get_font(40).render("Game Start!", True, "red")
+over_rect = win_txt.get_rect(center=(440, 257))
+turn_rect = your_turn.get_rect(center=(458, 35))
 
 def selectCharacter(onscreen_chara):
-    global heroes, monster, monster_hp, heroes_hp #heroes1
-    # print("1. Alectrona\n2. Nipalto\n3. Salazar")
-    # x = int(input("Masukkan Karakter yang diinginkan:"))
+    global heroes, monster, monster_hp, heroes_hp
     if onscreen_chara[0] == 1:
         heroes = karakter.Alectrona()
     elif onscreen_chara[0] == 2:
         heroes = karakter.Nipalto()
     else:
         heroes = karakter.Salazar()
-    # heroes = karakter.Alectrona()
-    # heroes = karakter.Salazar()
     if onscreen_chara[1] == 1:
         monster = karakter.Aposteus()
     else:
         monster = karakter.Fenrir()
-    # monster = karakter.Fenrir()
 
 def createGrounds():
     for x in range(0, 930, 55):
@@ -56,43 +57,52 @@ def createGrounds():
         grounds.add(Lantai(x, 390, 'terrain2.png'))
 
 def updateScreen(arena):
-    # global your_turn, monster_turn
+    # Arena BG
     WINDOW.blit(arena.bg_img, (0, 0))
     grounds.draw(WINDOW)
+    # Animasi monster dan hero
     heroes_act = heroes.animation[heroes.action][heroes.frame]
-    #heroes1_act = heroes1.animation[heroes1.action][heroes1.frame]
     monster_act = monster.animation[monster.action][monster.frame]
-    # WINDOW.blit(heroes1_act, (heroes1))
-    # Heroes Health
+    # Hp Bar 
+    # Hero
     pygame.draw.rect(WINDOW, (255, 0, 0), (100, 30, 250, 20))
     pygame.draw.rect(WINDOW, (0, 255, 0), (100, 30, (heroes.hp/heroes_hp)*250, 20))
-    # Monster Health
+    # Monster
     pygame.draw.rect(WINDOW, (255, 0, 0), (575, 30, 250, 20))
     pygame.draw.rect(WINDOW, (0, 255, 0), (575, 30, (monster.hp/monster_hp)*250, 20))
+    # Energi Hero
     pygame.draw.rect(WINDOW, (76, 76 , 76), (100, 45, 250, 15))
-    # Heroes Energy
     pygame.draw.rect(WINDOW, (44, 142, 212), (100, 45, 50*heroes.energi, 15))
-    # Monster Buff Gauge
+    # BUff Gauge Monster
     pygame.draw.rect(WINDOW, (76, 76, 76), (575, 45, 250, 15))
     pygame.draw.rect(WINDOW, (237, 222, 62), (575, 45, 250/4*monster.buffmeter, 15))
-    # pygame.draw.rect(WINDOW, (255, 0, 128), heroes, 2)
-    # pygame.draw.rect(WINDOW, (255, 0, 128), monster, 2)
-    if monster.finish:
+    # Gambar monster dulu
+    if monster.finish and not heroes.finish and not heroes.die:
         WINDOW.blit(monster_act, (monster))
         WINDOW.blit(heroes_act, (heroes))
-        your_rect = your_turn.get_rect()
-        your_rect.center = [458, 35]
-        WINDOW.blit(your_turn, your_rect)
-    else:
+    # Gambar hero dulu
+    elif heroes.finish and not monster.finish and not heroes.die:
         WINDOW.blit(heroes_act, (heroes))
         WINDOW.blit(monster_act, (monster))
-        monster_rect = your_turn.get_rect()
-        monster_rect.center = [458, 35]
-        WINDOW.blit(monster_turn, monster_rect)
+    # Gambar notif turn
+    if not heroes.death and not monster.death:
+        if not heroes.finish:
+            WINDOW.blit(your_turn, turn_rect)
+        elif not monster.finish:
+            WINDOW.blit(monster_turn, turn_rect)
+    # Tampilan Window jika hero mati
+    if monster.die or heroes.die:
+        if heroes.die:
+            WINDOW.blit(monster_act, (monster))
+            WINDOW.blit(heroes.dead_img, (160, 270))
+
+    if not heroes.onfloor:
+        WINDOW.blit(game_start, (220, 220))
 
 # Main Loop
 def mainLoop(arena):
     global game_over
+    # Membuat lantai
     createGrounds()
     mixer.music.load(arena.music)
     mixer.music.play(loops=-1)
@@ -109,38 +119,41 @@ def mainLoop(arena):
                 run = False
                 pygame.quit()
                 sys.exit()
-            if heroes.turn % 2 == 0 and monster.finish and heroes.action == 0 \
-                and heroes.onground and not heroes.death:
+            if heroes.turn % 2 == 0 and monster.finish and heroes.onfloor:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
-                        # highlight_btn(attack)
                         heroes.serang()
-                        #print('damage hero' ,heroes.damage)
-                    if event.key == pygame.K_1:
-                        # highlight_btn(skill1)
+                    if event.key == pygame.K_1 and heroes.energi >= 2:
                         heroes.skill1()
+        if heroes.death or monster.death:
+            if heroes.death:
+                heroes.move(monster)
+                if heroes.die:
+                    if monster.action == 0:
+                        game_over = 'lose'
+                        run = False
+            elif monster.death:
+                monster.move(heroes)
+                if monster.die:
+                    if monster.action == 0:
+                        game_over = 'win'
+                        run = False
+        else:
+            if heroes.turn % 2 != 0 and heroes.finish:
+                monster.serang(heroes)
+            if monster.buffmeter == 4:
+                monster.buff()
+            if monster.buffed:
+                if pygame.time.get_ticks() - monster.buff_time < 800:
+                    WINDOW.blit(monster.buff_alert, (575, 13))
+                else:
+                    monster.buffed = False
+                    monster.finish = True
+                    heroes.finish = False
         if heroes.move_l or heroes.move_r:
             heroes.move(monster)
         if monster.move_l or monster.move_r:
             monster.move(heroes)
-        if heroes.turn % 2 != 0 and heroes.finish and not monster.death:
-            monster.serang(heroes)
-        if monster.buffmeter == 4:
-            monster.buff()
-        if monster.buffed:
-            if pygame.time.get_ticks() - monster.buff_time < 800:
-                WINDOW.blit(monster.buff_alert, (575, 13))
-            else:
-                monster.buffed = False
-                monster.finish = True
-                heroes.finish = False
-        if heroes.death:
-            game_over = 'lose'
-            run = False
-        elif monster.death:
-            game_over = 'win'
-            if monster.action == 0 and heroes.action == 0:
-                run = False
         
         heroes.update(monster)
         monster.update(heroes)
@@ -176,6 +189,18 @@ def selectDifficulty():
     else:
         pilihLawan(onscreen_chara)
 
+def gameOver(text, image, time):
+    global over_rect
+    while pygame.time.get_ticks() - time < 3000:
+        WINDOW.blit(image, (0, 0))
+        WINDOW.blit(text, over_rect)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        pygame.display.flip()
+
+
 def gameStart():
     global arena, consider, onscreen_chara, win_txt, lose_txt, over_rect
     pilihKaraktermu(onscreen_chara)
@@ -184,13 +209,15 @@ def gameStart():
         selectDifficulty()
     mainLoop(arena)    
     if game_over != None:
+        time = pygame.time.get_ticks()
+        over_screen = os.path.join(f"{game_env}", "game_over.jpg")
+        image = pygame.image.save(WINDOW, over_screen)
+        image = pygame.image.load(over_screen)
         if game_over == 'win':
-            WINDOW.blit(win_txt, over_rect)
+            gameOver(win_txt, image, time)
         else:
-            WINDOW.blit(lose_txt, over_rect)
-        pygame.display.flip()
-        pygame.time.delay(3500)
-        consider = matchResult.akhirpertandingan(arena.bg_img, grounds)
+            gameOver(lose_txt, image, time)
+        consider = matchResult.akhirpertandingan(image, grounds)
         if consider:
             mixer.music.stop()
             mainMenu()
