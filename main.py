@@ -15,8 +15,6 @@ from objek import Lantai
 pygame.init()
 mixer.init()
 
-timer = 120
-
 FPS = 60
 WINDOW = pygame.display.set_mode((896, 504))
 pygame.display.set_caption("Dungeon Fighter")
@@ -33,11 +31,13 @@ your_turn = assetModule.get_font(15).render("Your Turn", True, "yellow")
 monster_turn = assetModule.get_font(15).render("Enemy Turn", True, "yellow")
 win_txt = assetModule.get_font(35).render("YOU WIN!", True, "yellow")
 lose_txt = assetModule.get_font(35).render("YOU LOSE!", True, "red")
-game_start = assetModule.get_font(40).render("Game Start!", True, "red")
-over_rect = win_txt.get_rect(center=(440, 257))
+game_start = assetModule.get_font(40).render("Game Start", True, "red")
+game_fight = assetModule.get_font(40).render("FIGHT!!!", True, "red")
+over_rect = win_txt.get_rect(center=(445, 257))
 turn_rect = your_turn.get_rect(center=(458, 35))
 
-def selectCharacter(onscreen_chara):
+# Membuat karakter yang sudah dipilih
+def makeCharacter(onscreen_chara):
     global heroes, monster, monster_hp, heroes_hp
     if onscreen_chara[0] == 1:
         heroes = karakter.Alectrona()
@@ -50,12 +50,14 @@ def selectCharacter(onscreen_chara):
     else:
         monster = karakter.Fenrir()
 
+# Membuat lantari
 def createGrounds():
     for x in range(0, 930, 55):
         grounds.add(Lantai(x, 490, 'terrain1.png'))
         grounds.add(Lantai(x, 440, 'terrain1.png'))
         grounds.add(Lantai(x, 390, 'terrain2.png'))
 
+# Menggambar objek ke layar
 def updateScreen(arena):
     # Arena BG
     WINDOW.blit(arena.bg_img, (0, 0))
@@ -85,7 +87,7 @@ def updateScreen(arena):
         WINDOW.blit(heroes_act, (heroes))
         WINDOW.blit(monster_act, (monster))
     # Gambar notif turn
-    if not heroes.death and not monster.death:
+    if not heroes.death and not monster.death and heroes.onfloor:
         if not heroes.finish:
             WINDOW.blit(your_turn, turn_rect)
         elif not monster.finish:
@@ -94,26 +96,32 @@ def updateScreen(arena):
     if monster.die or heroes.die:
         if heroes.die:
             WINDOW.blit(monster_act, (monster))
-            WINDOW.blit(heroes.dead_img, (160, 270))
-
-    if not heroes.onfloor:
-        WINDOW.blit(game_start, (220, 220))
+            if heroes.nama == 'Alectrona':
+                WINDOW.blit(heroes.dead_img, (180, 165))
+            elif heroes.nama == 'Nipalto':
+                WINDOW.blit(heroes.dead_img, (180, 242))
 
 # Main Loop
 def mainLoop(arena):
-    global game_over
+    global game_over, game_start, game_fight
     # Membuat lantai
     createGrounds()
     mixer.music.load(arena.music)
     mixer.music.play(loops=-1)
     mixer.music.set_volume(0.3)
-    music_duration = pygame.time.get_ticks()
+    times = pygame.time.get_ticks()
+    print(times)
     run = True
     while run:
         clock.tick(FPS)
         heroes.floor_collision(grounds)
         monster.floor_collision(grounds)
         updateScreen(arena)
+        if not heroes.onfloor:
+            if pygame.time.get_ticks() - times > 800:
+                WINDOW.blit(game_fight, (340, 220))
+            else:
+                WINDOW.blit(game_start, (230, 220))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -173,11 +181,12 @@ def pilihLawan(onscreen_chara):
     else:
         pilihKaraktermu(onscreen_chara)
 
+# Pilih tingkat kesulitan
 def selectDifficulty():
     global onscreen_chara, monster_hp, heroes_hp
     difficulty = pilihTingkatKesulitan.main()
     if difficulty != 'back' :
-        selectCharacter(onscreen_chara)
+        makeCharacter(onscreen_chara)
         if difficulty == 'easy':
             monster.hp = monster.hp * 1
         if difficulty == 'medium' :
@@ -189,6 +198,7 @@ def selectDifficulty():
     else:
         pilihLawan(onscreen_chara)
 
+# Permainan selesai
 def gameOver(text, image, time):
     global over_rect
     while pygame.time.get_ticks() - time < 3000:
@@ -200,7 +210,7 @@ def gameOver(text, image, time):
                 sys.exit()
         pygame.display.flip()
 
-
+# Mulai permainan
 def gameStart():
     global arena, consider, onscreen_chara, win_txt, lose_txt, over_rect
     pilihKaraktermu(onscreen_chara)

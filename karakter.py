@@ -12,7 +12,7 @@ class Alectrona(Hero, Ranged):
         self.animation = [[]]
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
-        self.dead_img = pygame.transform.rotate(self.animation[0][0], 90)
+        self.dead_img = self.animation[4][4]
         self.rect.x = 180
         self.rect.y = -100
 
@@ -53,9 +53,22 @@ class Alectrona(Hero, Ranged):
             image = image.subsurface((65, 42), (220, 220))
             image = pygame.transform.scale(image, (255, 265))
             self.animation[3].append(image)
+        temp_list = []
+        self.animation.append(temp_list)
+        dead = spritesheet.Spritesheet(os.path.join(
+            assetModule.alectrona_img, 'Death.png'))
+        for i in range(5):
+            rect = ((i*150, 0), (150, 80))
+            image = dead.image_at(rect)
+            image = pygame.transform.scale2x(image)
+            image = image.subsurface((90, 0), (100, 160))
+            image = pygame.transform.scale(image, (140, 200))
+            self.animation[4].append(image)
 
     def skill1(self):
         self.energi = 2
+        self.action = 3
+        self.skilled = True
 
 
 class Nipalto(Hero, Melee):
@@ -65,7 +78,7 @@ class Nipalto(Hero, Melee):
         self.animation = [[]]
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
-        self.dead_img = pygame.transform.rotate(self.animation[0][0], 90)
+        self.dead_img = self.animation[4][6]
         self.rect.x = 180
         self.rect.y = -100
 
@@ -106,6 +119,17 @@ class Nipalto(Hero, Melee):
             image = image.subsurface((150, 110), (240, 190))
             image = pygame.transform.scale(image, (160, 120))
             self.animation[3].append(image)
+        temp_list = []
+        self.animation.append(temp_list)
+        dead = spritesheet.Spritesheet(os.path.join(
+            assetModule.nipalto_img, 'Death.png'))
+        for i in range(7):
+            rect = ((i*231, 0), (231, 100))
+            image = dead.image_at(rect)
+            image = pygame.transform.scale2x(image)
+            image = image.subsurface((150, 0), (240, 190))
+            image = pygame.transform.scale(image, (160, 120))
+            self.animation[4].append(image)
 
     def skill1(self):
         self.energi = 2
@@ -117,7 +141,7 @@ class Salazar(Hero, Melee):
         self.animation = [[]]
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
-        self.dead_img = pygame.transform.rotate(self.animation[4][22], 90)
+        self.dead_img = self.animation[4][22]
         self.rect.x = 180
         self.rect.y = -100
 

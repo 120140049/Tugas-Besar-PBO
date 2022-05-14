@@ -74,11 +74,12 @@ class Hero(Makhluk):
     def __init__(self, nama, hp, damage, energi=0):
         super().__init__(nama)
         self.__hp = hp
-        self.__damage = damage
+        self.__damage = 13123123
         self.__energi = energi
         self.tipe = 'Hero'
         self.turn = 0
         self.dead_img = None
+        self.skilled = False
 
     def move(self, enemy):
         if not self.death:
@@ -96,10 +97,7 @@ class Hero(Makhluk):
             if self.move_l:
                 self.rect.x -= 5
         else:
-            if self.nama == 'Salazar':
-                self.action = 4
-            else:
-                self.die = True            
+            self.action = 4        
 
     def serang(self):
         self.move_r = True
@@ -141,7 +139,7 @@ class Monster(Makhluk):
     def __init__(self, nama, hp, damage):
         super().__init__(nama)
         self.__hp = hp
-        self.__damage = 500
+        self.__damage = 12312312
         self.__buffmeter = 0
         self.finish = True
         self.tipe = 'Monster'
