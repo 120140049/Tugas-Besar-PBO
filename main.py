@@ -8,7 +8,6 @@ import pilihTingkatKesulitan
 import menuUtama
 import matchResult
 import assetModule
-import ButtonMatch
 from assetModule import game_env
 from pygame import mixer
 from objek import Lantai
@@ -101,6 +100,8 @@ def updateScreen(arena):
                 WINDOW.blit(heroes.dead_img, (180, 165))
             elif heroes.nama == 'Nipalto':
                 WINDOW.blit(heroes.dead_img, (180, 242))
+    if heroes.skilled:
+        WINDOW.blit(heroes.skill_projectile[heroes.frame], (heroes.skill_rect))
 
 # Main Loop
 def mainLoop(arena):
@@ -163,7 +164,9 @@ def mainLoop(arena):
             heroes.move(monster)
         if monster.move_l or monster.move_r:
             monster.move(heroes)
-        ButtonMatch.matchButton(WINDOW,heroes,monster)
+        if heroes.skilled:
+            heroes.projectileCollide(monster)
+        
         heroes.update(monster)
         monster.update(heroes)
         pygame.display.flip()
