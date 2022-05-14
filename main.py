@@ -8,6 +8,7 @@ import pilihTingkatKesulitan
 import menuUtama
 import matchResult
 import assetModule
+import ButtonMatch
 from assetModule import game_env
 from pygame import mixer
 from objek import Lantai
@@ -166,7 +167,7 @@ def mainLoop(arena):
             monster.move(heroes)
         if heroes.skilled:
             heroes.projectileCollide(monster)
-        
+        ButtonMatch.matchButton(WINDOW,heroes,monster)
         heroes.update(monster)
         monster.update(heroes)
         pygame.display.flip()
