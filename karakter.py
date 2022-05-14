@@ -10,11 +10,15 @@ class Alectrona(Hero, Ranged):
         Hero.__init__(self, nama, hp, damage)
         Ranged.__init__(self)
         self.animation = [[]]
+        self.skill_projectile = []
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
+        self.skill_rect = self.skill_projectile[0].get_rect()
+        self.skill_rect.x = 200
+        self.skill_rect.y = 220
         self.dead_img = self.animation[4][4]
         self.rect.x = 180
-        self.rect.y = -100
+        self.rect.y = 0
 
     def setAnimation(self):
         idle = spritesheet.Spritesheet(os.path.join(
@@ -64,11 +68,19 @@ class Alectrona(Hero, Ranged):
             image = image.subsurface((90, 0), (100, 160))
             image = pygame.transform.scale(image, (140, 200))
             self.animation[4].append(image)
+        skill = spritesheet.Spritesheet(os.path.join(
+            assetModule.alectrona_img, 'projectile.png'))
+        for i in range(8):
+            rect = ((i*96, 0), (96, 112))
+            image = skill.image_at(rect)
+            image = pygame.transform.flip(image, True, False)
+            self.skill_projectile.append(image)
 
     def skill1(self):
         self.energi = 2
         self.action = 3
         self.skilled = True
+        self.turn += 1
 
 
 class Nipalto(Hero, Melee):

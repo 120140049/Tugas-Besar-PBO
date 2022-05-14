@@ -28,6 +28,9 @@ class Makhluk(ABC):
             self.onground = False
 
     def update(self, enemy):
+        if self.tipe == 'Hero':
+            if self.skilled:
+                self.skill_rect.x += 10
         if self.hp <= 0:
             self.death = True
         if enemy.hp <= 0:
@@ -38,8 +41,16 @@ class Makhluk(ABC):
             self.frame = 0
             self.prev_action = self.action
         if pygame.time.get_ticks() - self.update_time > 90:
-            self.frame = (self.frame + 1) % \
-                len(self.animation[self.action])
+            if self.tipe == 'Hero':
+                if self.skilled:
+                    self.frame = (self.frame + 1) % len(self.skill_projectile)
+                    if self.frame == len(self.skill_projectile) - 2:
+                        self.action = 0
+                else:
+                    self.frame = (self.frame + 1) % \
+                        len(self.animation[self.action])
+            else:
+                self.frame = (self.frame + 1) % len(self.animation[self.action])
             self.update_time = pygame.time.get_ticks()
             if self.attacking:
                 if self.frame == len(self.animation[self.action]) - 1:
@@ -71,10 +82,10 @@ class Makhluk(ABC):
 
 # Parent Class
 class Hero(Makhluk):
-    def __init__(self, nama, hp, damage, energi=0):
+    def __init__(self, nama, hp, damage, energi=4):
         super().__init__(nama)
         self.__hp = hp
-        self.__damage = 13123123
+        self.__damage = 200
         self.__energi = energi
         self.tipe = 'Hero'
         self.turn = 0
@@ -107,7 +118,15 @@ class Hero(Makhluk):
     def skill1(self):
         pass
 
-    # Famage Getter
+    def projectileCollide(self, enemy):
+        if self.skill_rect.x >= enemy.rect.x + 80:
+            self.finish = True
+            enemy.finish = False
+            self.skilled = False
+            self.skill_rect.x = 220
+            enemy - (self.damage + self.damage * 1.30)
+
+    # Damage Getter
     @property
     def damage(self):
         return self.__damage
@@ -139,7 +158,7 @@ class Monster(Makhluk):
     def __init__(self, nama, hp, damage):
         super().__init__(nama)
         self.__hp = hp
-        self.__damage = 12312312
+        self.__damage = damage
         self.__buffmeter = 0
         self.finish = True
         self.tipe = 'Monster'
