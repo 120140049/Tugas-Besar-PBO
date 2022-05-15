@@ -79,3 +79,14 @@ def menuUtama():
                     run = False
 
         pygame.display.update()
+
+
+def matchButton():
+	Tombol_attack= Button(image=pygame.image.load(f"{game_env}/button1.png"),
+		pos=(290, 450), text_input="attack", font=get_font(15),
+		base_color="white", hovering_color="red")
+	Tombol_skill = Button(image=pygame.image.load(f"{game_env}/button1.png"),
+		pos=(600, 450), text_input="skill", font=get_font(15),
+		base_color="white", hovering_color="red")
+
+	return [Tombol_attack, Tombol_skill]

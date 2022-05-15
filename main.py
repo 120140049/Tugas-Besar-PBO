@@ -8,7 +8,6 @@ import pilihTingkatKesulitan
 import menuUtama
 import matchResult
 import assetModule
-import ButtonMatch
 from assetModule import game_env
 from pygame import mixer
 from objek import Lantai
@@ -26,7 +25,7 @@ clock = pygame.time.Clock()
 game_over = None
 onscreen_chara = [None, None]
 consider = arena = None
-heroes = heroes1 = monster = monster_hp = heroes_hp = None
+heroes = heroes1 = monster = monster_hp = heroes_hp = button = mouse_pos = None
 
 your_turn = assetModule.get_font(15).render("Your Turn", True, "yellow")
 monster_turn = assetModule.get_font(15).render("Enemy Turn", True, "yellow")
@@ -104,22 +103,30 @@ def updateScreen(arena):
     if heroes.skilled:
         WINDOW.blit(heroes.skill_projectile[heroes.frame], (heroes.skill_rect))
 
+def updateButton(button, x):
+    button[0].changeColor(x)
+    button[0].update(WINDOW)
+    button[1].changeColor(x)
+    button[1].update(WINDOW)
+
 # Main Loop
 def mainLoop(arena):
-    global game_over, game_start, game_fight
+    global game_over, game_start, game_fight, button, mouse_pos
     # Membuat lantai
     createGrounds()
     mixer.music.load(arena.music)
     mixer.music.play(loops=-1)
     mixer.music.set_volume(0.3)
     times = pygame.time.get_ticks()
-    print(times)
     run = True
+    button = menuUtama.matchButton()
     while run:
         clock.tick(FPS)
         heroes.floor_collision(grounds)
         monster.floor_collision(grounds)
         updateScreen(arena)
+        mouse_pos = pygame.mouse.get_pos()
+        updateButton(button, mouse_pos)
         if not heroes.onfloor:
             if pygame.time.get_ticks() - times > 800:
                 WINDOW.blit(game_fight, (340, 220))
@@ -135,6 +142,11 @@ def mainLoop(arena):
                     if event.key == pygame.K_SPACE:
                         heroes.serang()
                     if event.key == pygame.K_1 and heroes.energi >= 2:
+                        heroes.skill1()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if button[0].checkForInput(mouse_pos):
+                        heroes.serang()
+                    if button[1].checkForInput(mouse_pos) and heroes.energi >= 2:
                         heroes.skill1()
         if heroes.death or monster.death:
             if heroes.death:
@@ -167,7 +179,6 @@ def mainLoop(arena):
             monster.move(heroes)
         if heroes.skilled:
             heroes.projectileCollide(monster)
-        ButtonMatch.matchButton(WINDOW,heroes,monster)
         heroes.update(monster)
         monster.update(heroes)
         pygame.display.flip()
