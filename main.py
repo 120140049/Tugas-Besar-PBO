@@ -101,8 +101,13 @@ def updateScreen(arena):
             elif heroes.nama == 'Nipalto':
                 WINDOW.blit(heroes.dead_img, (180, 242))
     if heroes.skilled:
-        WINDOW.blit(heroes.skill_projectile[heroes.frame], (heroes.skill_rect))
+        if heroes.nama == 'Alectrona':
+            WINDOW.blit(heroes.skill_projectile[heroes.frame], (heroes.skill_rect))
+    if heroes.nama == 'Salazar' and heroes.skip_turn:
+        WINDOW.blit(heroes.skip_alert, (300, 220))
+    pygame.draw.rect(WINDOW, (128, 64, 128), heroes.rect, 2)
 
+# Update tombol aksi
 def updateButton(button, x):
     button[0].changeColor(x)
     button[0].update(WINDOW)
@@ -112,7 +117,6 @@ def updateButton(button, x):
 # Main Loop
 def mainLoop(arena):
     global game_over, game_start, game_fight, button, mouse_pos
-    # Membuat lantai
     createGrounds()
     mixer.music.load(arena.music)
     mixer.music.play(loops=-1)
@@ -142,12 +146,12 @@ def mainLoop(arena):
                     if event.key == pygame.K_SPACE:
                         heroes.serang()
                     if event.key == pygame.K_1 and heroes.energi >= 2:
-                        heroes.skill1()
+                        heroes.skill()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if button[0].checkForInput(mouse_pos):
                         heroes.serang()
                     if button[1].checkForInput(mouse_pos) and heroes.energi >= 2:
-                        heroes.skill1()
+                        heroes.skill()
         if heroes.death or monster.death:
             if heroes.death:
                 heroes.move(monster)
@@ -177,12 +181,14 @@ def mainLoop(arena):
             heroes.move(monster)
         if monster.move_l or monster.move_r:
             monster.move(heroes)
-        if heroes.skilled:
+        if heroes.skilled and heroes.nama == 'Alectrona':
             heroes.projectileCollide(monster)
-        heroes.update(monster)
+        
+        heroes.update(monster, grounds=grounds)
         monster.update(heroes)
         pygame.display.flip()
 
+# PIlih Hero
 def pilihKaraktermu(onscreen_chara):
     onscreen_chara[0] = pilihKarakter.pilihhero()
     if onscreen_chara[0] == 4:
@@ -190,6 +196,7 @@ def pilihKaraktermu(onscreen_chara):
     else:
         pilihLawan(onscreen_chara)
 
+# Pilih Monster
 def pilihLawan(onscreen_chara):
     onscreen_chara[1] = pilihKarakter.pilihmonster()
     if onscreen_chara[1] != 3:
