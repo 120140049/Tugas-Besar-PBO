@@ -73,6 +73,4 @@ def main():
         pygame.display.update()
         FramePerSec.tick(FPS)
 
-
-main()
     

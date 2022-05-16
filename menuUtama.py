@@ -81,7 +81,7 @@ def menuUtama():
                     return state
                     run = False
                 if Tombol_exit.checkForInput(Posisi_Mouse):
-                    state = 'Options'
+                    state = 'Exit'
                     return state
                     run = False
 

@@ -8,6 +8,7 @@ import pilihTingkatKesulitan
 import menuUtama
 import matchResult
 import assetModule
+import guide
 from assetModule import game_env, get_font
 from pygame import mixer
 from objek import Lantai
@@ -281,6 +282,8 @@ def mainMenu():
     x = menuUtama.menuUtama()
     if x == 'Start':
         gameStart()
+    elif x == 'Guide':
+        guide.main()
     else:
         sys.exit()
 
