@@ -28,12 +28,15 @@ class Background():
         self.sensitivity=35
 
     def scrollDown(self):
-        if self.bgY1<=-self.rectBG.height:
-            self.bgY1-=0
+        if self.bgY1>=-2000:
+            print(self.rectBG.height)
+            print('down',self.bgY1)
+            self.bgY1-=self.sensitivity
+            #self.bgY1-=0
         # if self.bgY2<=-self.rectBG.height:
         #     self.bgY2-=0
-        else:
-            self.bgY1-=self.sensitivity
+        #else:
+            #self.bgY1-=self.sensitivity
             # self.bgY2-=self.sensitivity
         # while self.bgY1 > self.rectBG.height and self.bgY2 > self.rectBG.height:
         #     self.bgY1-=self.sensitivity
@@ -41,12 +44,15 @@ class Background():
 
         
     def scrollUp(self):
-        if self.bgY1>=self.rectBG.height:
-            self.bgY1+=0
+        if self.bgY1<=0:
+            print(self.rectBG.height)
+            print('up',self.bgY1)
+            self.bgY1+=self.sensitivity
+            #self.bgY1+=0
         # if self.bgY2>=self.rectBG.height:
         #     self.bgY2+=0
-        else:
-            self.bgY1+=self.sensitivity
+        #else:
+            #self.bgY1+=self.sensitivity
             # self.bgY2+=self.sensitivity
         # while self.bgY1 < self.rectBG.height and self.bgY2 < self.rectBG.height:
         #     self.bgY1+=self.sensitivity
