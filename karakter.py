@@ -7,7 +7,7 @@ from objek import Hero, Monster
 from assetModule import get_font
 
 class Alectrona(Hero):
-    def __init__(self, nama='Alectrona', hp=3000, damage=235):
+    def __init__(self, nama='Alectrona', hp=3000, damage=245):
         Hero.__init__(self, nama, hp, damage)
         self.animation = [[]]
         self.skill_projectile = []
@@ -17,9 +17,9 @@ class Alectrona(Hero):
         self.skill_rect.x = 200
         self.skill_rect.y = 220
         self.dead_img = self.animation[4][4]
-        self.skill_dmg = damage * 1.7
+        self.skill_dmg = damage * 1.82
         self.rect.x = 180
-        self.rect.y = 0
+        self.rect.y = -200
 
     def setAnimation(self):
         idle = spritesheet.Spritesheet(os.path.join(
@@ -85,15 +85,15 @@ class Alectrona(Hero):
 
 
 class Nipalto(Hero):
-    def __init__(self, nama='Nipalto', hp=2750, damage=275):
+    def __init__(self, nama='Nipalto', hp=2750, damage=280):
         Hero.__init__(self, nama, hp, damage)
         self.animation = [[]]
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
         self.dead_img = self.animation[4][6]
-        self.skill_dmg = damage * 1.73
+        self.skill_dmg = damage * 1.68
         self.rect.x = 180
-        self.rect.y = 0
+        self.rect.y = -200
 
     def setAnimation(self):
         idle = spritesheet.Spritesheet(os.path.join(
@@ -162,18 +162,18 @@ class Nipalto(Hero):
         self.skilled = True
 
 class Salazar(Hero):
-    def __init__(self, nama='Salazar', hp=2500, damage=310):
+    def __init__(self, nama='Salazar', hp=2500, damage=300):
         Hero.__init__(self, nama, hp, damage)
         self.animation = [[]]
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
         self.dead_img = self.animation[4][22]
-        self.skill_dmg = damage * 1.84
+        self.skill_dmg = damage * 1.73
         self.skip_turn = False
         self.skip_alert = get_font(15).render("Monster Turn Skipped!!", True, "yellow")
         self.skip_time = None
         self.rect.x = 180
-        self.rect.y = 0
+        self.rect.y = -200
 
     def setAnimation(self):
         idle = spritesheet.Spritesheet(os.path.join(
@@ -250,10 +250,9 @@ class Aposteus(Monster):
         self.animation = [[]]
         self.setAnimation()
         self.rect.x = 520
-        self.rect.y = -100
-        self.heal = int(self.hp * 0.06)
-        self.buff_alert = get_font(15).render(f"HP +{self.heal}", 
-                                                True, "green")
+        self.rect.y = -200
+        self.heal = int(self.hp * 0.045)
+        self.buff_alert = None
 
     def setAnimation(self):
         idle = spritesheet.Spritesheet(os.path.join(
@@ -286,8 +285,8 @@ class Aposteus(Monster):
 
     def buff(self):
         self.buff_time = pygame.time.get_ticks()
-        self.hp = self.heal
-        self.buffmeter = 2
+        self.hpBuff(self.heal)
+        self.buffmeter = 3
         self.done_buff = True
         self.buffed = True
 
@@ -297,8 +296,9 @@ class Fenrir(Monster):
         self.animation = [[]]
         self.setAnimation()
         self.rect.x = 520
-        self.rect.y = -100
+        self.rect.y = -200
         self.buff_alert = None
+        self.buff_dmg = 0.1
 
     def setAnimation(self):
         for i in range(6):
@@ -331,10 +331,10 @@ class Fenrir(Monster):
             self.animation[3].append(image)
 
     def buff(self):
-        self.buff_alert = get_font(15).render(f"Damage +{int(self.damage * 0.08)}", 
-                                                True, "red")
+        self.buff_alert = get_font(15).render(
+            f"Damage +{int(self.damage * self.buff_dmg)}", True, "red")
         self.buff_time = pygame.time.get_ticks()
-        self.damage = int(self.damage * 0.08)
-        self.buffmeter = 2
+        self.damage = int(self.damage * self.buff_dmg)
+        self.buffmeter = 3
         self.done_buff = True
         self.buffed = True

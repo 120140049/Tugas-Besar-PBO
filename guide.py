@@ -83,6 +83,4 @@ def main():
         pygame_widgets.update(event)
         FramePerSec.tick(FPS)
 
-
-main()
     
