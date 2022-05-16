@@ -103,8 +103,6 @@ def updateScreen(arena):
     if heroes.skilled:
         if heroes.nama == 'Alectrona':
             WINDOW.blit(heroes.skill_projectile[heroes.frame], (heroes.skill_rect))
-    if heroes.nama == 'Salazar' and heroes.skip_turn:
-        WINDOW.blit(heroes.skip_alert, (300, 220))
     pygame.draw.rect(WINDOW, (128, 64, 128), heroes.rect, 2)
 
 # Update tombol aksi
@@ -141,7 +139,8 @@ def mainLoop(arena):
                 run = False
                 pygame.quit()
                 sys.exit()
-            if heroes.turn % 2 == 0 and monster.finish and heroes.onfloor:
+            if heroes.turn % 2 == 0 and monster.finish and heroes.onfloor and \
+                heroes.action == 0:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         heroes.serang()
@@ -169,21 +168,25 @@ def mainLoop(arena):
             if heroes.turn % 2 != 0 and heroes.finish:
                 monster.serang(heroes)
             if monster.buffmeter == 4:
-                monster.buff()
+                monster.buffed = True
+                monster.done_buff = False
             if monster.buffed:
-                if pygame.time.get_ticks() - monster.buff_time < 800:
+                if pygame.time.get_ticks() - monster.buff_time < 900:
                     WINDOW.blit(monster.buff_alert, (575, 13))
                 else:
                     monster.buffed = False
-                    monster.finish = True
-                    heroes.finish = False
+        if heroes.nama == 'Salazar' and heroes.skip_turn:
+            if pygame.time.get_ticks() - heroes.skip_time < 1500:
+                WINDOW.blit(heroes.skip_alert, (300, 220))
+            else:
+                heroes.skip_turn = False
         if heroes.move_l or heroes.move_r:
             heroes.move(monster)
         if monster.move_l or monster.move_r:
             monster.move(heroes)
         if heroes.skilled and heroes.nama == 'Alectrona':
             heroes.projectileCollide(monster)
-        
+
         heroes.update(monster, grounds=grounds)
         monster.update(heroes)
         pygame.display.flip()

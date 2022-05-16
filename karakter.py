@@ -2,11 +2,12 @@ import os
 import pygame
 import assetModule
 import spritesheet
+from random import randint
 from objek import Hero, Monster, Melee, Ranged
 from assetModule import get_font
 
 class Alectrona(Hero, Ranged):
-    def __init__(self, nama='Alectrona', hp=3200, damage=240):
+    def __init__(self, nama='Alectrona', hp=3000, damage=235):
         Hero.__init__(self, nama, hp, damage)
         Ranged.__init__(self)
         self.animation = [[]]
@@ -17,7 +18,7 @@ class Alectrona(Hero, Ranged):
         self.skill_rect.x = 200
         self.skill_rect.y = 220
         self.dead_img = self.animation[4][4]
-        self.skill_dmg = damage + damage * 0.25
+        self.skill_dmg = damage * 1.7
         self.rect.x = 180
         self.rect.y = 0
 
@@ -85,14 +86,14 @@ class Alectrona(Hero, Ranged):
 
 
 class Nipalto(Hero, Melee):
-    def __init__(self, nama='Nipalto', hp=3200, damage=240):
+    def __init__(self, nama='Nipalto', hp=2750, damage=275):
         Hero.__init__(self, nama, hp, damage)
         Ranged.__init__(self)
         self.animation = [[]]
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
         self.dead_img = self.animation[4][6]
-        self.skill_dmg = damage + damage * 0.20
+        self.skill_dmg = damage * 1.73
         self.rect.x = 180
         self.rect.y = 0
 
@@ -163,16 +164,17 @@ class Nipalto(Hero, Melee):
         self.skilled = True
 
 class Salazar(Hero, Melee):
-    def __init__(self, nama='Salazar', hp=3200, damage=240):
+    def __init__(self, nama='Salazar', hp=2500, damage=310):
         Hero.__init__(self, nama, hp, damage)
         Ranged.__init__(self)
         self.animation = [[]]
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
         self.dead_img = self.animation[4][22]
-        self.skill_dmg = damage + damage * 0.275
+        self.skill_dmg = damage * 1.84
         self.skip_turn = False
         self.skip_alert = get_font(15).render("Monster Turn Skipped!!", True, "yellow")
+        self.skip_time = None
         self.rect.x = 180
         self.rect.y = 0
 
@@ -246,14 +248,16 @@ class Salazar(Hero, Melee):
         self.skilled = True
 
 class Aposteus(Monster, Ranged):
-    def __init__(self, nama='Aposteus', hp=5000, damage=78):
+    def __init__(self, nama='Aposteus', hp=5000, damage=115):
         Monster.__init__(self, nama, hp, damage)
         Ranged.__init__(self)
         self.animation = [[]]
         self.setAnimation()
         self.rect.x = 520
         self.rect.y = -100
-        self.buff_alert = get_font(15).render("HP +100", True, "green")
+        self.heal = int(self.hp * 0.06)
+        self.buff_alert = get_font(15).render(f"HP +{self.heal}", 
+                                                True, "green")
 
     def setAnimation(self):
         idle = spritesheet.Spritesheet(os.path.join(
@@ -286,18 +290,20 @@ class Aposteus(Monster, Ranged):
 
     def buff(self):
         self.buff_time = pygame.time.get_ticks()
-        self.buffmeter = 0
+        self.hp = self.heal
+        self.buffmeter = 2
+        self.done_buff = True
         self.buffed = True
 
 class Fenrir(Monster, Melee):
-    def __init__(self, nama='Fenrir', hp=5000, damage=82):
+    def __init__(self, nama='Fenrir', hp=4830, damage=78):
         Monster.__init__(self, nama, hp, damage)
         Ranged.__init__(self)
         self.animation = [[]]
         self.setAnimation()
         self.rect.x = 520
         self.rect.y = -100
-        self.buff_alert = get_font(15).render(f"Damage +{self.hp * 0.1}", True, "red")
+        self.buff_alert = None
 
     def setAnimation(self):
         for i in range(6):
@@ -330,8 +336,10 @@ class Fenrir(Monster, Melee):
             self.animation[3].append(image)
 
     def buff(self):
+        self.buff_alert = get_font(15).render(f"Damage +{int(self.damage * 0.08)}", 
+                                                True, "red")
         self.buff_time = pygame.time.get_ticks()
-        print(self.buff_time)
-        self.damage = self.damage * 0.2
-        self.buffmeter = 0
+        self.damage = int(self.damage * 0.08)
+        self.buffmeter = 3
+        self.done_buff = True
         self.buffed = True

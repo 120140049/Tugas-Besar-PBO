@@ -1,7 +1,7 @@
 import pygame
 import os
 import assetModule
-import random
+from random import randint
 from abc import ABC, abstractmethod
 
 
@@ -63,33 +63,34 @@ class Makhluk(ABC):
                     self.frame = 0
                     if self.tipe == 'Hero':
                         self.rect.right = enemy.rect.left
-                        if self.nama != 'Alectrona':
-                            self.rect = self.animation[0][0].get_rect() 
-                            self.rect.y = 504
-                            self.rect.right = enemy.rect.left
-                            self.floor_collision(grounds)
-                            self.skilled = False         
-                    else:
-                        if self.nama == 'Aposteus':
-                            self.rect.y = enemy.rect.y
-                        self.rect.left = enemy.rect.right
-                    if self.tipe == 'Hero':
                         if not self.skilled:
-                            enemy - self.damage
+                            pass
                         else:
+                            if self.nama != 'Alectrona':
+                                if self.nama == 'Salazar':                                                    
+                                    skip = randint(1, 10)
+                                    if skip < 4:
+                                        self.skip_time = pygame.time.get_ticks()
+                                        self.skip_turn = True
+                                        self.turn += 1
+                                self.rect = self.animation[0][0].get_rect() 
+                                self.rect.y = 504
+                                self.rect.right = enemy.rect.left
+                                self.floor_collision(grounds)
+                                self.skilled = False
                             if self.nama == 'Alectrona':
                                 enemy - (self.skill_dmg + enemy.hp * 0.1)
                             elif self.nama == 'Nipalto':
                                 enemy - self.skill_dmg
                                 enemy.damage - (enemy.damage * 0.03)
-                            else:
+                            elif self.nama == 'Salazar':
                                 enemy - self.skill_dmg
-                                skip = random.randint(1, 11)
-                                if skip < 4:
-                                    self.skip_turn = True
-                                    self.turn += 1
+                            return      
                     else:
-                        enemy - self.damage
+                        if self.nama == 'Aposteus':
+                            self.rect.y = enemy.rect.y
+                        self.rect.left = enemy.rect.right
+                    enemy - self.damage
                     self + 1
             if self.tipe == 'Hero' and self.action == 4:
                 if self.frame == len(self.animation[self.action]) - 1:
@@ -110,7 +111,7 @@ class Hero(Makhluk):
     def __init__(self, nama, hp, damage, energi=4):
         super().__init__(nama)
         self.__hp = hp
-        self.__damage = 1000000
+        self.__damage = damage
         self.__energi = energi
         self.tipe = 'Hero'
         self.turn = 0
@@ -136,7 +137,6 @@ class Hero(Makhluk):
                 if self.nama == 'Salazar' and self.skip_turn:
                     self.finish = False
                     enemy.finish = True
-                    self.skip_turn = False
                 else:
                     enemy.finish = False
                     self.finish = True
@@ -197,10 +197,11 @@ class Monster(Makhluk):
         super().__init__(nama)
         self.__hp = hp
         self.__damage = damage
-        self.__buffmeter = 0
+        self.__buffmeter = 3
         self.finish = True
         self.tipe = 'Monster'
         self.buffed = False
+        self.done_buff = True
         self.buff_time = 0
 
     def move(self, enemy):
@@ -220,14 +221,13 @@ class Monster(Makhluk):
                 if self.nama == 'Aposteus':
                     self.rect.y = 0
                 self.action = 3
+            if not self.done_buff:
+                self.buff()
             if self.rect.x >= 520 and self.move_l:
                 self.move_l = False
                 self.action = 0
-                if self.buffed:
-                    self.buff()
-                else:
-                    self.finish = True
-                    enemy.finish = False
+                self.finish = True
+                enemy.finish = False
             if self.move_r:
                 self.rect.x -= 6
             if self.move_l:
@@ -257,7 +257,16 @@ class Monster(Makhluk):
 
     @hp.setter
     def hp(self, amount):
-        self.__hp += amount
+        if self.nama == 'Aposteus':
+            if self.hp + amount >= 5000:
+                self.__hp = 5000
+            else:
+                self.__hp += amount
+        else:
+            if self.hp + amount >= 4830:
+                self.__hp = 4830
+            else:
+                self.__hp += amount
 
     @damage.setter
     def damage(self, amount):
