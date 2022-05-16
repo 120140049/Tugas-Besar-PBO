@@ -22,46 +22,18 @@ class Background():
         self.bgY1=0
         self.bgX1=0
 
-        # self.bgY2=self.rectBG.height
-        # self.bgX2=0
-
         self.sensitivity=35
 
     def scrollDown(self):
-        if self.bgY1>=-1800:
-            print(self.rectBG.height)
-            print('down',self.bgY1)
+        if self.bgY1>=-1930:
             self.bgY1-=self.sensitivity
-            #self.bgY1-=0
-        # if self.bgY2<=-self.rectBG.height:
-        #     self.bgY2-=0
-        #else:
-            #self.bgY1-=self.sensitivity
-            # self.bgY2-=self.sensitivity
-        # while self.bgY1 > self.rectBG.height and self.bgY2 > self.rectBG.height:
-        #     self.bgY1-=self.sensitivity
-        #     self.bgY2-=self.sensitivity
-
         
     def scrollUp(self):
         if self.bgY1<=0:
-            print(self.rectBG.height)
-            print('up',self.bgY1)
             self.bgY1+=self.sensitivity
-            #self.bgY1+=0
-        # if self.bgY2>=self.rectBG.height:
-        #     self.bgY2+=0
-        #else:
-            #self.bgY1+=self.sensitivity
-            # self.bgY2+=self.sensitivity
-        # while self.bgY1 < self.rectBG.height and self.bgY2 < self.rectBG.height:
-        #     self.bgY1+=self.sensitivity
-        #     self.bgY2+=self.sensitivity
-
         
     def render(self):
         WINDOW.blit(self.background,(self.bgX1,self.bgY1))
-        # WINDOW.blit(self.background,(self.bgX2,self.bgY2))
         self.Tombol_back.update(WINDOW)
 
 bg=Background()
@@ -85,11 +57,8 @@ def main():
                     bg.scrollDown()
                     bg.render()
 
-        
         pygame.display.update()
         pygame_widgets.update(event)
         FramePerSec.tick(FPS)
 
-main()
-
-    
+main()    
