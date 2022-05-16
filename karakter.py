@@ -17,6 +17,7 @@ class Alectrona(Hero, Ranged):
         self.skill_rect.x = 200
         self.skill_rect.y = 220
         self.dead_img = self.animation[4][4]
+        self.skill_dmg = damage + damage * 0.25
         self.rect.x = 180
         self.rect.y = 0
 
@@ -76,7 +77,7 @@ class Alectrona(Hero, Ranged):
             image = pygame.transform.flip(image, True, False)
             self.skill_projectile.append(image)
 
-    def skill1(self):
+    def skill(self):
         self.energi = 2
         self.action = 3
         self.skilled = True
@@ -91,8 +92,9 @@ class Nipalto(Hero, Melee):
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
         self.dead_img = self.animation[4][6]
+        self.skill_dmg = damage + damage * 0.20
         self.rect.x = 180
-        self.rect.y = -100
+        self.rect.y = 0
 
     def setAnimation(self):
         idle = spritesheet.Spritesheet(os.path.join(
@@ -142,9 +144,23 @@ class Nipalto(Hero, Melee):
             image = image.subsurface((150, 0), (240, 190))
             image = pygame.transform.scale(image, (160, 120))
             self.animation[4].append(image)
+        temp_list = []
+        self.animation.append(temp_list)
+        skill = spritesheet.Spritesheet(os.path.join(
+            assetModule.nipalto_img, 'Skill.png'))
+        for i in range(8):
+            rect = ((i*231+30, 0), (185, 145))
+            image = skill.image_at(rect)
+            image = pygame.transform.scale2x(image)
+            image = pygame.transform.scale(image, (230, 180))
+            self.animation[5].append(image)
 
-    def skill1(self):
+    def skill(self):
         self.energi = 2
+        self.move_r = True
+        self.action = 1
+        self.turn += 1
+        self.skilled = True
 
 class Salazar(Hero, Melee):
     def __init__(self, nama='Salazar', hp=3200, damage=240):
@@ -154,8 +170,11 @@ class Salazar(Hero, Melee):
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
         self.dead_img = self.animation[4][22]
+        self.skill_dmg = damage + damage * 0.275
+        self.skip_turn = False
+        self.skip_alert = get_font(15).render("Monster Turn Skipped!!", True, "yellow")
         self.rect.x = 180
-        self.rect.y = -100
+        self.rect.y = 0
 
     def setAnimation(self):
         idle = spritesheet.Spritesheet(os.path.join(
@@ -205,9 +224,26 @@ class Salazar(Hero, Melee):
             image = image.subsurface((20, 0), (135, 138))
             image = pygame.transform.scale(image, (310, 240))
             self.animation[4].append(image)
+        temp_list = []
+        self.animation.append(temp_list)
+        skill = spritesheet.Spritesheet(os.path.join(
+            assetModule.salazar_img, 'Skill.png'))
+        for i in range(5):
+            rect = ((i*74, 0), (74, 160))
+            image = skill.image_at(rect)
+            image = pygame.transform.scale2x(image)
+            image = pygame.transform.scale(image, (240, 440))
+            image = pygame.transform.flip(image, True, False)
+            self.animation[5].append(image)
+        for i in range(5):
+            self.animation[5].append(self.animation[5][4-i])
 
-    def skill1(self):
+    def skill(self):
         self.energi = 2
+        self.move_r = True
+        self.action = 1
+        self.turn += 1
+        self.skilled = True
 
 class Aposteus(Monster, Ranged):
     def __init__(self, nama='Aposteus', hp=5000, damage=78):
@@ -250,8 +286,6 @@ class Aposteus(Monster, Ranged):
 
     def buff(self):
         self.buff_time = pygame.time.get_ticks()
-        print(self.buff_time)
-        self.hp = 100
         self.buffmeter = 0
         self.buffed = True
 
@@ -263,7 +297,7 @@ class Fenrir(Monster, Melee):
         self.setAnimation()
         self.rect.x = 520
         self.rect.y = -100
-        self.buff_alert = get_font(15).render("Damage +1000", True, "red")
+        self.buff_alert = get_font(15).render(f"Damage +{self.hp * 0.1}", True, "red")
 
     def setAnimation(self):
         for i in range(6):

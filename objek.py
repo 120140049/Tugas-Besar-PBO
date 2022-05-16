@@ -1,6 +1,7 @@
 import pygame
 import os
 import assetModule
+import random
 from abc import ABC, abstractmethod
 
 
@@ -27,22 +28,24 @@ class Makhluk(ABC):
         else:
             self.onground = False
 
-    def update(self, enemy):
+    def update(self, enemy, grounds = None):
         if self.tipe == 'Hero':
-            if self.skilled:
+            if self.skilled and self.nama == 'Alectrona':
                 self.skill_rect.x += 10
+            elif self.skilled and self.nama != 'Alectrona':
+                self.floor_collision(grounds)
         if self.hp <= 0:
             self.death = True
         if enemy.hp <= 0:
             enemy.death = True
         if not self.onground and not self.attacking:
-            self.rect.y += 3
+            self.rect.y += 6
         if self.prev_action != self.action:
             self.frame = 0
             self.prev_action = self.action
         if pygame.time.get_ticks() - self.update_time > 90:
             if self.tipe == 'Hero':
-                if self.skilled:
+                if self.skilled and self.nama == 'Alectrona':
                     self.frame = (self.frame + 1) % len(self.skill_projectile)
                     if self.frame == len(self.skill_projectile) - 2:
                         self.action = 0
@@ -59,12 +62,34 @@ class Makhluk(ABC):
                     self.move_l = True
                     self.frame = 0
                     if self.tipe == 'Hero':
-                        self.rect.right = enemy.rect.left                      
+                        self.rect.right = enemy.rect.left
+                        if self.nama != 'Alectrona':
+                            self.rect = self.animation[0][0].get_rect() 
+                            self.rect.y = 504
+                            self.rect.right = enemy.rect.left
+                            self.floor_collision(grounds)
+                            self.skilled = False         
                     else:
                         if self.nama == 'Aposteus':
                             self.rect.y = enemy.rect.y
                         self.rect.left = enemy.rect.right
-                    enemy - self.damage
+                    if self.tipe == 'Hero':
+                        if not self.skilled:
+                            enemy - self.damage
+                        else:
+                            if self.nama == 'Alectrona':
+                                enemy - (self.skill_dmg + enemy.hp * 0.1)
+                            elif self.nama == 'Nipalto':
+                                enemy - self.skill_dmg
+                                enemy.damage - (enemy.damage * 0.03)
+                            else:
+                                enemy - self.skill_dmg
+                                skip = random.randint(1, 11)
+                                if skip < 4:
+                                    self.skip_turn = True
+                                    self.turn += 1
+                    else:
+                        enemy - self.damage
                     self + 1
             if self.tipe == 'Hero' and self.action == 4:
                 if self.frame == len(self.animation[self.action]) - 1:
@@ -85,7 +110,7 @@ class Hero(Makhluk):
     def __init__(self, nama, hp, damage, energi=4):
         super().__init__(nama)
         self.__hp = hp
-        self.__damage = 200
+        self.__damage = 1000000
         self.__energi = energi
         self.tipe = 'Hero'
         self.turn = 0
@@ -95,18 +120,31 @@ class Hero(Makhluk):
     def move(self, enemy):
         if not self.death:
             if self.obj_collision(enemy):
+                self.rect.x += 50
                 self.move_r = False
                 self.attacking = True
-                self.action = 3
+                if self.skilled and self.nama != 'Alectrona':
+                    self.action = 5
+                    temp_x = self.rect.x
+                    self.rect = self.animation[5][0].get_rect()
+                    self.rect.y = 480
+                    self.rect.right = enemy.rect.left + 120
+                else:
+                    self.action = 3
             if self.rect.x <= 180 and self.move_l:
                 self.move_l = False
-                enemy.finish = False
-                self.finish = True
+                if self.nama == 'Salazar' and self.skip_turn:
+                    self.finish = False
+                    enemy.finish = True
+                    self.skip_turn = False
+                else:
+                    enemy.finish = False
+                    self.finish = True
                 self.action = 0
             if self.move_r:
-                self.rect.x += 5
+                self.rect.x += 4.5
             if self.move_l:
-                self.rect.x -= 5
+                self.rect.x -= 4.5
         else:
             self.action = 4        
 
@@ -115,7 +153,7 @@ class Hero(Makhluk):
         self.action = 1
         self.turn += 1
 
-    def skill1(self):
+    def skill(self):
         pass
 
     def projectileCollide(self, enemy):
