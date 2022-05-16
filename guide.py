@@ -1,6 +1,5 @@
 import pygame,sys
 from pygame.locals import *
-import random, time
 from assetModule import guide_img
 pygame.init()
 
@@ -20,16 +19,33 @@ class Background():
         self.bgY2=self.rectBG.height
         self.bgX2=0
 
-        self.sensitivity=10
+        self.sensitivity=25
 
-    def scrolldown(self):
-        self.bgY1-=self.sensitivity
-        self.bgY2-=self.sensitivity
-
+    def scrollDown(self):
         if self.bgY1<=-self.rectBG.height:
-            self.bgY1=self.rectBG.height
+            self.bgY1-=0
         if self.bgY2<=-self.rectBG.height:
-            self.bgY2=self.rectBG.height
+            self.bgY2-=0
+        else:
+            self.bgY1-=self.sensitivity
+            self.bgY2-=self.sensitivity
+        # while self.bgY1 > self.rectBG.height and self.bgY2 > self.rectBG.height:
+        #     self.bgY1-=self.sensitivity
+        #     self.bgY2-=self.sensitivity
+
+        
+    def scrollUp(self):
+        if self.bgY1>=self.rectBG.height:
+            self.bgY1+=0
+        if self.bgY2>=self.rectBG.height:
+            self.bgY2+=0
+        else:
+            self.bgY1+=self.sensitivity
+            self.bgY2+=self.sensitivity
+        # while self.bgY1 < self.rectBG.height and self.bgY2 < self.rectBG.height:
+        #     self.bgY1+=self.sensitivity
+        #     self.bgY2+=self.sensitivity
+
         
     def render(self):
         WINDOW.blit(self.background,(self.bgX1,self.bgY1))
@@ -45,9 +61,12 @@ def main():
             if event.type==QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == KEYDOWN:
-                if event.key == pygame.K_DOWN :
-                    bg.scrolldown()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 4 :
+                    bg.scrollUp()
+                    bg.render()
+                if event.button == 5 :
+                    bg.scrollDown()
                     bg.render()
 
         
