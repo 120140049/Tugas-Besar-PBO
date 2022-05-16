@@ -3,13 +3,12 @@ import pygame
 import assetModule
 import spritesheet
 from random import randint
-from objek import Hero, Monster, Melee, Ranged
+from objek import Hero, Monster
 from assetModule import get_font
 
-class Alectrona(Hero, Ranged):
+class Alectrona(Hero):
     def __init__(self, nama='Alectrona', hp=3000, damage=235):
         Hero.__init__(self, nama, hp, damage)
-        Ranged.__init__(self)
         self.animation = [[]]
         self.skill_projectile = []
         self.setAnimation()
@@ -85,10 +84,9 @@ class Alectrona(Hero, Ranged):
         self.turn += 1
 
 
-class Nipalto(Hero, Melee):
+class Nipalto(Hero):
     def __init__(self, nama='Nipalto', hp=2750, damage=275):
         Hero.__init__(self, nama, hp, damage)
-        Ranged.__init__(self)
         self.animation = [[]]
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
@@ -163,10 +161,9 @@ class Nipalto(Hero, Melee):
         self.turn += 1
         self.skilled = True
 
-class Salazar(Hero, Melee):
+class Salazar(Hero):
     def __init__(self, nama='Salazar', hp=2500, damage=310):
         Hero.__init__(self, nama, hp, damage)
-        Ranged.__init__(self)
         self.animation = [[]]
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
@@ -247,10 +244,9 @@ class Salazar(Hero, Melee):
         self.turn += 1
         self.skilled = True
 
-class Aposteus(Monster, Ranged):
+class Aposteus(Monster):
     def __init__(self, nama='Aposteus', hp=5000, damage=115):
         Monster.__init__(self, nama, hp, damage)
-        Ranged.__init__(self)
         self.animation = [[]]
         self.setAnimation()
         self.rect.x = 520
@@ -295,10 +291,9 @@ class Aposteus(Monster, Ranged):
         self.done_buff = True
         self.buffed = True
 
-class Fenrir(Monster, Melee):
+class Fenrir(Monster):
     def __init__(self, nama='Fenrir', hp=4830, damage=78):
         Monster.__init__(self, nama, hp, damage)
-        Ranged.__init__(self)
         self.animation = [[]]
         self.setAnimation()
         self.rect.x = 520
@@ -340,6 +335,6 @@ class Fenrir(Monster, Melee):
                                                 True, "red")
         self.buff_time = pygame.time.get_ticks()
         self.damage = int(self.damage * 0.08)
-        self.buffmeter = 3
+        self.buffmeter = 2
         self.done_buff = True
         self.buffed = True

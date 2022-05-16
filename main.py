@@ -103,7 +103,6 @@ def updateScreen(arena):
     if heroes.skilled:
         if heroes.nama == 'Alectrona':
             WINDOW.blit(heroes.skill_projectile[heroes.frame], (heroes.skill_rect))
-    pygame.draw.rect(WINDOW, (128, 64, 128), heroes.rect, 2)
 
 # Update tombol aksi
 def updateButton(button, x):

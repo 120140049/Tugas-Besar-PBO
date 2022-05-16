@@ -82,7 +82,7 @@ class Makhluk(ABC):
                                 enemy - (self.skill_dmg + enemy.hp * 0.1)
                             elif self.nama == 'Nipalto':
                                 enemy - self.skill_dmg
-                                enemy.damage - (enemy.damage * 0.03)
+                                enemy.damage - (enemy.damage * 0.02)
                             elif self.nama == 'Salazar':
                                 enemy - self.skill_dmg
                             return      
@@ -108,7 +108,7 @@ class Makhluk(ABC):
 
 # Parent Class
 class Hero(Makhluk):
-    def __init__(self, nama, hp, damage, energi=4):
+    def __init__(self, nama, hp, damage, energi=2):
         super().__init__(nama)
         self.__hp = hp
         self.__damage = damage
@@ -197,7 +197,7 @@ class Monster(Makhluk):
         super().__init__(nama)
         self.__hp = hp
         self.__damage = damage
-        self.__buffmeter = 3
+        self.__buffmeter = 0
         self.finish = True
         self.tipe = 'Monster'
         self.buffed = False
@@ -274,7 +274,7 @@ class Monster(Makhluk):
 
     @buffmeter.setter
     def buffmeter(self, amount):
-        self.__buffmeter = amount
+        self.__buffmeter -= amount
     # Reducing hp after attacked
     def __sub__(self, amount):
         self.__hp -= amount
@@ -282,16 +282,6 @@ class Monster(Makhluk):
     def __add__(self, amount):
         if self.__buffmeter < 4:
             self.__buffmeter += 1
-
-
-class Melee:
-    def __init__(self):
-        self.atk_range = 10
-
-
-class Ranged:
-    def __init__(self):
-        self.atk_range = 70
 
 
 class Lantai(pygame.sprite.Sprite):
