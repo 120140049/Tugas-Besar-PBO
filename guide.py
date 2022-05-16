@@ -28,7 +28,7 @@ class Background():
         self.sensitivity=35
 
     def scrollDown(self):
-        if self.bgY1>=-2000:
+        if self.bgY1>=-1800:
             print(self.rectBG.height)
             print('down',self.bgY1)
             self.bgY1-=self.sensitivity
