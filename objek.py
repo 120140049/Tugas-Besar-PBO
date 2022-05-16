@@ -82,7 +82,8 @@ class Makhluk(ABC):
                                 enemy - (self.skill_dmg + enemy.hp * 0.1)
                             elif self.nama == 'Nipalto':
                                 enemy - self.skill_dmg
-                                enemy.damage - (enemy.damage * 0.02)
+                                enemy.damage = -(enemy.damage * 0.01)
+                                print(enemy.damage)
                             elif self.nama == 'Salazar':
                                 enemy - self.skill_dmg
                             return      
@@ -180,8 +181,8 @@ class Hero(Makhluk):
         return self.__energi
 
     @energi.setter
-    def energi(self, tambahan):
-        self.__energi -= tambahan
+    def energi(self, cost):
+        self.__energi -= cost
 
     # Reducing HP after attacked
     def __sub__(self, amount):
@@ -203,6 +204,7 @@ class Monster(Makhluk):
         self.buffed = False
         self.done_buff = True
         self.buff_time = 0
+        self.max_hp = 0
 
     def move(self, enemy):
         if self.death:
@@ -257,16 +259,13 @@ class Monster(Makhluk):
 
     @hp.setter
     def hp(self, amount):
-        if self.nama == 'Aposteus':
-            if self.hp + amount >= 5000:
-                self.__hp = 5000
-            else:
-                self.__hp += amount
+        self.__hp = amount
+
+    def hpBuff(self, amount):
+        if self.__hp + amount >= self.max_hp:
+            self.__hp = self.max_hp
         else:
-            if self.hp + amount >= 4830:
-                self.__hp = 4830
-            else:
-                self.__hp += amount
+            self.__hp += amount
 
     @damage.setter
     def damage(self, amount):
@@ -280,7 +279,7 @@ class Monster(Makhluk):
         self.__hp -= amount
 
     def __add__(self, amount):
-        if self.__buffmeter < 4:
+        if self.__buffmeter < 3:
             self.__buffmeter += 1
 
 

@@ -8,7 +8,7 @@ import pilihTingkatKesulitan
 import menuUtama
 import matchResult
 import assetModule
-from assetModule import game_env
+from assetModule import game_env, get_font
 from pygame import mixer
 from objek import Lantai
 
@@ -25,7 +25,7 @@ clock = pygame.time.Clock()
 game_over = None
 onscreen_chara = [None, None]
 consider = arena = None
-heroes = heroes1 = monster = monster_hp = heroes_hp = button = mouse_pos = None
+heroes = heroes1 = monster  = heroes_hp = button = mouse_pos = None
 
 your_turn = assetModule.get_font(15).render("Your Turn", True, "yellow")
 monster_turn = assetModule.get_font(15).render("Enemy Turn", True, "yellow")
@@ -37,8 +37,8 @@ over_rect = win_txt.get_rect(center=(445, 257))
 turn_rect = your_turn.get_rect(center=(458, 35))
 
 # Membuat karakter yang sudah dipilih
-def makeCharacter(onscreen_chara):
-    global heroes, monster, monster_hp, heroes_hp
+def makeCharacter(onscreen_chara, difficulty):
+    global heroes, monster, heroes_hp
     if onscreen_chara[0] == 1:
         heroes = karakter.Alectrona()
     elif onscreen_chara[0] == 2:
@@ -47,8 +47,23 @@ def makeCharacter(onscreen_chara):
         heroes = karakter.Salazar()
     if onscreen_chara[1] == 1:
         monster = karakter.Aposteus()
+        if difficulty == 'easy':
+            pass
+        if difficulty == 'medium' :
+            monster.heal = int(monster.hp * 0.05)
+        if difficulty == 'hard' :
+            monster.heal = int(monster.hp * 0.066)
+        monster.buff_alert = get_font(15).render(f"HP +{monster.heal}", True, "green")
+        print(monster.heal)
     else:
         monster = karakter.Fenrir()
+        if difficulty == 'easy':
+            pass
+        if difficulty == 'medium' :
+            monster.buff_dmg = 0.12
+        if difficulty == 'hard' :
+            monster.buff_dmg = 0.2
+        print(monster.buff_dmg)
 
 # Membuat lantari
 def createGrounds():
@@ -67,17 +82,17 @@ def updateScreen(arena):
     monster_act = monster.animation[monster.action][monster.frame]
     # Hp Bar 
     # Hero
-    pygame.draw.rect(WINDOW, (255, 0, 0), (100, 30, 250, 20))
-    pygame.draw.rect(WINDOW, (0, 255, 0), (100, 30, (heroes.hp/heroes_hp)*250, 20))
+    pygame.draw.rect(WINDOW, (255, 0, 0), (80, 30, 250, 20))
+    pygame.draw.rect(WINDOW, (0, 255, 0), (80, 30, (heroes.hp/heroes_hp)*250, 20))
     # Monster
     pygame.draw.rect(WINDOW, (255, 0, 0), (575, 30, 250, 20))
-    pygame.draw.rect(WINDOW, (0, 255, 0), (575, 30, (monster.hp/monster_hp)*250, 20))
+    pygame.draw.rect(WINDOW, (0, 255, 0), (575, 30, (monster.hp/monster.max_hp)*250, 20))
     # Energi Hero
-    pygame.draw.rect(WINDOW, (76, 76 , 76), (100, 45, 250, 15))
-    pygame.draw.rect(WINDOW, (44, 142, 212), (100, 45, 50*heroes.energi, 15))
+    pygame.draw.rect(WINDOW, (76, 76 , 76), (80, 45, 250, 15))
+    pygame.draw.rect(WINDOW, (44, 142, 212), (80, 45, 50*heroes.energi, 15))
     # BUff Gauge Monster
     pygame.draw.rect(WINDOW, (76, 76, 76), (575, 45, 250, 15))
-    pygame.draw.rect(WINDOW, (237, 222, 62), (575, 45, 250/4*monster.buffmeter, 15))
+    pygame.draw.rect(WINDOW, (237, 222, 62), (575, 45, 250/3*monster.buffmeter, 15))
     # Gambar monster dulu
     if monster.finish and not heroes.finish and not heroes.die:
         WINDOW.blit(monster_act, (monster))
@@ -120,6 +135,7 @@ def mainLoop(arena):
     mixer.music.set_volume(0.3)
     times = pygame.time.get_ticks()
     run = True
+    start = False
     button = menuUtama.matchButton()
     while run:
         clock.tick(FPS)
@@ -129,7 +145,7 @@ def mainLoop(arena):
         mouse_pos = pygame.mouse.get_pos()
         updateButton(button, mouse_pos)
         if not heroes.onfloor:
-            if pygame.time.get_ticks() - times > 800:
+            if pygame.time.get_ticks() - times > 600:
                 WINDOW.blit(game_fight, (340, 220))
             else:
                 WINDOW.blit(game_start, (230, 220))
@@ -166,7 +182,7 @@ def mainLoop(arena):
         else:
             if heroes.turn % 2 != 0 and heroes.finish:
                 monster.serang(heroes)
-            if monster.buffmeter == 4:
+            if monster.buffmeter == 3:
                 monster.buffed = True
                 monster.done_buff = False
             if monster.buffed:
@@ -208,17 +224,18 @@ def pilihLawan(onscreen_chara):
 
 # Pilih tingkat kesulitan
 def selectDifficulty():
-    global onscreen_chara, monster_hp, heroes_hp
+    global onscreen_chara, heroes_hp
     difficulty = pilihTingkatKesulitan.main()
     if difficulty != 'back' :
-        makeCharacter(onscreen_chara)
+        makeCharacter(onscreen_chara, difficulty)
         if difficulty == 'easy':
             monster.hp = monster.hp * 1
         if difficulty == 'medium' :
             monster.hp = monster.hp * 1.15 
         if difficulty == 'hard' :
             monster.hp = monster.hp * 1.25
-        monster_hp = monster.hp
+        print(monster.hp)
+        monster.max_hp = monster.hp
         heroes_hp = heroes.hp
     else:
         pilihLawan(onscreen_chara)
