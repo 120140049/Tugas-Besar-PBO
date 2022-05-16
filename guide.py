@@ -1,12 +1,15 @@
-import pygame,sys
+import pygame,sys,pygame_widgets
 from pygame.locals import *
 from assetModule import guide_img
+from button import Button
+from assetModule import game_env, get_font
 pygame.init()
 
 FPS=60
 FramePerSec=pygame.time.Clock()
 WINDOW = pygame.display.set_mode((896, 504))
 pygame.display.set_caption("Game Guide")
+posisi_mouse=pygame.mouse.get_pos()
 
 class Background():
     def __init__(self):
@@ -52,7 +55,11 @@ class Background():
         WINDOW.blit(self.background,(self.bgX2,self.bgY2))
 
 bg=Background()
-
+Tombol_back = Button(image=pygame.image.load(f"{game_env}/button2.png"),
+            pos=(100, 50), text_input="Back", font=get_font(15), base_color="white",
+            hovering_color="red")
+Tombol_back.changeColor(posisi_mouse)
+Tombol_back.update(WINDOW)
 
 def main():
     while True:
@@ -62,6 +69,8 @@ def main():
                 pygame.quit()
                 sys.exit()
             if event.type == MOUSEBUTTONDOWN:
+                if Tombol_back.checkForInput(posisi_mouse):
+                    print("tombol back")
                 if event.button == 4 :
                     bg.scrollUp()
                     bg.render()
@@ -71,6 +80,7 @@ def main():
 
         
         pygame.display.update()
+        pygame_widgets.update(event)
         FramePerSec.tick(FPS)
 
 
