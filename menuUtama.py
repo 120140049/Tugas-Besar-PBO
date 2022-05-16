@@ -51,15 +51,18 @@ def menuUtama():
         Judul_Rect = Text_Judul.get_rect(center=(448, 80))
 
         Tombol_start= Button(image=pygame.image.load(f"{game_env}/button1.png"), 
-                            pos=(450, 230), text_input="Start", font=get_font(20),
+                            pos=(450, 180), text_input="Start", font=get_font(20),
                             base_color="white", hovering_color="red")
+        Tombol_guide = Button(image=pygame.image.load(f"{game_env}/button1.png"),
+                            pos=(450, 290), text_input="Guide", font=get_font(20), base_color="white",
+                            hovering_color="red")
         Tombol_exit = Button(image=pygame.image.load(f"{game_env}/button1.png"),
-                            pos=(450, 340), text_input="Exit", font=get_font(20),
-                            base_color="white", hovering_color="red")                 
+                            pos=(450, 400), text_input="Exit", font=get_font(20),
+                            base_color="white", hovering_color="red")                
 
         Display.blit(Text_Judul, Judul_Rect)
 
-        for button in [Tombol_start, Tombol_exit]:
+        for button in [Tombol_start, Tombol_exit,Tombol_guide]:
             button.changeColor(Posisi_Mouse)
             button.update(Display)
         
@@ -71,6 +74,10 @@ def menuUtama():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if Tombol_start.checkForInput(Posisi_Mouse):
                     state = 'Start'
+                    return state
+                    run = False
+                if Tombol_guide.checkForInput(Posisi_Mouse):
+                    state = 'Guide'
                     return state
                     run = False
                 if Tombol_exit.checkForInput(Posisi_Mouse):
