@@ -9,7 +9,7 @@ import menuUtama
 import matchResult
 import assetModule
 import guide
-from assetModule import game_env, get_font
+from assetModule import game_env, get_font, menu_bgm
 from pygame import mixer
 from objek import Lantai
 
@@ -28,14 +28,14 @@ onscreen_chara = [None, None]
 consider = arena = None
 heroes = heroes1 = monster  = heroes_hp = button = mouse_pos = None
 
-your_turn = assetModule.get_font(15).render("Your Turn", True, "yellow")
-monster_turn = assetModule.get_font(15).render("Enemy Turn", True, "yellow")
+your_turn = assetModule.get_font(15).render("Your Turn", True, "red")
+monster_turn = assetModule.get_font(15).render("Enemy Turn", True, "red")
 win_txt = assetModule.get_font(35).render("YOU WIN!", True, "yellow")
 lose_txt = assetModule.get_font(35).render("YOU LOSE!", True, "red")
 game_start = assetModule.get_font(40).render("Game Start", True, "red")
 game_fight = assetModule.get_font(40).render("FIGHT!!!", True, "red")
 over_rect = win_txt.get_rect(center=(445, 257))
-turn_rect = your_turn.get_rect(center=(458, 35))
+turn_rect = your_turn.get_rect(center=(455, 35))
 
 # Membuat karakter yang sudah dipilih
 def makeCharacter(onscreen_chara, difficulty):
@@ -55,7 +55,6 @@ def makeCharacter(onscreen_chara, difficulty):
         if difficulty == 'hard' :
             monster.heal = int(monster.hp * 0.066)
         monster.buff_alert = get_font(15).render(f"HP +{monster.heal}", True, "green")
-        print(monster.heal)
     else:
         monster = karakter.Fenrir()
         if difficulty == 'easy':
@@ -64,7 +63,6 @@ def makeCharacter(onscreen_chara, difficulty):
             monster.buff_dmg = 0.12
         if difficulty == 'hard' :
             monster.buff_dmg = 0.2
-        print(monster.buff_dmg)
 
 # Membuat lantari
 def createGrounds():
@@ -122,13 +120,18 @@ def updateScreen(arena):
 
 # Update tombol aksi
 def updateButton(button, x):
-    button[0].changeColor(x)
-    button[0].update(WINDOW)
-    button[1].changeColor(x)
-    button[1].update(WINDOW)
+    for i in range(len(button)):
+        if i == len(button) - 1:
+            button[i].update(WINDOW)
+        else:
+            button[0].changeColor(x)
+            button[0].update(WINDOW)
+            button[1].changeColor(x)
+            button[1].update(WINDOW)
 
 # Main Loop
 def mainLoop(arena):
+    mixer.music.stop()
     global game_over, game_start, game_fight, button, mouse_pos
     createGrounds()
     mixer.music.load(arena.music)
@@ -144,6 +147,7 @@ def mainLoop(arena):
         monster.floor_collision(grounds)
         updateScreen(arena)
         mouse_pos = pygame.mouse.get_pos()
+        pygame.draw.rect(WINDOW, (36, 36, 36), button[2].rect)
         updateButton(button, mouse_pos)
         if not heroes.onfloor:
             if pygame.time.get_ticks() - times > 600:
@@ -155,17 +159,23 @@ def mainLoop(arena):
                 run = False
                 pygame.quit()
                 sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if button[2].checkForInput(mouse_pos):
+                    pause()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pause()
             if heroes.turn % 2 == 0 and monster.finish and heroes.onfloor and \
                 heroes.action == 0:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         heroes.serang()
-                    if event.key == pygame.K_1 and heroes.energi >= 2:
+                    elif event.key == pygame.K_1 and heroes.energi >= 2:
                         heroes.skill()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if button[0].checkForInput(mouse_pos):
                         heroes.serang()
-                    if button[1].checkForInput(mouse_pos) and heroes.energi >= 2:
+                    elif button[1].checkForInput(mouse_pos) and heroes.energi >= 2:
                         heroes.skill()
         if heroes.death or monster.death:
             if heroes.death:
@@ -235,7 +245,6 @@ def selectDifficulty():
             monster.hp = monster.hp * 1.15 
         if difficulty == 'hard' :
             monster.hp = monster.hp * 1.25
-        print(monster.hp)
         monster.max_hp = monster.hp
         heroes_hp = heroes.hp
     else:
@@ -251,6 +260,36 @@ def gameOver(text, image, time):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+        pygame.display.flip()
+
+def pause():
+    pause_screen = os.path.join(f"{game_env}", "game_pause.jpg")
+    image = pygame.image.save(WINDOW, pause_screen)
+    image = pygame.image.load(pause_screen)
+    image.set_alpha(50)
+    text_pause = get_font(35).render("Game Paused", True, "red")
+    y = menuUtama.pauseMenu()
+    pause = True
+    while pause:
+        WINDOW.fill((0, 0, 0))
+        WINDOW.blit(image, (0, 0))
+        WINDOW.blit(text_pause, (240, 90))
+        mouse_pos = pygame.mouse.get_pos()
+        updateButton(y, mouse_pos)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pause = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if y[0].checkForInput(mouse_pos):
+                        pause = False
+                    if y[1].checkForInput(mouse_pos):
+                        mixer.music.stop()
+                        mainMenu()
+        
         pygame.display.flip()
 
 # Mulai permainan
@@ -277,8 +316,14 @@ def gameStart():
         else:
             mixer.music.stop()
             gameStart()
+            mixer.music.load(menu_bgm)
+            mixer.music.play(loops=-1)
+            mixer.music.set_volume(0.3)
 
 def mainMenu():
+    mixer.music.load(menu_bgm)
+    mixer.music.play(loops=-1)
+    mixer.music.set_volume(0.3)
     x = menuUtama.menuUtama()
     if x == 'Start':
         gameStart()
