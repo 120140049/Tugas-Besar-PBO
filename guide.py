@@ -43,7 +43,7 @@ def main():
         Posisi_Mouse = pygame.mouse.get_pos()
         bg.Tombol_back.changeColor(Posisi_Mouse)
         for event in pygame.event.get():
-            if event.type==QUIT:
+            if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
