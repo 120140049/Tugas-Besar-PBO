@@ -283,7 +283,8 @@ def mainMenu():
     if x == 'Start':
         gameStart()
     elif x == 'Guide':
-        guide.main()
+        if guide.main() == 'Back':
+            mainMenu()
     else:
         sys.exit()
 
