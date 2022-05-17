@@ -17,7 +17,7 @@ class Alectrona(Hero):
         self.skill_rect.x = 200
         self.skill_rect.y = 220
         self.dead_img = self.animation[4][4]
-        self.skill_dmg = damage * 1.82
+        self.skill_dmg = self.damage * 1.82
         self.rect.x = 180
         self.rect.y = -200
 
@@ -91,7 +91,7 @@ class Nipalto(Hero):
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
         self.dead_img = self.animation[4][6]
-        self.skill_dmg = damage * 1.68
+        self.skill_dmg = self.damage * 1.68
         self.rect.x = 180
         self.rect.y = -200
 
@@ -168,7 +168,7 @@ class Salazar(Hero):
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
         self.dead_img = self.animation[4][22]
-        self.skill_dmg = damage * 1.73
+        self.skill_dmg = self.damage * 1.73
         self.skip_turn = False
         self.skip_alert = get_font(15).render("Monster Turn Skipped!!", True, "yellow")
         self.skip_time = None

@@ -36,7 +36,7 @@ pygame.init()
 def tingkatKesulitan():
     while True:
         Display = pygame.display.set_mode((896, 504))
-        pygame.display.set_caption("Display Tingkat Kesulitan")
+        pygame.display.set_caption("Dungeon Fighter")
         BG = pygame.image.load(f"{game_env}/bg_pilihTingkatKesulitan.jpeg").convert()
         BG = pygame.transform.scale(BG,(896, 504))
         Display.blit(BG, (0, 0))
@@ -70,16 +70,16 @@ def tingkatKesulitan():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if Tombol_easy.checkForInput(Posisi_Mouse):
+                if Tombol_easy.checkForInput(Posisi_Mouse) and event.button == 1:
                     return 1
-                if Tombol_medium.checkForInput(Posisi_Mouse):
+                if Tombol_medium.checkForInput(Posisi_Mouse) and event.button == 1:
                     return 2
-                if Tombol_hard.checkForInput(Posisi_Mouse):
+                if Tombol_hard.checkForInput(Posisi_Mouse) and event.button == 1:
                     return 3
-                if Tombol_back.checkForInput(Posisi_Mouse):
+                if Tombol_back.checkForInput(Posisi_Mouse) and event.button == 1:
                     return 4
 
-        pygame.display.update()
+        pygame.display.flip()
 
 def main():
     state= tingkatKesulitan()

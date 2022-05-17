@@ -83,7 +83,6 @@ class Makhluk(ABC):
                             elif self.nama == 'Nipalto':
                                 enemy - self.skill_dmg
                                 enemy.damage = -(enemy.damage * 0.01)
-                                print(enemy.damage)
                             elif self.nama == 'Salazar':
                                 enemy - self.skill_dmg
                             return      

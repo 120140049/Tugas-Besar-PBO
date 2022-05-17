@@ -8,7 +8,7 @@ assets_dir = os.path.join(CWD, 'Assets')
 game_env = os.path.join(assets_dir, 'env')
 game_bgm = os.path.join(assets_dir, 'bgm')
 
-menu_bgm = os.path.join(game_bgm, 'bgmMenu.mp3')
+menu_bgm = os.path.join(game_bgm, 'bgmMenu2.mp3')
 
 game_chara = os.path.join(assets_dir, 'pilihKarakter')
 game_font = os.path.join(assets_dir, 'font', 'A Goblin Appears!.otf')

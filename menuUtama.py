@@ -1,40 +1,9 @@
 import pygame, sys
 from assetModule import game_env, get_font
+from button import Button
 
 state = None
 run = True
-
-class Button():
-    def __init__(self, image, pos, text_input=None, font=None, base_color="white", hovering_color="red", ):
-        self.image = image
-        self.x_pos = pos[0]
-        self.y_pos = pos[1]
-        if font != None:
-            self.font = font
-        if text_input != None:
-            self.base_color, self.hovering_color = base_color, hovering_color
-            self.text_input = text_input
-            self.text = self.font.render(self.text_input, True, self.base_color)
-            self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
-        else:
-            self.text = None
-        self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
-
-    def update(self, screen):
-        screen.blit(self.image, self.rect)
-        if self.text != None:
-            screen.blit(self.text, self.text_rect)
-
-    def checkForInput(self, position):
-        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            return True
-        return False
-
-    def changeColor(self, position):
-        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            self.text = self.font.render(self.text_input, True, self.hovering_color)
-        else:
-            self.text = self.font.render(self.text_input, True, self.base_color)
 
 pygame.init()
 
@@ -71,20 +40,20 @@ def menuUtama():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if Tombol_start.checkForInput(Posisi_Mouse):
+                if Tombol_start.checkForInput(Posisi_Mouse) and event.button == 1:
                     state = 'Start'
                     return state
                     run = False
-                if Tombol_guide.checkForInput(Posisi_Mouse):
+                elif Tombol_guide.checkForInput(Posisi_Mouse) and event.button == 1:
                     state = 'Guide'
                     return state
                     run = False
-                if Tombol_exit.checkForInput(Posisi_Mouse):
+                elif Tombol_exit.checkForInput(Posisi_Mouse) and event.button == 1:
                     state = 'Exit'
                     return state
                     run = False
 
-        pygame.display.update()
+        pygame.display.flip()
 
 
 def matchButton():
@@ -94,7 +63,7 @@ def matchButton():
         pos=(620, 430), text_input="skill", font=get_font(15))
     gambar_pause = pygame.image.load(f"{game_env}/pause_btn.png")
     gambar_pause = pygame.transform.scale(gambar_pause, (42, 42))
-    Tombol_pause = Button(image=gambar_pause, pos=(450, 80))
+    Tombol_pause = Button(image=gambar_pause, pos=(450, 90))
 
     return [Tombol_attack, Tombol_skill, Tombol_pause]
 

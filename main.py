@@ -9,6 +9,7 @@ import menuUtama
 import matchResult
 import assetModule
 import guide
+import time
 from assetModule import game_env, get_font, menu_bgm
 from pygame import mixer
 from objek import Lantai
@@ -34,7 +35,7 @@ win_txt = assetModule.get_font(35).render("YOU WIN!", True, "yellow")
 lose_txt = assetModule.get_font(35).render("YOU LOSE!", True, "red")
 game_start = assetModule.get_font(40).render("Game Start", True, "red")
 game_fight = assetModule.get_font(40).render("FIGHT!!!", True, "red")
-over_rect = win_txt.get_rect(center=(445, 257))
+over_rect = win_txt.get_rect(center=(440, 240))
 turn_rect = your_turn.get_rect(center=(455, 35))
 
 # Membuat karakter yang sudah dipilih
@@ -136,7 +137,6 @@ def mainLoop(arena):
     createGrounds()
     mixer.music.load(arena.music)
     mixer.music.play(loops=-1)
-    mixer.music.set_volume(0.3)
     times = pygame.time.get_ticks()
     run = True
     start = False
@@ -160,10 +160,12 @@ def mainLoop(arena):
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if button[2].checkForInput(mouse_pos):
+                if button[2].checkForInput(mouse_pos) and event.button == 1:
+                    mixer.music.pause()
                     pause()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
+                    mixer.music.pause()
                     pause()
             if heroes.turn % 2 == 0 and monster.finish and heroes.onfloor and \
                 heroes.action == 0:
@@ -173,9 +175,10 @@ def mainLoop(arena):
                     elif event.key == pygame.K_1 and heroes.energi >= 2:
                         heroes.skill()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if button[0].checkForInput(mouse_pos):
+                    if button[0].checkForInput(mouse_pos) and event.button == 1:
                         heroes.serang()
-                    elif button[1].checkForInput(mouse_pos) and heroes.energi >= 2:
+                    elif button[1].checkForInput(mouse_pos) and event.button == 1\
+                        and heroes.energi >= 2:
                         heroes.skill()
         if heroes.death or monster.death:
             if heroes.death:
@@ -283,14 +286,21 @@ def pause():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     pause = False
+                    mixer.music.unpause()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if y[0].checkForInput(mouse_pos):
+                    if y[0].checkForInput(mouse_pos) and event.button == 1:
                         pause = False
-                    if y[1].checkForInput(mouse_pos):
+                        mixer.music.unpause()
+                    if y[1].checkForInput(mouse_pos) and event.button == 1:
                         mixer.music.stop()
+                        playBGM()
                         mainMenu()
         
         pygame.display.flip()
+
+def playBGM():
+    mixer.music.load(menu_bgm)
+    mixer.music.play(loops=-1)
 
 # Mulai permainan
 def gameStart():
@@ -310,20 +320,14 @@ def gameStart():
         else:
             gameOver(lose_txt, image, time)
         consider = matchResult.akhirpertandingan(image, grounds)
+        mixer.music.stop()
+        playBGM()
         if consider:
-            mixer.music.stop()
             mainMenu()
         else:
-            mixer.music.stop()
             gameStart()
-            mixer.music.load(menu_bgm)
-            mixer.music.play(loops=-1)
-            mixer.music.set_volume(0.3)
 
 def mainMenu():
-    mixer.music.load(menu_bgm)
-    mixer.music.play(loops=-1)
-    mixer.music.set_volume(0.3)
     x = menuUtama.menuUtama()
     if x == 'Start':
         gameStart()
@@ -334,5 +338,6 @@ def mainMenu():
         sys.exit()
 
 if __name__ == "__main__":
+    playBGM()
     mainMenu()
     
