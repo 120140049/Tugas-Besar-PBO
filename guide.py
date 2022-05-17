@@ -1,8 +1,9 @@
-import pygame,sys,pygame_widgets
+import pygame,sys
 from pygame.locals import *
 from assetModule import guide_img
 from button import Button
 from assetModule import game_env, get_font
+from main import mainMenu
 pygame.init()
 
 FPS=60
@@ -49,7 +50,7 @@ def main():
                 sys.exit()
             if event.type == MOUSEBUTTONDOWN:
                 if bg.Tombol_back.checkForInput(Posisi_Mouse):
-                    print("tombol back")
+                    return mainMenu()
                 if event.button == 4 :
                     bg.scrollUp()
                     bg.render()
@@ -58,7 +59,5 @@ def main():
                     bg.render()
 
         pygame.display.update()
-        pygame_widgets.update(event)
-        FramePerSec.tick(FPS)
-
-main()    
+        #pygame_widgets.update(event)
+        FramePerSec.tick(FPS)   
