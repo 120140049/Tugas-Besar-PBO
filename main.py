@@ -9,7 +9,6 @@ import menuUtama
 import matchResult
 import assetModule
 import guide
-import time
 from assetModule import game_env, get_font, menu_bgm
 from pygame import mixer
 from objek import Lantai
@@ -139,7 +138,6 @@ def mainLoop(arena):
     mixer.music.play(loops=-1)
     times = pygame.time.get_ticks()
     run = True
-    start = False
     button = menuUtama.matchButton()
     while run:
         clock.tick(FPS)
