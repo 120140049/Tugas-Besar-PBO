@@ -338,4 +338,3 @@ def mainMenu():
 if __name__ == "__main__":
     playBGM()
     mainMenu()
-    
