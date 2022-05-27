@@ -2,13 +2,10 @@ FROM ubuntu:20.04
 
 ARG arg="windows"
 
-ENV DISPLAY=""
-ENV PULSE_SERVER=""
-
 RUN if [ "$arg" = "windows" ] ; then \
 	export ENV DISPLAY=host.docker.internal:0.0 \
-	ENV PULSE_SERVER=tcp:host.docker.internal:4713 ; \
-	else echo Damn ; \
+	export ENV PULSE_SERVER=tcp:host.docker.internal:4713 ; \
+	else echo you are using $arg ; \
 fi
 
 COPY asound.conf /etc/asound.conf
