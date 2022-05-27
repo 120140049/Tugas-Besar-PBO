@@ -80,4 +80,4 @@ Install 3 software dibawah ini.
 8. Container sudah berjalan dan game sudah dapat dimainkan
 
 ### 🎥 Video Demo Container
-Untuk link video demonstrasi kontainer dapat diakses di halaman youtube dengan mengklik emoji disamping -> [▶️▶️▶️](https://www.youtube.com/)
+Untuk link video demonstrasi kontainer dapat diakses di halaman youtube dengan mengklik emoji dibawah <br /> [▶️▶️▶️](https://www.youtube.com/)
