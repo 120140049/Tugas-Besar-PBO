@@ -106,5 +106,5 @@ Install 3 software dibawah ini.
 ### 🎥 Video Demo Container
 Untuk link video demonstrasi kontainer dapat diakses di halaman youtube dengan mengklik thumbnail dibawah <br />
 <p align="center">
-    <img src="https://img.youtube.com/vi/YCheHXCA2Hc/sddefault.jpg" /><br />
+    <a href link="https://youtu.be/YCheHXCA2Hc/"><img src="https://img.youtube.com/vi/YCheHXCA2Hc/sddefault.jpg"/></a>
 <p>
