@@ -1,6 +1,18 @@
 # 🏆 Tubes PBO dan Handson 4 SO
+## Daftar Konten
+### [👨🏽‍💻 Tubes PBO : Dungeon Fighter](#tubes)
+### [🖋 Cara Bermain](#guide)
+### [⚓ UML Class Digram Proyek](#UML)
+### [💻 Handson 4 - Docker 2](#handson)
+### [🚀 Cara Menjalankan Container (Windows)](#container)
+### [🎥 Video Demo Container](#Demo)
+### [💂🏼‍♀️💂🏼 Anggota Kelompok](#angkel)
+    
+
+<a name="tubes" />
+
 ## 👨🏽‍💻 Tubes PBO : DUNGEON FIGHTER
-### Game Dungeon Fighter 
+### Game Dungeon Fighter
 Proyek ini berisikan file file esensial yang menyusun game Dungeon Fighter.
 Library yang digunakan:
 * pygame
@@ -8,10 +20,14 @@ Library yang digunakan:
 * sys
 * pygame-widgets
 
+<a name="UML" />
+
+### ⚓ UML Class Digram Proyek
 UML Diagram Class Proyek dapat dilihat [disini](https://app.diagrams.net/#G1dlkLDjpyVCzWbg-prvUUIHKn4et4n6fv) (Belum final)
 
+<a name="guide" />
 
-### 🖋 Guide
+### 🖋 Cara Bermain
 -   Game memiliki 3 menu saat dijalankan, yaitu start, guide dan exit
 -   Guide akan menampilkan window (jendela) yang berisi petunjuk permainan
 -   Exit akan menghentikan program / game.
@@ -23,9 +39,12 @@ UML Diagram Class Proyek dapat dilihat [disini](https://app.diagrams.net/#G1dlkL
     Penggunaan skill membutuhkan 2 energi yang didapat dari setiap selesai melakukan attack normal
 -   Monster juga memiliki mekanisme khusus yaitu buff, buff ini memiliki indikator dibawah healthpoints
     Buff akan dipicu setiap 4 turn monster.
--   Game ini juga memiliki fitur pause (jeda) yang bisa dijalankan dengan menekan tombol pause (berupa ikon dengan dua bar vertikal) di layar atau menekan tombol 'Esc' dan Untuk resume juga dapat dilakukan dengan menekan tombol 'Esc' kembali ataupun dengan mengklik tombol 'Resume' pada layar
+-   Game ini juga memiliki fitur pause (jeda) yang bisa dijalankan dengan menekan tombol pause (berupa ikon dengan dua bar vertikal) di layar atau menekan tombol <b><i>Esc</b></i> dan Untuk resume juga dapat dilakukan dengan menekan tombol <b><i>Esc</b></i> kembali ataupun dengan mengklik tombol <b><i>Resume</b></i> pada layar
 -   Game berakhir ketika salah satu objek kehabisan healthpoints (HP = 0)
--   Setelah game berakhir, player dapat melakukan 'try again' (kembali ke pemilihan karakter) ataupun kembali ke main menu
+-   Setelah game berakhir, player dapat melakukan <b><i>try again</b></i> (kembali ke pemilihan karakter) ataupun kembali ke main menu
+ 
+<a name="angkel" />
+
 ## 💂🏼‍♀️💂🏼 Anggota Kelompok
 
 - Ardhito Saputra; 120140003 -
@@ -41,6 +60,8 @@ UML Diagram Class Proyek dapat dilihat [disini](https://app.diagrams.net/#G1dlkL
     [@Sintadwiputri](https://github.com/Sintadwiputri)
 - Yusuf Fadillah Ahmad; 120140245
     [@yusuffa01](https://github.com/yusuffa01)
+    
+<a name="handson"/>
 
 ## 💻 Handson 4 - Docker 2
 ### Game Dungeon Fighter
@@ -49,6 +70,7 @@ pada Tugas Besar PBO agar user tidak perlu menginstall paket-paket / modul modul
 menjalankan game. Game yang kami kembangkan adalah turn-based pve fighting game yang kami beri nama Dungeon Fighter. Goal dari permainan ini adlaah untuk saling mengalahkan satu sama lain.
 Note: Untuk penjalanan container sejauh ini hanya bisa kami lakukan di windows, karena saat mencoba di linux terdapat error "X Error of failed request: BadValue... " yang membuat container force closed.
 
+<a name="container"/>
 
 ### 🚀 Cara Menjalankan Container (Windows)
 
@@ -79,5 +101,10 @@ Install 3 software dibawah ini.
    ```
 8. Container sudah berjalan dan game sudah dapat dimainkan
 
+<a name="Demo" />
+
 ### 🎥 Video Demo Container
-Untuk link video demonstrasi kontainer dapat diakses di halaman youtube dengan mengklik emoji dibawah <br /> [▶️▶️▶️](https://www.youtube.com/)
+Untuk link video demonstrasi kontainer dapat diakses di halaman youtube dengan mengklik thumbnail dibawah <br />
+<p align="center">
+    <img src="https://img.youtube.com/vi/YCheHXCA2Hc/sddefault.jpg" /><br />
+<p>
