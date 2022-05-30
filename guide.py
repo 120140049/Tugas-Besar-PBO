@@ -41,7 +41,7 @@ def main():
     FramePerSec=pygame.time.Clock()
     pygame.display.set_caption("Game Guide")
     while True:
-        bg.render(WINDOW)
+        bg.render()
         Posisi_Mouse = pygame.mouse.get_pos()
         bg.Tombol_back.changeColor(Posisi_Mouse)
         for event in pygame.event.get():
