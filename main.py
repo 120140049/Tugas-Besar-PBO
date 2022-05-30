@@ -236,7 +236,7 @@ def pilihLawan(onscreen_chara):
 
 # Pilih tingkat kesulitan
 def selectDifficulty():
-    global onscreen_chara, heroes_hp
+    global onscreen_chara, heroes_hp, arena
     difficulty = pilihTingkatKesulitan.main()
     if difficulty != 'back' :
         makeCharacter(onscreen_chara, difficulty)
