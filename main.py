@@ -248,6 +248,7 @@ def selectDifficulty():
             monster.hp = monster.hp * 1.25
         monster.max_hp = monster.hp
         heroes_hp = heroes.hp
+        arena = pilihArena.Arena()
     else:
         pilihLawan(onscreen_chara)
 
@@ -305,7 +306,7 @@ def gameStart():
     global arena, consider, onscreen_chara, win_txt, lose_txt, over_rect
     pilihKaraktermu(onscreen_chara)
     arena = pilihArena.Arena()
-    if arena.state == 'Back':
+    while arena.state == 'Back':
         selectDifficulty()
     mainLoop(arena)    
     if game_over != None:
