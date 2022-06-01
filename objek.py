@@ -98,9 +98,8 @@ class Makhluk(ABC):
                     self.frame = 0
                     self.die = True
 
-    @abstractmethod
     def __sub__(self):
-        pass
+        self.__hp -= amount
 
     @abstractmethod
     def serang(self):
@@ -183,10 +182,6 @@ class Hero(Makhluk):
     def energi(self, cost):
         self.__energi -= cost
 
-    # Reducing HP after attacked
-    def __sub__(self, amount):
-        self.__hp -= amount
-
     def __add__(self, amount):
         if self.__energi < 5:
             self.__energi += amount
@@ -267,9 +262,6 @@ class Monster(Makhluk):
     @buffmeter.setter
     def buffmeter(self, amount):
         self.__buffmeter -= amount
-    # Reducing hp after attacked
-    def __sub__(self, amount):
-        self.__hp -= amount
 
     def __add__(self, amount):
         if self.__buffmeter < 3:
