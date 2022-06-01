@@ -260,12 +260,6 @@ class Monster(Makhluk):
     def hp(self, amount):
         self.__hp = amount
 
-    def hpBuff(self, amount):
-        if self.__hp + amount >= self.max_hp:
-            self.__hp = self.max_hp
-        else:
-            self.__hp += amount
-
     @damage.setter
     def damage(self, amount):
         self.__damage += amount
