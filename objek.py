@@ -7,8 +7,9 @@ from abc import ABC, abstractmethod
 
 # Abstract class
 class Makhluk(ABC):
-    def __init__(self, nama):
+    def __init__(self, nama, tipe):
         self.nama = nama
+        self.tipe = tipe
         self.action = self.prev_action = self.frame = 0
         self.update_time = pygame.time.get_ticks()
         self.onground = self.onfloor = self.death = self.die = False
@@ -113,11 +114,10 @@ class Makhluk(ABC):
 # Parent Class
 class Hero(Makhluk):
     def __init__(self, nama, hp, damage, energi=2):
-        super().__init__(nama)
+        super().__init__(nama, tipe='Hero')
         self.__hp = hp
         self.__damage = damage
         self.__energi = energi
-        self.tipe = 'Hero'
         self.turn = 0
         self.dead_img = None
         self.skilled = False
@@ -194,12 +194,11 @@ class Hero(Makhluk):
 
 class Monster(Makhluk):
     def __init__(self, nama, hp, damage):
-        super().__init__(nama)
+        super().__init__(nama, tipe='Monster')
         self.__hp = hp
         self.__damage = damage
         self.__buffmeter = 0
         self.finish = True
-        self.tipe = 'Monster'
         self.buffed = False
         self.done_buff = True
         self.buff_time = 0
