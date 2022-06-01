@@ -23,7 +23,7 @@ Library yang digunakan:
 <a name="UML" />
 
 ### ⚓ UML Class Digram Proyek
-UML Diagram Class Proyek dapat dilihat [disini](https://drive.google.com/file/d/1gtE595fy46f82gAE7oLeVCY9SoV-zx3m/view?usp=drivesdk) (Belum final)
+UML Diagram Class Proyek dapat dilihat [disini](https://drive.google.com/file/d/1qCGP1fJolxkQraGsAkIoY_7mq4aSjY4_/view?usp=sharing)
 
 <a name="guide" />
 
