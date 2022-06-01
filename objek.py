@@ -100,7 +100,7 @@ class Makhluk(ABC):
                     self.frame = 0
                     self.die = True
 
-    def __sub__(self):
+    def __sub__(self, amount):
         self.__hp -= amount
 
     @abstractmethod
