@@ -286,11 +286,6 @@ class Aposteus(Monster):
         self.done_buff = True
         self.buffed = True
     
-    def hpBuff(self, amount):
-        if self.__hp + amount >= self.max_hp:
-            self.__hp = self.max_hp
-        else:
-            self.__hp += amount
 
 class Fenrir(Monster):
     def __init__(self, nama='Fenrir', hp=4830, damage=78):

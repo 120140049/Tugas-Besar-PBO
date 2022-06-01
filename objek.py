@@ -271,6 +271,11 @@ class Monster(Makhluk):
         if self.__buffmeter < 3:
             self.__buffmeter += 1
 
+    def hpBuff(self, amount):
+        if self.__hp + amount >= self.max_hp:
+            self.__hp = self.max_hp
+        else:
+            self.__hp += amount
 
 class Lantai(pygame.sprite.Sprite):
     def __init__(self, x, y, image):
