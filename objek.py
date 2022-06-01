@@ -13,6 +13,7 @@ class Makhluk(ABC):
         self.update_time = pygame.time.get_ticks()
         self.onground = self.onfloor = self.death = self.die = False
         self.move_l = self.move_r = self.finish = self.attacking = False
+        self.animation = [[]]
 
     def obj_collision(self, enemy):
        collide = self.rect.colliderect(enemy.rect)

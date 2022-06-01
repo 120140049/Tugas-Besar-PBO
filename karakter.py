@@ -9,7 +9,6 @@ from assetModule import get_font
 class Alectrona(Hero):
     def __init__(self, nama='Alectrona', hp=3000, damage=245):
         Hero.__init__(self, nama, hp, damage)
-        self.animation = [[]]
         self.skill_projectile = []
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
@@ -87,7 +86,6 @@ class Alectrona(Hero):
 class Nipalto(Hero):
     def __init__(self, nama='Nipalto', hp=2750, damage=280):
         Hero.__init__(self, nama, hp, damage)
-        self.animation = [[]]
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
         self.dead_img = self.animation[4][6]
@@ -164,7 +162,6 @@ class Nipalto(Hero):
 class Salazar(Hero):
     def __init__(self, nama='Salazar', hp=2500, damage=300):
         Hero.__init__(self, nama, hp, damage)
-        self.animation = [[]]
         self.setAnimation()
         self.rect = self.animation[0][0].get_rect()
         self.dead_img = self.animation[4][22]
@@ -247,7 +244,6 @@ class Salazar(Hero):
 class Aposteus(Monster):
     def __init__(self, nama='Aposteus', hp=5000, damage=115):
         Monster.__init__(self, nama, hp, damage)
-        self.animation = [[]]
         self.setAnimation()
         self.rect.x = 520
         self.rect.y = -200
@@ -299,7 +295,6 @@ class Aposteus(Monster):
 class Fenrir(Monster):
     def __init__(self, nama='Fenrir', hp=4830, damage=78):
         Monster.__init__(self, nama, hp, damage)
-        self.animation = [[]]
         self.setAnimation()
         self.rect.x = 520
         self.rect.y = -200
