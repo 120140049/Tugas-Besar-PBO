@@ -7,7 +7,7 @@ pygame.init()
 
 WINDOW = None
 
-class Background():
+class Guide():
     global WINDOW
     Tombol_back = Button(image=pygame.image.load(f"{game_env}/button2.png"),
                 pos=(100, 50), text_input="Back", font=get_font(15))
@@ -36,7 +36,7 @@ class Background():
 def main():
     global WINDOW
     WINDOW = pygame.display.set_mode((896, 504))
-    bg=Background()
+    bg=Guide()
     FPS=60
     FramePerSec=pygame.time.Clock()
     pygame.display.set_caption("Game Guide")
