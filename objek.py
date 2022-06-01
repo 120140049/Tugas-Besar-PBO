@@ -104,6 +104,10 @@ class Makhluk(ABC):
     @abstractmethod
     def serang(self):
         pass
+        
+    @abstractmethod
+    def __add__(self):
+        pass
 
 # Parent Class
 class Hero(Makhluk):
