@@ -49,7 +49,7 @@ def tingkatKesulitan():
         pygame.display.flip()
 
 def main():
-    state= tingkatKesulitan()
+    state=tingkatKesulitan()
     if state == 1 :
         return 'easy'
     if state == 2 :
@@ -58,4 +58,3 @@ def main():
         return 'hard'
     if state == 4 :
         return 'back'
-    

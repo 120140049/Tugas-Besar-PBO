@@ -242,7 +242,7 @@ class Salazar(Hero):
         self.skilled = True
 
 class Aposteus(Monster):
-    def __init__(self, nama='Aposteus', hp=5000, damage=115):
+    def __init__(self, nama='Aposteus', hp=5000, damage=128):
         Monster.__init__(self, nama, hp, damage)
         self.setAnimation()
         self.rect.x = 520
@@ -288,7 +288,7 @@ class Aposteus(Monster):
     
 
 class Fenrir(Monster):
-    def __init__(self, nama='Fenrir', hp=4830, damage=78):
+    def __init__(self, nama='Fenrir', hp=4830, damage=106):
         Monster.__init__(self, nama, hp, damage)
         self.setAnimation()
         self.rect.x = 520
